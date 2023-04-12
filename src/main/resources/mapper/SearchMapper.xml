@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.springboot_vue.mapper.SearchMapper">
+
+    <resultMap id="goods" type="com.example.springboot_vue.pojo.goods.Goods">
+        <result column="id" property="id"/>
+        <result column="category_name" property="categoryName"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="name" property="name"/>
+        <result column="camera" property="camera"/>
+        <result column="image" property="image"/>
+        <result column="net" property="net"/>
+        <result column="trademark" property="trademark"/>
+        <result column="price" property="price"/>
+        <result column="size" property="size"/>
+    </resultMap>
+
+    <resultMap id="myType" type="com.example.springboot_vue.pojo.goods.Type">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="type_title" property="typeTitle"/>
+    </resultMap>
+
+    <resultMap id="myDetail" type="com.example.springboot_vue.pojo.goods.Detail">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="key_value" property="attrJson" typeHandler="com.example.springboot_vue.pojo.JsonTypeHandler"/>
+        <result column="price_value" property="price"/>
+    </resultMap>
+
+    <resultMap id="newGoods" type="com.example.springboot_vue.pojo.goods.NewGoods">
+        <result column="id" property="id"/>
+        <result column="category1_id" property="category1Id"/>
+        <result column="category2_id" property="category2Id"/>
+        <result column="category3_id" property="category3Id"/>
+        <result column="name" property="name"/>
+        <result column="image" property="image"/>
+        <result column="trademark" property="trademark"/>
+        <result column="price" property="price"/>
+        <result column="key_words" property="keyWords"/>
+        <result column="detail" property="detail" typeHandler="com.example.springboot_vue.pojo.JsonTypeHandler"/>
+    </resultMap>
+
+    <resultMap id="detailAndTrademark" type="com.example.springboot_vue.pojo.goods.KeyToTrademark">
+        <result column="id" property="id"/>
+        <result column="key_words" property="keyWords" />
+        <result column="trademark" property="trademark" typeHandler="com.example.springboot_vue.pojo.JsonTypeHandler"/>
+        <result column="detail" property="detail" typeHandler="com.example.springboot_vue.pojo.JsonTypeHandler"/>
+    </resultMap>
+
+    <resultMap id="newTypeNav" type="com.example.springboot_vue.pojo.NewTypeNav">
+        <result column="id" property="id"/>
+        <result column="category1_id" property="category1Id"/>
+        <result column="category2_id" property="category2Id"/>
+        <result column="category3_id" property="category3Id"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="parent2_id" property="parent2Id"/>
+    </resultMap>
+
+    <select id="selAllGoods" resultMap="goods">
+        select * from my_goods where 1=1
+        <if test="id != -1">
+            and id = #{id}
+        </if>
+    </select>
+
+    <select id="selAllType" resultMap="myType">
+        select * from my_type
+    </select>
+
+    <select id="selTypeNum" resultType="java.lang.Integer">
+        select count(distinct category_id) from my_type
+    </select>
+
+    <select id="selAll" resultType="java.lang.Integer">
+        select count(*) from my_goods where 1=1
+        <if test="map.categoryId != null and '' != map.categoryId">
+            and category_id = #{map.categoryId}
+        </if>
+        <if test="map.categoryName != null and '' != map.categoryName">
+            and category_name = #{map.categoryName}
+        </if>
+        <if test="map.trademark != null and '' != map.trademark">
+            and trademark = #{map.trademark}
+        </if>
+        <if test="map.keyWords != null and '' != map.keyWords">
+            and `name` like concat('%', #{map.keyWords}, '%')
+        </if>
+    </select>
+
+    <insert id="insertGoods" parameterType="com.example.springboot_vue.pojo.goods.Goods">
+        insert into my_goods(`name`, price, category_name, category_id, trademark, net, `size`, image, camera)
+        values (#{name}, #{price}, #{categoryName}, #{categoryId}, #{trademark}, #{net}, #{size}, #{image}, #{camera})
+    </insert>
+
+    <insert id="insertType" parameterType="com.example.springboot_vue.pojo.goods.Type">
+        insert into my_type(category_id, `name`) values (#{categoryId}, #{name})
+    </insert>
+
+    <select id="selImages" resultType="java.lang.String">
+        select `path` from images where type_id = #{id}
+    </select>
+    
+    <select id="selGoodsById" resultMap="goods">
+        select * from my_goods where 1=1
+        <if test="map.categoryId != null and '' != map.categoryId">
+            and category_id = #{map.categoryId}
+        </if>
+        <if test="map.categoryName != null and '' != map.categoryName">
+            and category_name = #{map.categoryName}
+        </if>
+        <if test="map.trademark != null and '' != map.trademark">
+            and trademark = #{map.trademark}
+        </if>
+        <if test="map.keyWords != null and '' != map.keyWords">
+            and `name` like concat('%', #{map.keyWords}, '%')
+        </if>
+        <if test="start != null and end != null">
+            limit #{start}, #{end}
+        </if>
+    </select>
+
+    <select id="selDetail" resultMap="myDetail" >
+        select * from my_detail where good_id = #{id}
+    </select>
+
+    <select id="selNewGoods" resultMap="newGoods">
+        select * from goods_table
+        where key_words like concat('%', #{keyWords}, '%')
+        limit #{start}, #{end}
+    </select>
+
+    <select id="selNewDetailAndTrademark" resultMap="detailAndTrademark">
+        select id, trademark, detail
+        from detail_table
+        where key_words like concat('%', #{keyWords}, '%')
+    </select>
+
+    <!-- detail::json->> '运行内存' = #{detail} -->
+    <select id="selOneDetail" resultMap="detailAndTrademark">
+        select * from detail_table
+        where json_contains(detail, json_object('运行内存', #{detail}))
+    </select>
+
+<!--    <select id="selAllDetail" resultMap="newGoods">-->
+<!--        select id, `name`, image, category1_id, category2_id, category3_id, trademark, key_words, price, detail-->
+<!--        from goods_table-->
+<!--        where key_words like concat('%', #{keyWords}, '%')-->
+<!--        <if test="keys != null">-->
+<!--            <foreach collection="keys" item="key" index="i">-->
+<!--                <foreach collection="values" index="j" item="value">-->
+<!--                    and json_contains(detail, json_object(#{key}, #{value}))-->
+<!--                </foreach>-->
+<!--            </foreach>-->
+<!--        </if>-->
+<!--        limit #{start}, #{end}-->
+<!--    </select>-->
+
+    <select id="selAllDetail" resultMap="newGoods">
+        select id, `name`, image, category1_id, category2_id, category3_id, trademark, key_words, price, detail
+        from goods_table
+        where key_words like concat('%', #{keyWords}, '%')
+        <if test="kvMap != null">
+            <foreach collection="kvMap.keys" item="key">
+                <foreach collection="kvMap[key]" item="value">
+                    and json_contains(detail, json_object(#{key}, #{value}))
+                </foreach>
+            </foreach>
+        </if>
+        limit #{start}, #{end}
+    </select>
+<!--    <foreach collection="values[#{i}]" item="value" index="j">-->
+<!--        and json_contains(detail, json_object(#{key}, #{value}))-->
+<!--    </foreach>-->
+
+    <select id="selTypeNav" resultMap="newTypeNav">
+        select * from new_category_table
+    </select>
+
+<!--    <select id="selAllDetail1" resultMap="newGoods">-->
+<!--        select id, `name`, image, category1_id, category2_id, category3_id, trademark, key_words, price, detail-->
+<!--        from goods_table-->
+<!--        where key_words = #{keyWords}-->
+<!--        <foreach collection="KVList" item="KV" index="i">-->
+<!--            and json_contains(detail, json_object(#{KV.key}, #{KV.value}))-->
+<!--        </foreach>-->
+<!--    </select>-->
+
+    <insert id="addGoods" >
+        insert into goods_table(`name`, category1_id, category2_id, category3_id, trademark, key_words, price, detail)
+        values (#{map.name}, #{map.category1Id}, #{map.category2Id}, #{map.category3Id},
+                #{map.trademark}, #{map.category3Id}, #{map.price},
+                #{detail, typeHandler = com.example.springboot_vue.pojo.JsonTypeHandler});
+    </insert>
+
+    <update id="updGoods" >
+        update goods_table
+        set `name` = #{map.name}, `price` = #{map.price},
+        category1_id = #{map.category1Id}, category2_id = #{map.category2Id}, category3_id = #{map.category3Id},
+        key_words = #{map.category3Id}, trademark = #{map.trademark}
+        where id = #{id}
+    </update>
+
+    <select id="selDeepCount" resultType="int">
+        select count(*) from goods_table
+        where key_words like concat('%', #{keyWords}, '%')
+        <if test="kvMap != null">
+            <foreach collection="kvMap.keys" item="key">
+                <foreach collection="kvMap[key]" item="value">
+                    and json_contains(detail, json_object(#{key}, #{value}))
+                </foreach>
+            </foreach>
+        </if>
+    </select>
+</mapper>

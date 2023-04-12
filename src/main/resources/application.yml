@@ -1,0 +1,45 @@
+spring:
+  thymeleaf:
+    cache: false
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/seckill?useSSL=false&amp
+    username: root
+    password: root
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    timeout: 10000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: 100000ms
+        max-idle: 10
+        min-idle: 3
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+  data:
+    mongodb:
+      enabled: true #设置为true才开启mongodb服务
+      host: 127.0.0.1
+      port: 27017
+server:
+  port: 9000
+#  servlet:
+#    session:
+#      cookie:
+#        secure: true
+mybatis:
+  mapper-locations: classpath*:/mapper/*Mapper.xml
+  type-aliases-package: com.example.demo.pojo
+#  config-location: classpath:mybatis-config.xml
+  configuration:
+#    在控制台打印输出SQL语句
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+

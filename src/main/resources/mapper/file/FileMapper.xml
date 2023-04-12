@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.springboot_vue.file_operate.mapper.FileMapper">
+
+    <insert id="insertFile" parameterType="com.example.springboot_vue.file_operate.pojo.FileInfo">
+        insert into file_info(filename, type, location, time) value (#{filename}, #{type}, #{location}, #{time})
+    </insert>
+
+
+</mapper>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.springboot_vue.mapper.DemoMapper">
+    <resultMap id="testDemo" type="com.example.springboot_vue.pojo.Demo">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="account" property="account"/>
+        <result column="password" property="password"/>
+    </resultMap>
+
+    <resultMap id="category" type="com.example.springboot_vue.pojo.Category">
+        <result column="id" property="id"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="category2_id" property="category2Id"/>
+        <result column="category3_id" property="category3Id"/>
+        <result column="category_level" property="categoryLevel"/>
+        <result column="category_name" property="categoryName" />
+    </resultMap>
+
+    <resultMap id="testJson" type="com.example.springboot_vue.pojo.Test">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="account" property="account"/>
+        <!-- typeHandler映射具体配置的json格式 -->
+        <result column="skill" property="skill" typeHandler="com.example.springboot_vue.pojo.JsonTypeHandler"/>
+    </resultMap>
+
+    <resultMap id="testLeftJoin" type="com.example.springboot_vue.pojo.test.Teacher">
+        <result column="id" property="id"/>
+        <result column="account" property="account"/>
+        <result column="password" property="password"/>
+        <result column="college_name" property="college"/>
+    </resultMap>
+
+    <select id="selDemoByAccount" resultType="com.example.springboot_vue.pojo.Demo">
+        select * from demo_table where account = #{account}
+    </select>
+
+    <insert id="inertDemo" parameterType="com.example.springboot_vue.pojo.Demo">
+        insert into demo_table(`name`, account, password) values (#{name}, #{account}, #{password})
+    </insert>
+
+    <select id="getCategory" resultType="com.example.springboot_vue.pojo.Category">
+        select * from category_table where category_id = #{categoryId} and category_level = #{categoryLevel}
+    </select>
+
+    <select id="getAllCategory" resultMap="category">
+        select * from category_table
+    </select>
+
+    <insert id="insertCate" >
+        insert into  category_table(category_id, category_level, category_name) values("3", "1", "电脑、办公")
+    </insert>
+
+    <insert id="insertJson">
+        insert into test_json (`name`, account, skill)
+        values (#{name}, #{account}, #{skill, typeHandler = com.example.springboot_vue.pojo.JsonTypeHandler});
+    </insert>
+
+    <select id="selJsonResult" resultMap="testJson">
+        select * from test_json
+    </select>
+
+    <select id="selTeacher" resultMap="testLeftJoin">
+        select u.account, u.password, c.college_name from user u
+        left join college c
+        on u.college = c.college_id
+    </select>
+</mapper>
