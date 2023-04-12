@@ -6,7 +6,7 @@ import java.util.*;
 public class LeetCodeMain5 {
 
     public static void main(String[] args) throws IOException {
-
+        System.out.println("测试提交");
     }
 
     // 1041. 困于环中的机器人
