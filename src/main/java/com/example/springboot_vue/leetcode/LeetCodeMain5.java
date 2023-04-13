@@ -9,6 +9,31 @@ public class LeetCodeMain5 {
         System.out.println("测试提交");
     }
 
+    // 2404. 出现最频繁的偶数元素
+    public int mostFrequentEven(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            if (num % 2 != 0) {
+                continue;
+            }
+            map.merge(num, 1, Integer::sum);
+        }
+
+        int max = -1, res = -1;
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            if (entry.getValue() > max) {
+                max = entry.getValue();
+                res = entry.getKey();
+            } else if (entry.getValue() == max) {
+                if (entry.getKey() < res) {
+                    res = entry.getKey();
+                }
+            }
+        }
+
+        return res;
+    }
+
     // 1041. 困于环中的机器人
     public boolean isRobotBounded(String instructions) {
         int x = 0, y = 0;
