@@ -6,7 +6,104 @@ import java.util.*;
 public class LeetCodeMain5 {
 
     public static void main(String[] args) throws IOException {
-        System.out.println("测试提交");
+        LeetCodeMain5 leetCodeMain5 = new LeetCodeMain5();
+        int[][] paths = {{1,2},{3,4}};
+        System.out.println(Arrays.toString(leetCodeMain5.gardenNoAdj(4, paths)));
+    }
+
+    // 1042. 不邻接植花
+    public int[] gardenNoAdj(int n, int[][] paths) {
+        Map<Integer, Set<Integer>> map = new HashMap<>();
+        for (int[] path : paths) {
+            if (map.get(path[0]) == null) {
+                Set<Integer> list = new HashSet<>();
+                list.add(path[1]);
+                map.put(path[0], list);
+            } else {
+                map.get(path[0]).add(path[1]);
+            }
+
+            if (map.get(path[1]) == null) {
+                Set<Integer> list = new HashSet<>();
+                list.add(path[0]);
+                map.put(path[1], list);
+            } else {
+                map.get(path[1]).add(path[0]);
+            }
+        }
+
+        int[] res = new int[n];
+        Arrays.fill(res, 1);
+        for (Map.Entry<Integer, Set<Integer>> entry : map.entrySet()) {
+            int i = entry.getKey();
+
+            boolean[] booleans = new boolean[5];
+            Arrays.fill(booleans, false);
+
+            for (Integer integer : entry.getValue()) {
+                // 不为0说明设置过颜色
+                if (res[integer - 1] != 0) {
+                    booleans[res[integer - 1]] = true;
+                }
+            }
+
+            for (int j = 1; j < booleans.length; j++) {
+                if (!booleans[j]) {
+                    res[i - 1] = j;
+                    break;
+                }
+            }
+        }
+
+        return res;
+    }
+
+    // 1023. 驼峰式匹配 （有误）
+    public List<Boolean> camelMatch(String[] queries, String pattern) {
+        List<String> part = new ArrayList<>();
+        StringBuilder stringBuilder = new StringBuilder(pattern.charAt(0) + "");
+        for (int i = 1; i < pattern.length(); i++) {
+            if (pattern.charAt(i) >= 'A' && pattern.charAt(i) <= 'Z') {
+                part.add(stringBuilder.toString());
+                stringBuilder = new StringBuilder(pattern.charAt(i) + "");
+            } else {
+                stringBuilder.append(pattern.charAt(i));
+            }
+        }
+        part.add(stringBuilder.toString());
+
+        List<Boolean> list = new ArrayList<>();
+        for (int i = 0; i < queries.length; i++) {
+            int lastIndex = queries[i].lastIndexOf(part.get(0));
+            if (lastIndex == -1) {
+                list.add(false);
+                continue;
+            }
+
+            int mark = 0;
+            for (int j = 1; j < part.size(); j++) {
+                int val = queries[i].lastIndexOf(part.get(j));
+                if (val != -1 && val > lastIndex) {
+                    lastIndex = val;
+                } else {
+                    mark = 1;
+                    list.add(false);
+                }
+            }
+
+            for (int j = lastIndex + part.get(part.size() - 1).length(); j < queries[i].length(); j++) {
+                if (queries[i].charAt(j) >= 'A' && queries[i].charAt(j) <= 'Z') {
+                    mark = 1;
+                    list.add(false);
+                    break;
+                }
+            }
+            if (mark == 0) {
+                list.add(true);
+            }
+        }
+
+        return list;
     }
 
     // 2404. 出现最频繁的偶数元素
