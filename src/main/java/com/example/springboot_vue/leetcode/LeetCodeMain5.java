@@ -8,7 +8,41 @@ public class LeetCodeMain5 {
     public static void main(String[] args) throws IOException {
         LeetCodeMain5 leetCodeMain5 = new LeetCodeMain5();
         int[][] paths = {{1,2},{3,4}};
-        System.out.println(Arrays.toString(leetCodeMain5.gardenNoAdj(4, paths)));
+//        System.out.println(Arrays.toString(leetCodeMain5.gardenNoAdj(4, paths)));
+        System.out.println(leetCodeMain5.getIndex("02-20"));
+    }
+
+    // 2409. 统计共同度过的日子数
+    public int countDaysTogether(String arriveAlice, String leaveAlice, String arriveBob, String leaveBob) {
+        int[] dayArr = new int[365];
+        Arrays.fill(dayArr, 0);
+
+        for (int i = getIndex(arriveAlice); i <= getIndex(leaveAlice); i++) {
+            dayArr[i] = 1;
+        }
+
+        int res = 0;
+        for (int i = getIndex(arriveBob); i <= getIndex(leaveBob); i++) {
+            if (dayArr[i] == 1) {
+                res++;
+            }
+        }
+
+        return res;
+    }
+
+    public int getIndex(String str) {
+        int[] arr = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+        String[] monthAndDay = str.split("-");
+        int month = Integer.parseInt(monthAndDay[0]);
+        int days = 0;
+        for (int i = 1; i < month; i++) {
+            days += arr[i];
+        }
+        int day = Integer.parseInt(monthAndDay[1]);
+
+        return day + days;
     }
 
     // 1042. 不邻接植花
