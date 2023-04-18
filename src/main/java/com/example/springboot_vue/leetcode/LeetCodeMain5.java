@@ -12,6 +12,33 @@ public class LeetCodeMain5 {
         System.out.println(leetCodeMain5.getIndex("02-20"));
     }
 
+    // 1026. 节点与其祖先之间的最大差值
+    public int maxAncestorDiff(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        return myXaxAncestorDiff(root, root.val, root.val);
+    }
+
+    public int myXaxAncestorDiff(TreeNode root, int max, int min) {
+        if (root == null) {
+            return 0;
+        }
+
+        int partMax = Math.max(root.val, max);
+        int partMin = Math.min(root.val, min);
+
+        if (root.left == null && root.right == null) {
+            return partMax - partMin;
+        }
+
+        int leftDiffer = myXaxAncestorDiff(root.left, partMax, partMin);
+        int rightDiffer = myXaxAncestorDiff(root.right, partMax, partMin);
+
+        return Math.max(leftDiffer, rightDiffer);
+    }
+
     // 2409. 统计共同度过的日子数
     public int countDaysTogether(String arriveAlice, String leaveAlice, String arriveBob, String leaveBob) {
         int[] dayArr = new int[365];
