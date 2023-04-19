@@ -7,9 +7,35 @@ public class LeetCodeMain5 {
 
     public static void main(String[] args) throws IOException {
         LeetCodeMain5 leetCodeMain5 = new LeetCodeMain5();
-        int[][] paths = {{1,2},{3,4}};
-//        System.out.println(Arrays.toString(leetCodeMain5.gardenNoAdj(4, paths)));
-        System.out.println(leetCodeMain5.getIndex("02-20"));
+        int[] arr = {1,15,7,9,2,5,10};
+        System.out.println(leetCodeMain5.maxSumAfterPartitioning(arr, 3));
+    }
+
+    // 1043. 分隔数组以得到最大和
+    public int maxSumAfterPartitioning(int[] arr, int k) {
+        int[] dp = new int[arr.length];
+        int max = arr[0];
+        for (int i = 1; i <= k; i++) {
+            max = Math.max(max, arr[i - 1]);
+            dp[i - 1] = Math.max(arr[i - 1], max) * i;
+        }
+
+        for (int i = k; i < arr.length; i++) {
+            for (int j = 1; j <= k; j++) {
+                // 这里还是要找从i往前的k个数的最大值。
+                dp[i] = Math.max(dp[i - j] + getMaxValue(arr, i - j + 1, i) * j, dp[i]);
+            }
+        }
+
+        return dp[arr.length - 1];
+    }
+
+    private int getMaxValue(int[] arr, int start, int end) {
+        int res = 0;
+        for (int i = start; i <= end; i++) {
+            res = Math.max(res, arr[i]);
+        }
+        return res;
     }
 
     // 1026. 节点与其祖先之间的最大差值
