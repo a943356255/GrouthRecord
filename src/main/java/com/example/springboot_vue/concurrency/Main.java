@@ -1,15 +1,8 @@
 package com.example.springboot_vue.concurrency;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Scanner;
-import java.util.Set;
 
-//        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-//        bufferedReader.readLine();
 public class Main {
 
     static int[] arr = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
