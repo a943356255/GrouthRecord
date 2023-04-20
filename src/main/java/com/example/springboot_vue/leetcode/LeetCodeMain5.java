@@ -11,6 +11,17 @@ public class LeetCodeMain5 {
         System.out.println(leetCodeMain5.maxSumAfterPartitioning(arr, 3));
     }
 
+    // 189. 轮转数组
+    public void rotate(int[] nums, int k) {
+        int[] res = new int[nums.length];
+        System.arraycopy(nums, 0, res, 0, nums.length);
+
+        for (int i = 0; i < nums.length; i++) {
+            System.out.println((i + k) % nums.length);
+            nums[(i + k) % nums.length] = res[i];
+        }
+    }
+
     // 1043. 分隔数组以得到最大和
     public int maxSumAfterPartitioning(int[] arr, int k) {
         int[] dp = new int[arr.length];
