@@ -7,8 +7,29 @@ public class LeetCodeMain5 {
 
     public static void main(String[] args) throws IOException {
         LeetCodeMain5 leetCodeMain5 = new LeetCodeMain5();
-        int[] arr = {1,15,7,9,2,5,10};
-        System.out.println(leetCodeMain5.maxSumAfterPartitioning(arr, 3));
+        int[] arr = {5,4,3,2,1};
+        System.out.println(leetCodeMain5.candy(arr));
+    }
+
+    // 135. 分发糖果
+    public int candy(int[] ratings) {
+        int[] candy = new int[ratings.length];
+        Arrays.fill(candy, 1);
+
+        for (int i = 1; i < ratings.length; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                candy[i] = candy[i - 1] + 1;
+            } else if (ratings[i] < ratings[i - 1]) {
+                candy[i - 1] = Math.max(candy[i] + 1, candy[i - 1]);
+                int part = i;
+                while (part > 0 && ratings[part] < ratings[part - 1]) {
+                    candy[part - 1] = Math.max(candy[part] + 1, candy[part - 1]);
+                    part--;
+                }
+            }
+        }
+
+        return Arrays.stream(candy).sum();
     }
 
     // 2413. 最小偶倍数
