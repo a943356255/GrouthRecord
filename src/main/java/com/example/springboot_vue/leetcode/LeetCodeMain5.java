@@ -11,6 +11,17 @@ public class LeetCodeMain5 {
         System.out.println(leetCodeMain5.maxSumAfterPartitioning(arr, 3));
     }
 
+    // 2413. 最小偶倍数
+    public int smallestEvenMultiple(int n) {
+        for (int i = n; i <= 2 * n; i++) {
+            if (i % 2 == 0 && i % n == 0) {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
     // 189. 轮转数组
     public void rotate(int[] nums, int k) {
         int[] res = new int[nums.length];
