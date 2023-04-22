@@ -11,6 +11,53 @@ public class LeetCodeMain5 {
         System.out.println(leetCodeMain5.candy(arr));
     }
 
+    // 1027. 最长等差数列
+    public int longestArithSeqLength(int[] nums) {
+//        Map<Integer, Set<Integer>> map = new HashMap<>();
+//        for (int i = 1; i < nums.length; i++) {
+//            for (int j = 0; j < i; j++) {
+//                if (map.get(nums[j] - nums[i]) == null) {
+//                    Set<Integer> set = new HashSet<>();
+//                    set.add(nums[j]);
+//                    set.add(nums[i]);
+//                    map.put(nums[j] - nums[i], set);
+//                } else {
+//                    map.get(nums[j] - nums[i]).add(nums[j]);
+//                    map.get(nums[j] - nums[i]).add(nums[i]);
+//                }
+//            }
+//        }
+//
+//        int res = 0;
+//        for (Map.Entry<Integer, Set<Integer>> entry : map.entrySet()) {
+//            res = Math.max(res, entry.getValue().size());
+//            System.out.println(entry.getValue().toString());
+//            System.out.println(entry.getValue().size());
+//        }
+//
+//        return res;
+
+        int n = nums.length;
+        int[][] dp = new int[n][1001];
+
+        // 保存结果
+        int maxLen = 0;
+        // 这里的思路是，目前统计到第k行，那么我从第0行统计到第k行，
+        for (int k = 1; k < n; k++) {
+            for (int j = 0; j < k; j++) {
+                // 统一加偏移量，使下标非负
+                int d = nums[k] - nums[j] + 500;
+                // 根据 d 去填充dp[k][d]
+                // 这里的dp[k][d] 是从dp[j][d]得到的，当限制了d这一列以后，就不存在断层这种情况了
+                dp[k][d] = dp[j][d] + 1;
+                // 维护最大值
+                maxLen = Math.max(maxLen, dp[k][d]);
+            }
+        }
+
+        return maxLen + 1;
+    }
+
     // 135. 分发糖果
     public int candy(int[] ratings) {
         int[] candy = new int[ratings.length];
