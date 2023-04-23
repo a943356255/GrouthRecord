@@ -11,6 +11,32 @@ public class LeetCodeMain5 {
         System.out.println(leetCodeMain5.candy(arr));
     }
 
+    // 151. 反转字符串中的单词
+    public String reverseWords(String s) {
+        Stack<String> stack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) != ' ') {
+                i++;
+                StringBuilder stringBuilder = new StringBuilder();
+                while (i < s.length() && s.charAt(i) != ' ') {
+                    stringBuilder.append(s.charAt(i));
+                    i++;
+                }
+                stack.add(stringBuilder.toString());
+            }
+        }
+
+        StringBuilder res = new StringBuilder();
+        while (!stack.isEmpty()) {
+            res.append(stack.pop());
+            if (!stack.isEmpty()) {
+                res.append(" ");
+            }
+        }
+
+        return res.toString();
+    }
+
     // 1027. 最长等差数列
     public int longestArithSeqLength(int[] nums) {
 //        Map<Integer, Set<Integer>> map = new HashMap<>();
