@@ -11,6 +11,42 @@ public class LeetCodeMain5 {
         System.out.println(leetCodeMain5.candy(arr));
     }
 
+    // 134. 加油站
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int res = 0;
+        int[] arr = new int[gas.length];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = gas[i] - cost[i];
+            res += arr[i];
+        }
+
+        if (res < 0) {
+            return -1;
+        }
+
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] < 0) {
+                continue;
+            }
+            int count = 0, sum = 0, j = i;
+            while (count != arr.length) {
+                count++;
+                sum += arr[j];
+                if (sum < 0) {
+                    break;
+                }
+                j = (j + 1) % arr.length;
+            }
+
+            if (count == arr.length) {
+                return i;
+            }
+            i += count - 1;
+        }
+
+        return -1;
+    }
+
     // 151. 反转字符串中的单词
     public String reverseWords(String s) {
         Stack<String> stack = new Stack<>();
