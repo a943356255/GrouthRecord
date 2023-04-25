@@ -3,12 +3,79 @@ package com.example.springboot_vue.leetcode;
 import java.io.IOException;
 import java.util.*;
 
+class Student {
+    String name;
+    int height;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+}
+
 public class LeetCodeMain5 {
 
     public static void main(String[] args) throws IOException {
         LeetCodeMain5 leetCodeMain5 = new LeetCodeMain5();
         int[] arr = {5,4,3,2,1};
         System.out.println(leetCodeMain5.candy(arr));
+    }
+
+    // 2418. 按身高排序
+    public String[] sortPeople(String[] names, int[] heights) {
+        ArrayList<Student> list = new ArrayList<>();
+        for (int i = 0; i < names.length; i++) {
+            Student student = new Student();
+            student.height = heights[i];
+            student.name = names[i];
+            list.add(student);
+        }
+
+        list.sort(Comparator.comparing(Student::getHeight));
+
+        int index = 0;
+        String[] arr = new String[names.length];
+        for (int i = list.size() - 1; i >= 0; i--) {
+            arr[index++] = list.get(i).name;
+        }
+
+        return arr;
+    }
+
+    // 15. 三数之和
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == nums[Math.max(0, i - 1)]) {
+                continue;
+            }
+            for (int j = i + 1; j < nums.length; j++) {
+                for (int k = j + 1; k < nums.length; k++) {
+                    if (nums[i] + nums[j] + nums[k] == 0) {
+                        List<Integer> list = new ArrayList<>();
+                        list.add(nums[i]);
+                        list.add(nums[j]);
+                        list.add(nums[k]);
+                        res.add(list);
+                    }
+                }
+            }
+        }
+
+        return res;
     }
 
     // 134. 加油站
