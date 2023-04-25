@@ -3,33 +3,34 @@ package com.example.springboot_vue.leetcode;
 import java.io.IOException;
 import java.util.*;
 
-class Student {
-    String name;
-    int height;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-}
-
 public class LeetCodeMain5 {
 
     public static void main(String[] args) throws IOException {
         LeetCodeMain5 leetCodeMain5 = new LeetCodeMain5();
         int[] arr = {5,4,3,2,1};
         System.out.println(leetCodeMain5.candy(arr));
+    }
+
+    // 128. 最长连续序列
+    public int longestConsecutive(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            set.add(num);
+        }
+
+        int max = 0;
+        for (int i : set) {
+            if (!set.contains(i - 1)) {
+                int temp = i + 1, tempVal = 1;
+                while (set.contains(temp)) {
+                    tempVal++;
+                    temp += 1;
+                }
+                max = Math.max(max, tempVal);
+            }
+        }
+
+        return max;
     }
 
     // 2418. 按身高排序
@@ -762,5 +763,26 @@ public class LeetCodeMain5 {
         }
 
         return res;
+    }
+}
+
+class Student {
+    String name;
+    int height;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 }
