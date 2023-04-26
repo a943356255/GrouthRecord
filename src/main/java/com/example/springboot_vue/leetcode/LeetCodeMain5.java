@@ -11,6 +11,22 @@ public class LeetCodeMain5 {
         System.out.println(leetCodeMain5.candy(arr));
     }
 
+    // 274. H 指数
+    public int hIndex(int[] citations) {
+        int res = 0;
+        Arrays.sort(citations);
+
+        int min;
+        for (int i = 0; i < citations.length; i++) {
+            if (citations[i] >= citations.length - i) {
+                min = Math.min(citations.length - i, citations[i]);
+                res = Math.max(min, res);
+            }
+        }
+
+        return res;
+    }
+
     // 128. 最长连续序列
     public int longestConsecutive(int[] nums) {
         Set<Integer> set = new HashSet<>();
