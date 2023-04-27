@@ -11,6 +11,29 @@ public class LeetCodeMain5 {
         System.out.println(leetCodeMain5.candy(arr));
     }
 
+    // 1048. 最长字符串链
+    public int longestStrChain(String[] words) {
+        Arrays.sort(words, Comparator.comparingInt(String::length));
+
+        int res = 0;
+        Map<String, Integer> map = new HashMap<>();
+        for (int i = 0; i < words.length; i++) {
+            map.put(words[i], 1);
+            for (int j = 0; j < words[i].length(); j++) {
+                String prev = words[i].substring(0, i) + words[i].substring(i + 1);
+                // 包含前一个
+                if (map.containsKey(prev)) {
+                    // 这里相当于遍历每一种情况，找到最大的
+                    map.put(words[i], Math.max(map.get(prev) + 1, map.get(words[i])));
+                }
+            }
+
+            res = Math.max(res, map.get(words[i]));
+        }
+
+        return res;
+    }
+
     // 274. H 指数
     public int hIndex(int[] citations) {
         int res = 0;
