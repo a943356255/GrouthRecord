@@ -1,5 +1,7 @@
 package com.example.springboot_vue.leetcode;
 
+import com.example.springboot_vue.pojo.city.City;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -7,8 +9,37 @@ public class LeetCodeMain5 {
 
     public static void main(String[] args) throws IOException {
         LeetCodeMain5 leetCodeMain5 = new LeetCodeMain5();
+
         int[] arr = {5,4,3,2,1};
         System.out.println(leetCodeMain5.candy(arr));
+    }
+
+    // 2423. 删除字符使频率相同
+    public boolean equalFrequency(String word) {
+        int[] charCount = new int[26];
+        int n = word.length();
+        for (int i = 0; i < n; i++) {
+            charCount[word.charAt(i) - 'a']++;
+        }
+
+        for (int i = 0; i < 26; i++) {
+            if (charCount[i] == 0) {
+                continue;
+            }
+            charCount[i]--;
+
+            HashSet<Integer> frequency = new HashSet<>();
+            for (int f : charCount) {
+                if (f > 0) {
+                    frequency.add(f);
+                }
+            }
+            if (frequency.size() == 1) {
+                return true;
+            }
+            charCount[i]++;
+        }
+        return false;
     }
 
     // 1048. 最长字符串链
