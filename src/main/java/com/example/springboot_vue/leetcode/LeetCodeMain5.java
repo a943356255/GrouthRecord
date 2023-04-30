@@ -1,7 +1,5 @@
 package com.example.springboot_vue.leetcode;
 
-import com.example.springboot_vue.pojo.city.City;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -12,6 +10,34 @@ public class LeetCodeMain5 {
 
         int[] arr = {5,4,3,2,1};
         System.out.println(leetCodeMain5.candy(arr));
+    }
+
+    // 1033. 移动石子直到连续
+    public int[] numMovesStones(int a, int b, int c) {
+        int[] sort = {a, b, c};
+        Arrays.sort(sort);
+        int mark = 0;
+        for (int i = 1; i < 3; i++) {
+            if (sort[i] - sort[i - 1] != 1) {
+                mark = 1;
+                break;
+            }
+        }
+        if (mark == 0) {
+            return new int[]{0, 0};
+        }
+
+        int[] arr = new int[2];
+        arr[0] = 2;
+        if (sort[2] - sort[1] == 1 && sort[1] - sort[0] == 1) {
+            arr[0] = 0;
+        } else if (sort[1] - sort[0] <= 2 || sort[2] - sort[1] <= 2) {
+            arr[0] = 1;
+        }
+
+        arr[1] = sort[2] - sort[0] - 2;
+
+        return arr;
     }
 
     // 2423. 删除字符使频率相同
