@@ -12,6 +12,66 @@ public class LeetCodeMain5 {
         System.out.println(leetCodeMain5.candy(arr));
     }
 
+    // 1376. 通知所有员工所需的时间
+    public int numOfMinutes(int n, int headID, int[] manager, int[] informTime) {
+        if (n == 1) {
+            return 0;
+        }
+
+        int res = 0;
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int i = 0; i < manager.length; i++) {
+            if (manager[i] == -1) {
+                continue;
+            }
+
+            if (map.get(manager[i]) == null) {
+                List<Integer> list = new ArrayList<>();
+                list.add(i);
+                map.put(manager[i], list);
+            } else {
+                map.get(manager[i]).add(i);
+            }
+        }
+
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(headID);
+        while (!queue.isEmpty()) {
+            int max = 0;
+            // 该list保存每一层的元素
+            List<Integer> list = new ArrayList<>();
+            int val, mark = 0;
+            while (!queue.isEmpty()) {
+                val = queue.poll();
+                if (map.get(val) != null) {
+                    mark = 1;
+                    list.add(val);
+                }
+//                max = Math.max(max, informTime[val]);
+                if (max > informTime[val]) {
+                    informTime[val] = informTime[val] - (max - informTime[val]);
+                } else {
+                    max = informTime[val];
+                }
+            }
+
+            // 如果有子集，才加
+            if (mark == 1) {
+                res += max;
+            }
+
+            for (Integer integer : list) {
+                if (map.get(integer) != null) {
+                    for (int i = 0; i < map.get(integer).size(); i++) {
+                        queue.offer(map.get(integer).get(i));
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
+
     // 1033. 移动石子直到连续
     public int[] numMovesStones(int a, int b, int c) {
         int[] sort = {a, b, c};
