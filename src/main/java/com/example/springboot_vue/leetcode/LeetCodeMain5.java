@@ -12,6 +12,28 @@ public class LeetCodeMain5 {
         System.out.println(leetCodeMain5.candy(arr));
     }
 
+    // 970. 强整数
+    public List<Integer> powerfulIntegers(int x, int y, int bound) {
+        List<Integer> list = new ArrayList<>();
+
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; Math.pow(x, i) < bound; i++) {
+            for (int j = 0; Math.pow(y, j) + Math.pow(x, i) <= bound; j++) {
+                if (!list.contains((int) (Math.pow(y, j) + Math.pow(x, i)))) {
+                    list.add((int) (Math.pow(y, j) + Math.pow(x, i)));
+                    if (y == 1) {
+                        break;
+                    }
+                }
+            }
+            if (x == 1) {
+                break;
+            }
+        }
+
+        return list;
+    }
+
     // 1376. 通知所有员工所需的时间
     public int numOfMinutes(int n, int headID, int[] manager, int[] informTime) {
         if (n == 1) {
