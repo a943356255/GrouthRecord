@@ -237,19 +237,43 @@ public class LeetCodeMain5 {
         List<List<Integer>> res = new ArrayList<>();
 
         Arrays.sort(nums);
+        int left, right;
         for (int i = 0; i < nums.length; i++) {
-            if (nums[i] == nums[Math.max(0, i - 1)]) {
+            if (i > 0 && nums[i] == nums[i - 1]) {
                 continue;
             }
-            for (int j = i + 1; j < nums.length; j++) {
-                for (int k = j + 1; k < nums.length; k++) {
-                    if (nums[i] + nums[j] + nums[k] == 0) {
-                        List<Integer> list = new ArrayList<>();
-                        list.add(nums[i]);
-                        list.add(nums[j]);
-                        list.add(nums[k]);
-                        res.add(list);
+
+            if (nums[i] > 0 || i > nums.length - 2) {
+                return res;
+            }
+            left = i + 1;
+            right = nums.length - 1;
+
+            while (left < right) {
+                if (nums[i] + nums[left] + nums[right] == 0) {
+                    List<Integer> list = new ArrayList<>();
+                    list.add(nums[i]);
+                    list.add(nums[left]);
+                    list.add(nums[right]);
+                    res.add(list);
+
+                    int temp = left++;
+                    if (left >= nums.length) {
+                        break;
                     }
+                    while (nums[left] == nums[temp] && left < nums.length - 1) {
+                        left++;
+                    }
+
+                    temp = right--;
+                    while (nums[right] == nums[temp] && right > 0) {
+                        right--;
+                    }
+
+                } else if (nums[i] + nums[left] + nums[right] > 0) {
+                    right--;
+                } else {
+                    left++;
                 }
             }
         }
