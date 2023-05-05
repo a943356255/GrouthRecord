@@ -1,12 +1,30 @@
 package com.example.springboot_vue.leetcode;
 
-import java.util.Arrays;
 import java.util.Stack;
 
 public class LeetCodeMain6 {
 
     public static void main(String[] args) {
 
+    }
+    
+    // 2432. 处理用时最长的那个任务的员工
+    public int hardestWorker(int n, int[][] logs) {
+        int id = logs[0][0], max = logs[0][1];
+        int temp;
+        for (int i = 1; i < logs.length; i++) {
+            temp = logs[i][1] - logs[i - 1][1];
+            if (temp > max) {
+                max = temp;
+                id = logs[i][0];
+            } else if (temp == max) {
+                if (logs[i][0] < id) {
+                    id = logs[i][0];
+                }
+            }
+        }
+
+        return id;
     }
 
     // 2106. 摘水果
