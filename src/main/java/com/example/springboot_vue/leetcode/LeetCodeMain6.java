@@ -1,13 +1,61 @@
 package com.example.springboot_vue.leetcode;
 
-import java.util.Stack;
+import java.util.*;
 
 public class LeetCodeMain6 {
 
     public static void main(String[] args) {
 
     }
-    
+
+    // 1419. 数青蛙
+    public int minNumberOfFrogs(String croakOfFrogs) {
+        if (croakOfFrogs.length() % 5 != 0) {
+            return -1;
+        }
+        int res = 0, frogNum = 0;
+        int[] cnt = new int[4];
+        Map<Character, Integer> map = new HashMap<Character, Integer>() {{
+            put('c', 0);
+            put('r', 1);
+            put('o', 2);
+            put('a', 3);
+            put('k', 4);
+        }};
+
+        char c;
+        for (int i = 0; i < croakOfFrogs.length(); i++) {
+            c = croakOfFrogs.charAt(i);
+            int temp = map.get(c);
+            if (temp == 0) {
+                frogNum++;
+                cnt[temp]++;
+                if (frogNum > res) {
+                    res = frogNum;
+                }
+            } else {
+                // 出现了该单词，但是没有前一个，返回-1
+                if (cnt[temp - 1] == 0) {
+                    return -1;
+                }
+                cnt[temp - 1]--;
+                // 每出现一个k，说明一个青蛙叫完了，下一个c就是该青蛙叫的第二声，所以num--
+                if (temp == 4) {
+                    frogNum--;
+                } else {
+                    cnt[temp]++;
+                }
+            }
+        }
+
+        // 这里是还有青蛙没有叫完
+        if (frogNum > 0) {
+            return -1;
+        }
+
+        return res;
+    }
+
     // 2432. 处理用时最长的那个任务的员工
     public int hardestWorker(int n, int[][] logs) {
         int id = logs[0][0], max = logs[0][1];
