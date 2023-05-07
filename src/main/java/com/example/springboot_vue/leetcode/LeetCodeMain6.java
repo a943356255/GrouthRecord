@@ -8,6 +8,39 @@ public class LeetCodeMain6 {
 
     }
 
+    // 1010. 总持续时间可被 60 整除的歌曲 (超时)
+    public int numPairsDivisibleBy60(int[] time) {
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int i = 0; i < time.length; i++) {
+            int temp = time[i] % 60;
+            if (map.get(temp) == null) {
+                List<Integer> queue = new ArrayList<>();
+                map.put(temp, queue);
+            }
+            map.get(temp).add(i);
+        }
+
+        int res = 0;
+        for (int i = 0; i < time.length; i++) {
+            int val = 60 - time[i] % 60;
+            if (val == 60) {
+                val = 0;
+            }
+
+            List<Integer> list = map.get(val);
+            if (list != null) {
+                for (int j = 0; j < list.size(); j++) {
+                    if (list.get(j) > i) {
+                        res += list.size() - j;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
+
     // 1419. 数青蛙
     public int minNumberOfFrogs(String croakOfFrogs) {
         if (croakOfFrogs.length() % 5 != 0) {
