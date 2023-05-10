@@ -8,6 +8,68 @@ public class LeetCodeMain6 {
 
     }
 
+    // 1015. 可被 K 整除的最小整数
+    public int smallestRepunitDivByK(int k) {
+        int res = 0;
+
+        return res;
+    }
+
+    // 30. 串联所有单词的子串
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> res = new ArrayList<>();
+        int m = words.length, n = words[0].length();
+        for (int i = 0; i < n; i++) {
+            // i + m * n是截取单词的最右下标，如果超过字符串长度，说明剩下的单词长度不够了
+            if (i + m * n > s.length()) {
+                break;
+            }
+
+            Map<String, Integer> map = new HashMap<>();
+            // 从i开始，每n个字符截取成一个单词
+            for (int j = 0; j < m; j++) {
+                // 这里可以直接截取是由循环第一个if判断保证的
+                String word = s.substring(i + j * n, i + (j + 1) * n);
+                map.put(word, map.getOrDefault(word, 0) + 1);
+            }
+
+            // 遍历words，与截取的单词进行比较
+            for (String str : words) {
+                map.put(str, map.getOrDefault(str, 0) - 1);
+                if (map.get(str) == 0) {
+                    map.remove(str);
+                }
+            }
+
+            // 对比较的结果进行判断, 上边那两步是为了初始化窗口的大小，然后才开始往后滑动
+            for (int start = i; start < s.length() - m * n + 1; start += n) {
+                if (start != i) {
+                    // 从start开始的一组单词在上面已经处理过了，放在了窗口中，这里是截取窗口后一个单词的长度
+                    String word = s.substring(start + (m - 1) * n, start + m * n);
+
+                    // 将窗口后一个单词放入窗口中，考虑结果
+                    map.put(word, map.getOrDefault(word, 0) + 1);
+                    if (map.get(word) == 0) {
+                        map.remove(word);
+                    }
+
+                    // 将窗口中的第一个单词划出去
+                    word = s.substring(start - n, start);
+                    map.put(word, map.getOrDefault(word, 0) - 1);
+                    if (map.get(word) == 0) {
+                        map.remove(word);
+                    }
+                }
+
+                if (map.isEmpty()) {
+                    res.add(start);
+                }
+            }
+        }
+
+        return res;
+    }
+
     // 2437. 有效时间的数目
     public int countTime(String time) {
         int countHour = 0;
@@ -29,17 +91,6 @@ public class LeetCodeMain6 {
             }
         }
         return countHour * countMinute;
-    }
-
-    // 30. 串联所有单词的子串
-    public List<Integer> findSubstring(String s, String[] words) {
-        List<Integer> res = new ArrayList<>();
-        for (int i = 0; i < words.length; i++) {
-            Map<String, Integer> map = new HashMap<>();
-        }
-
-
-        return res;
     }
 
     // 1010. 总持续时间可被 60 整除的歌曲 (超时)
