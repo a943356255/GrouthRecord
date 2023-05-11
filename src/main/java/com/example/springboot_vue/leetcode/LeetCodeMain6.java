@@ -8,6 +8,22 @@ public class LeetCodeMain6 {
 
     }
 
+    // 49. 字母异位词分组
+    public List<List<String>> groupAnagrams(String[] strs) {
+
+        Map<String, List<String>> map = new HashMap<>();
+        for (String str : strs) {
+            char[] array = str.toCharArray();
+            Arrays.sort(array);
+            String key = new String(array);
+            List<String> list = map.getOrDefault(key, new ArrayList<>());
+            list.add(str);
+            map.put(key, list);
+        }
+
+        return new ArrayList<>(map.values());
+    }
+
     // 1016. 子串能表示从 1 到 N 数字的二进制串
     public boolean queryString(String s, int n) {
         for (int i = 1; i <= n; i++) {
@@ -16,13 +32,6 @@ public class LeetCodeMain6 {
             }
         }
         return true;
-    }
-
-    // 1015. 可被 K 整除的最小整数
-    public int smallestRepunitDivByK(int k) {
-        int res = 0;
-
-        return res;
     }
 
     // 30. 串联所有单词的子串
