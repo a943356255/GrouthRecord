@@ -8,6 +8,16 @@ public class LeetCodeMain6 {
 
     }
 
+    // 1016. 子串能表示从 1 到 N 数字的二进制串
+    public boolean queryString(String s, int n) {
+        for (int i = 1; i <= n; i++) {
+            if (!s.contains(Integer.toBinaryString(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     // 1015. 可被 K 整除的最小整数
     public int smallestRepunitDivByK(int k) {
         int res = 0;
