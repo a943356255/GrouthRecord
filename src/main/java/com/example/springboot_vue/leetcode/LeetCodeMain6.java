@@ -8,6 +8,30 @@ public class LeetCodeMain6 {
 
     }
 
+    // 2441. 与对应负数同时存在的最大正整数
+    public int findMaxK(int[] nums) {
+        int max = -1;
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int val : nums) {
+            if (map.get(val) == null) {
+                map.put(-val, 1);
+            } else {
+                max = Math.max(max, Math.abs(val));
+            }
+        }
+
+        return max;
+    }
+
+    // 76. 最小覆盖子串
+    public String minWindow(String s, String t) {
+        if (t.length() > s.length()) {
+            return "";
+        }
+
+
+    }
+
     // 49. 字母异位词分组
     public List<List<String>> groupAnagrams(String[] strs) {
 
