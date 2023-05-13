@@ -29,7 +29,50 @@ public class LeetCodeMain6 {
             return "";
         }
 
+        Map<Character, Integer> targetMap = new HashMap<>();
+        Map<Character, Integer> haveMap = new HashMap<>();
+        for (int i = 0; i < t.length(); i++) {
+            char c = t.charAt(i);
+            targetMap.merge(c, 1, Integer::sum);
+        }
 
+        int left = 0, right = -1;
+        int min = Integer.MAX_VALUE, resL = -1, resR = -1;
+        while (right < s.length()) {
+            right++;
+            // target中有的元素，才有必要加入已有元素的集合
+            if (right < s.length() && targetMap.containsKey(s.charAt(right))) {
+                haveMap.merge(s.charAt(right), 1, Integer::sum);
+            }
+
+            while (check(targetMap, haveMap) && left <= right) {
+                // 进入check后，说明满足条件，那么只需要判断长度就可以,如果长度小于之前的长度，那么就可取
+                if (right - left + 1 < min) {
+                    min = right - left + 1;
+                    resL = left;
+                    resR = left + min;
+                }
+                char b = s.charAt(left);
+                // 这里是要开始左滑窗口，left是划出去的字符，要判断它是否在target中，如果在，要在have中移除，之后重新判断剩下的单词是否满足
+                if (targetMap.containsKey(b)) {
+                    haveMap.put(b, haveMap.getOrDefault(b, 0) - 1);
+                }
+
+                left++;
+            }
+        }
+
+        return resL == -1 ? "" : s.substring(resL, resR);
+    }
+
+    public boolean check(Map<Character, Integer> targetMap, Map<Character, Integer> haveMap) {
+        for (Map.Entry<Character, Integer> entry : targetMap.entrySet()) {
+            if (haveMap.getOrDefault(entry.getKey(), 0) < entry.getValue()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     // 49. 字母异位词分组
