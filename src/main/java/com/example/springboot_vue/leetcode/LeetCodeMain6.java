@@ -1,5 +1,8 @@
 package com.example.springboot_vue.leetcode;
 
+import org.omg.CORBA.portable.OutputStream;
+
+import java.io.*;
 import java.util.*;
 
 class Number {
@@ -25,7 +28,7 @@ class Number {
 
 public class LeetCodeMain6 {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         int[] arr = {1,1,1,1,2,2,3,3};
         new LeetCodeMain6().rearrangeBarcodes(arr);
     }
