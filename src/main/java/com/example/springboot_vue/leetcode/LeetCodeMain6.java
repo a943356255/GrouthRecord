@@ -2,10 +2,81 @@ package com.example.springboot_vue.leetcode;
 
 import java.util.*;
 
+class Number {
+    int count;
+    int val;
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int getVal() {
+        return val;
+    }
+
+    public void setVal(int val) {
+        this.val = val;
+    }
+}
+
 public class LeetCodeMain6 {
 
     public static void main(String[] args) {
+        int[] arr = {1,1,1,1,2,2,3,3};
+        new LeetCodeMain6().rearrangeBarcodes(arr);
+    }
 
+    // 1054. 距离相等的条形码
+    public int[] rearrangeBarcodes(int[] barcodes) {
+        if (barcodes.length == 1) {
+            return barcodes;
+        }
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int barcode : barcodes) {
+            map.merge(barcode, 1, Integer::sum);
+        }
+
+        List<Number> list = new ArrayList<>();
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            Number number = new Number();
+            number.count = entry.getValue();
+            number.val = entry.getKey();
+            list.add(number);
+        }
+
+        list.sort(Comparator.comparingInt(a -> a.count));
+
+        int[] res = new int[barcodes.length];
+        int left = 0, right = list.size() - 1, index = 0;
+        while (left < right) {
+            if (list.get(right).count == 0) {
+                right--;
+            }
+            if (right < 0) {
+                break;
+            }
+            res[index++] = list.get(right).val;
+            list.get(right).count--;
+
+            if (list.get(left).count == 0) {
+                left++;
+            }
+            if (left >= list.size()) {
+                break;
+            }
+            res[index++] = list.get(left).val;
+            list.get(left).count--;
+
+            if (index >= barcodes.length) {
+                break;
+            }
+        }
+
+        return res;
     }
 
     // 2441. 与对应负数同时存在的最大正整数
