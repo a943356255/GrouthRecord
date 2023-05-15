@@ -33,6 +33,41 @@ public class LeetCodeMain6 {
         new LeetCodeMain6().rearrangeBarcodes(arr);
     }
 
+    // 1072. 按列翻转得到最大值等行数
+    public int maxEqualRowsAfterFlips(int[][] matrix) {
+        int res = 0, n = matrix[0].length;
+        Map<String, Integer> map = new HashMap<>();
+        for (int[] ints : matrix) {
+            char[] arr = new char[n];
+            Arrays.fill(arr, '0');
+            if (ints[0] == 1) {
+                for (int j = 0; j < n; j++) {
+                    if (ints[j] == 0) {
+                        arr[j] = '1';
+                    } else {
+                        arr[j] = '0';
+                    }
+                }
+            } else {
+                for (int j = 0; j < n; j++) {
+                    if (ints[j] == 0) {
+                        arr[j] = '0';
+                    } else {
+                        arr[j] = '1';
+                    }
+                }
+            }
+            String str = new String(arr);
+            map.put(str, map.getOrDefault(str, 0) + 1);
+        }
+
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            res = Math.max(entry.getValue(), res);
+        }
+
+        return res;
+    }
+
     // 1054. 距离相等的条形码
     public int[] rearrangeBarcodes(int[] barcodes) {
         if (barcodes.length == 1) {
