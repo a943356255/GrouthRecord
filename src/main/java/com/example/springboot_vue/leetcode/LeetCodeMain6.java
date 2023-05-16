@@ -1,7 +1,5 @@
 package com.example.springboot_vue.leetcode;
 
-import org.omg.CORBA.portable.OutputStream;
-
 import java.io.*;
 import java.util.*;
 
@@ -31,6 +29,44 @@ public class LeetCodeMain6 {
     public static void main(String[] args) throws IOException {
         int[] arr = {1,1,1,1,2,2,3,3};
         new LeetCodeMain6().rearrangeBarcodes(arr);
+    }
+
+    // 205. 同构字符串
+    public boolean isIsomorphic(String s, String t) {
+        String str1 = get(s);
+        String str2 = get(t);
+
+        return str1.equals(str2);
+    }
+
+    public String get(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+        int index = 0;
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (map.get(c) == null) {
+                map.put(c, index);
+                list.add(index);
+                index++;
+            } else {
+                list.add(map.get(c));
+            }
+        }
+
+        return list.toString();
+    }
+
+
+    // 1335. 工作计划的最低难度
+    public int minDifficulty(int[] jobDifficulty, int d) {
+        if (jobDifficulty.length < d) {
+            return -1;
+        }
+
+        int res = 0;
+
+        return res;
     }
 
     // 1072. 按列翻转得到最大值等行数
