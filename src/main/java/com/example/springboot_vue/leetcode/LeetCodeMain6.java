@@ -31,6 +31,21 @@ public class LeetCodeMain6 {
         new LeetCodeMain6().rearrangeBarcodes(arr);
     }
 
+    // 2446. 判断两个事件是否存在冲突
+    public boolean haveConflict(String[] event1, String[] event2) {
+        String[] first = event1[0].split(":");
+        String[] second = event1[1].split(":");
+        int time1 = Integer.parseInt(first[0]) * 60 + Integer.parseInt(first[1]);
+        int time1End = Integer.parseInt(second[0]) * 60 + Integer.parseInt(second[1]);
+
+        String[] first1 = event2[0].split(":");
+        String[] second1 = event2[1].split(":");
+        int time2 = Integer.parseInt(first1[0]) * 60 + Integer.parseInt(first1[1]);
+        int time2End = Integer.parseInt(second1[0]) * 60 + Integer.parseInt(second1[1]);
+
+        return (time1 <= time2 || time1 <= time2End) && (time2 <= time1 || time2 <= time1End);
+    }
+
     // 205. 同构字符串
     public boolean isIsomorphic(String s, String t) {
         String str1 = get(s);
