@@ -30,6 +30,70 @@ public class LeetCodeMain6 {
         int[] arr = {1,1,1,1,2,2,3,3};
         new LeetCodeMain6().rearrangeBarcodes(arr);
     }
+    // 56. 合并区间 正确
+    public int[][] writeMerge(int[][] intervals) {
+        if (intervals.length == 0) {
+            return new int[0][2];
+        }
+        // 按照第一个元素排序，即按左端点
+        Arrays.sort(intervals, Comparator.comparingInt(interval -> interval[0]));
+
+        List<int[]> merged = new ArrayList<>();
+        for (int[] interval : intervals) {
+            int L = interval[0], R = interval[1];
+            // 如果是首次进入，或者说当前元素的左端点大于merge中最后一个节点的右端点，说明这俩区间肯定不重合，直接加入
+            if (merged.size() == 0 || merged.get(merged.size() - 1)[1] < L) {
+                merged.add(new int[]{L, R});
+            } else {
+                // 否则，取本次的R和上一次的最后一个端点的右端点进行比较，取较大值
+                merged.get(merged.size() - 1)[1] = Math.max(merged.get(merged.size() - 1)[1], R);
+            }
+        }
+        return merged.toArray(new int[merged.size()][]);
+    }
+
+    // 56. 合并区间 有误
+    public int[][] merge(int[][] intervals) {
+        int max = -1;
+        for (int[] interval : intervals) {
+            if (interval[1] > max) {
+                max = interval[1];
+            }
+        }
+
+        int[] arr = new int[max + 1];
+        for (int[] interval : intervals) {
+            Arrays.fill(arr, interval[0], interval[1] + 1, 1);
+        }
+
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[0] == 1) {
+                list.add(0);
+            }
+
+            if (i != 0 && arr[i - 1] == 0 && arr[i] == 1) {
+                list.add(i);
+            }
+
+            if (i != 0 && arr[i - 1] == 1 && arr[i] == 0) {
+                list.add(i - 1);
+            }
+        }
+        if (list.size() % 2 != 0) {
+            list.add(arr.length - 1);
+        }
+
+        int index = 0;
+        int[][] res = new int[list.size() / 2][2];
+        for (int i = 0; i < list.size(); i += 2) {
+            res[index][0] = list.get(i);
+            res[index][1] = list.get(i + 1);
+            index++;
+        }
+
+        return res;
+    }
 
     // 2446. 判断两个事件是否存在冲突
     public boolean haveConflict(String[] event1, String[] event2) {
