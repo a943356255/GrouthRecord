@@ -27,9 +27,41 @@ class Number {
 public class LeetCodeMain6 {
 
     public static void main(String[] args) throws IOException {
-        int[] arr = {1,1,1,1,2,2,3,3};
-        new LeetCodeMain6().rearrangeBarcodes(arr);
+//        int[] arr = {1,1,1,1,2,2,3,3};
+//        new LeetCodeMain6().rearrangeBarcodes(arr);
+        System.out.println(Math.pow(-2, 900));
     }
+
+    // 57. 插入区间
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+
+    }
+
+    // 1073. 负二进制数相加
+    public int[] addNegabinary(int[] arr1, int[] arr2) {
+        long arr1Val = 0;
+        int n = arr1.length;
+        for (int i = 0; i < n; i++) {
+            arr1Val += arr1[i] * Math.pow(-2, n - i - 1);
+        }
+
+        long arr2Val = 0;
+        int m = arr2.length;
+        for (int i = 0; i < m; i++) {
+            arr2Val += arr2[i] * Math.pow(-2, m - i - 1);
+        }
+
+        long val = arr1Val + arr2Val;
+        String str = Integer.toBinaryString((int) val);
+
+        int[] res = new int[str.length()];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = str.charAt(i) - '0';
+        }
+
+        return res;
+    }
+
     // 56. 合并区间 正确
     public int[][] writeMerge(int[][] intervals) {
         if (intervals.length == 0) {
