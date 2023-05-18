@@ -34,7 +34,15 @@ public class LeetCodeMain6 {
 
     // 57. 插入区间
     public int[][] insert(int[][] intervals, int[] newInterval) {
+        int[][] arr = new int[intervals.length + 1][2];
+        for (int i = 0; i < intervals.length; i++) {
+            arr[i][0] = intervals[i][0];
+            arr[i][1] = intervals[i][1];
+        }
+        arr[intervals.length][0] = newInterval[0];
+        arr[intervals.length][1] = newInterval[1];
 
+        return writeMerge(arr);
     }
 
     // 1073. 负二进制数相加
