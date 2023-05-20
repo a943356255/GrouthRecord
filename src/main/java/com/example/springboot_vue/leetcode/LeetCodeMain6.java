@@ -26,10 +26,60 @@ class Number {
 
 public class LeetCodeMain6 {
 
+    int res;
+    static final int INF = 0x3f3f3f3f;
+
+    class SubTree {
+        boolean isBST;
+        int minValue;
+        int maxValue;
+        int sumValue;
+
+        SubTree(boolean isBST, int minValue, int maxValue, int sumValue) {
+            this.isBST = isBST;
+            this.minValue = minValue;
+            this.maxValue = maxValue;
+            this.sumValue = sumValue;
+        }
+    }
+
     public static void main(String[] args) throws IOException {
 //        int[] arr = {1,1,1,1,2,2,3,3};
 //        new LeetCodeMain6().rearrangeBarcodes(arr);
         System.out.println(Math.pow(-2, 900));
+    }
+
+    // 1373. 二叉搜索子树的最大键值和
+    public int maxSumBST(TreeNode root) {
+        res = 0;
+        dfs(root);
+        return res;
+    }
+
+    public SubTree dfs(TreeNode root) {
+        if (root == null) {
+            return new SubTree(true, INF, -INF, 0);
+        }
+
+        SubTree left = dfs(root.left);
+        SubTree right = dfs(root.right);
+
+        if (left.isBST && right.isBST && root.val > left.maxValue && root.val < right.minValue) {
+            if (root.val == 3) {
+                System.out.println("进入");
+            }
+            int sum = root.val + left.sumValue + right.sumValue;
+            res = Math.max(sum, res);
+            // 在这一步赋值sumValue
+            // 必须要Math.min(root.val, left.minValue), Math.max(root.val, right.maxValue)
+            // 因为叶子节点返回的最小值是INF,最大值是-INF
+            // 如果不进行比较，会导致叶子节点的val无法替换掉这两个值，也就是说后续的节点比较时，min = INF， max = -INF，注意左右节点都是这样
+            // 这也就会导致判断是否是二叉排序树时，root.val > left.maxValue是root.val跟-INF进行比较，root.val < right.minVal 是和INF进行比较
+            // root.val < left.minValue是 root.val跟INF进行比较，导致结果永远都是二叉排序树
+            return new SubTree(true, Math.min(root.val, left.minValue), Math.max(root.val, right.maxValue), sum);
+        } else {
+            return new SubTree(false, 0, 0, 0);
+        }
     }
 
     // 57. 插入区间
