@@ -49,6 +49,36 @@ public class LeetCodeMain6 {
         System.out.println(Math.pow(-2, 900));
     }
 
+    List<Integer> treeList = new ArrayList<>();
+
+    // 1080. 根到叶路径上的不足节点
+    public TreeNode sufficientSubset(TreeNode root, int limit) {
+        boolean haveSufficient = sufficientSubsetDfs(root, 0, limit);
+        return haveSufficient ? root : null;
+    }
+
+    public boolean sufficientSubsetDfs(TreeNode node, int sum, int limit) {
+        if (node == null) {
+            return false;
+        }
+
+        if (node.left == null && node.right == null) {
+            return node.val + sum >= limit;
+        }
+
+        boolean haveSufficientLeft = sufficientSubsetDfs(node.left, sum + node.val, limit);
+        boolean haveSufficientRight = sufficientSubsetDfs(node.right, sum + node.val, limit);
+
+        if (!haveSufficientLeft) {
+            node.left = null;
+        }
+        if (!haveSufficientRight) {
+            node.right = null;
+        }
+
+        return haveSufficientLeft || haveSufficientRight;
+    }
+
     // 1373. 二叉搜索子树的最大键值和
     public int maxSumBST(TreeNode root) {
         res = 0;
