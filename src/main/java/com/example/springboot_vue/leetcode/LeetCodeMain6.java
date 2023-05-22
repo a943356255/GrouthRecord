@@ -66,6 +66,7 @@ public class LeetCodeMain6 {
             return node.val + sum >= limit;
         }
 
+        // 这里，在递归时会把节点的值加到一起，传递给叶子节点，然后进行判断
         boolean haveSufficientLeft = sufficientSubsetDfs(node.left, sum + node.val, limit);
         boolean haveSufficientRight = sufficientSubsetDfs(node.right, sum + node.val, limit);
 
