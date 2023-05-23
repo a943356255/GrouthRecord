@@ -49,7 +49,39 @@ public class LeetCodeMain6 {
         System.out.println(Math.pow(-2, 900));
     }
 
-    List<Integer> treeList = new ArrayList<>();
+    // 1090. 受标签影响的最大值
+    public int largestValsFromLabels(int[] values, int[] labels, int numWanted, int useLimit) {
+        int res = 0;
+        int[][] arr = new int[values.length][2];
+        for (int i = 0; i < values.length; i++) {
+            arr[i][0] = values[i];
+            arr[i][1] = labels[i];
+        }
+        Arrays.sort(arr, (o1, o2) -> o2[0] - o1[0]);
+
+        Map<Integer, Integer> map = new HashMap<>();
+        int count = 0;
+        for (int i = 0; i < values.length; i++) {
+            if (map.get(arr[i][1]) == null) {
+                map.put(arr[i][1], 1);
+                res += arr[i][0];
+                count++;
+            } else {
+                int val = map.get(arr[i][1]);
+                if (val < useLimit) {
+                    res += arr[i][0];
+                    map.put(arr[i][1], val + 1);
+                    count++;
+                }
+            }
+
+            if (count == numWanted) {
+                break;
+            }
+        }
+
+        return res;
+    }
 
     // 1080. 根到叶路径上的不足节点
     public TreeNode sufficientSubset(TreeNode root, int limit) {
