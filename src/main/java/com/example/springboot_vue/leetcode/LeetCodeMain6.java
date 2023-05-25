@@ -49,6 +49,30 @@ public class LeetCodeMain6 {
         System.out.println(Math.pow(-2, 900));
     }
 
+    // 2451. 差值数组不同的字符串
+    public String oddString(String[] words) {
+        Map<String, Integer> result = new HashMap<>();
+        Map<String, Integer> map = new HashMap<>();
+        for (int i = 0; i < words.length; i++) {
+            StringBuilder str = new StringBuilder();
+            for (int j = 1; j < words[i].length(); j++) {
+                str.append(words[i].charAt(j) - 'a' - (words[i].charAt(j - 1) - 'a'));
+                str.append(" ");
+            }
+
+            map.merge(str.toString(), 1, Integer::sum);
+            result.put(str.toString(), i);
+        }
+
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            if (entry.getValue() == 1) {
+                return words[result.get(entry.getKey())];
+            }
+        }
+
+        return null;
+    }
+
     // 1090. 受标签影响的最大值
     public int largestValsFromLabels(int[] values, int[] labels, int numWanted, int useLimit) {
         int res = 0;
