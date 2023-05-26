@@ -49,6 +49,56 @@ public class LeetCodeMain6 {
         System.out.println(Math.pow(-2, 900));
     }
 
+    // 1091. 二进制矩阵中的最短路径
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        if (grid[0][0] == 1) {
+            return -1;
+        }
+
+        int n = grid.length;
+        int[][] dist = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(dist[i], Integer.MAX_VALUE);
+        }
+        dist[0][0] = 1;
+
+        Queue<int[]> queue = new ArrayDeque<>();
+        queue.offer(new int[]{0, 0});
+        while (!queue.isEmpty()) {
+            int[] arr = queue.poll();
+            int x = arr[0];
+            int y = arr[1];
+
+            // 到达右下角
+            if (x == n - 1  && y == n - 1) {
+                return dist[x][y];
+            }
+
+            // 这里其实就是看当前x和y的右边，下边，以及右下角这三个格子是否是0
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    // 越界
+                    if (x + dx < 0 || x + dx >= n || y + dy < 0 || y + dy >= n) {
+                        continue;
+                    }
+
+                    // 单元格值不为 0 或已被访问
+                    // 以访问的情况：访问x和y时，会访问该点的右边以及右下，这两个点都会入队
+                    // 当遍历到前一个x和y的右边时，该点的下边一个点已经在遍历x和y时赋值了
+                    if (grid[x + dx][y + dy] == 1 || dist[x + dx][y + dy] <= dist[x][y] + 1) {
+                        continue;
+                    }
+
+                    // 这里就是找到一个可以走的点，然后进行赋值，然后加入队列
+                    dist[x + dx][y + dy] = dist[x][y] + 1;
+                    queue.offer(new int[]{x + dx, y + dy});
+                }
+            }
+        }
+
+        return -1;
+    }
+
     // 2451. 差值数组不同的字符串
     public String oddString(String[] words) {
         Map<String, Integer> result = new HashMap<>();
