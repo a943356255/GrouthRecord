@@ -49,6 +49,54 @@ public class LeetCodeMain6 {
         System.out.println(Math.pow(-2, 900));
     }
 
+    // 1093. 大样本统计
+    public double[] sampleStats(int[] count) {
+        Map<String, Integer> map = new HashMap<>();
+        int max = -1, min = Integer.MAX_VALUE;
+        double sum = 0;
+        int countNum = 0, maxCount = -1;
+        for (int i = 0; i < count.length; i++) {
+            // 统计样本和
+            sum += count[i] * i;
+
+            // 统计样本个数
+            countNum += count[i];
+
+            // 统计最大值最小值
+            if (count[i] != 0) {
+                if (i > max) {
+                    max = i;
+                }
+
+                if (i < min) {
+                    min = i;
+                }
+            }
+
+            if (maxCount < count[i]) {
+                maxCount = count[i];
+                map.put("maxCount", i);
+            }
+        }
+
+        // 计算中位数
+        int temp = 0, tempAddOne = -1;
+        for (int i = 0; i < count.length; i++) {
+            if (temp <= countNum / 2 && temp + count[i] >= countNum / 2) {
+
+            }
+            temp += count[i];
+        }
+
+        double[] res = new double[5];
+
+        res[0] = min;
+        res[1] = max;
+        res[2] = sum / countNum;
+        res[4] = map.get("maxCount");
+        return res;
+    }
+
     // 1091. 二进制矩阵中的最短路径
     public int shortestPathBinaryMatrix(int[][] grid) {
         if (grid[0][0] == 1) {
