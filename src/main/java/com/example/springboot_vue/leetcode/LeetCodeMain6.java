@@ -49,6 +49,31 @@ public class LeetCodeMain6 {
         System.out.println(Math.pow(-2, 900));
     }
 
+    // 242. 有效的字母异位词
+    public boolean isAnagram(String s, String t) {
+        if (s.length() != t.length()) {
+            return false;
+        }
+
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            map.merge(s.charAt(i), 1, Integer::sum);
+        }
+
+        Map<Character, Integer> tMap = new HashMap<>();
+        for (int i = 0; i < t.length(); i++) {
+            tMap.merge(t.charAt(i), 1, Integer::sum);
+        }
+
+        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+            if (!entry.getValue().equals(tMap.get(entry.getKey()))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     // 1093. 大样本统计
     public double[] sampleStats(int[] count) {
         Map<String, Integer> map = new HashMap<>();
