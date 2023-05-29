@@ -49,6 +49,25 @@ public class LeetCodeMain6 {
         System.out.println(Math.pow(-2, 900));
     }
 
+
+
+    // 2455. 可被三整除的偶数的平均值
+    public int averageValue(int[] nums) {
+        int count = 0, sum = 0;
+        for (int num : nums) {
+            if (num % 3 == 0 && num % 2 == 0) {
+                count++;
+                sum += num;
+            }
+        }
+
+        if (count == 0) {
+            return 0;
+        }
+
+        return sum / count;
+    }
+
     // 242. 有效的字母异位词
     public boolean isAnagram(String s, String t) {
         if (s.length() != t.length()) {
