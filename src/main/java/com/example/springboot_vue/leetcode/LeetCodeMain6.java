@@ -49,7 +49,52 @@ public class LeetCodeMain6 {
         System.out.println(Math.pow(-2, 900));
     }
 
+    // 1130. 叶值的最小代价生成树
+    public int mctFromLeafValues(int[] arr) {
+        int res = 0;
+        Deque<Integer> stk = new ArrayDeque<>();
+        for (int x : arr) {
+            // 因为题目要求非叶子节点的值等于左子树和右子树中叶子节点的最大值的乘积，所以这里栈要是单调递减的
+            // 才能确保每次相乘都是最大值相乘
+            while (!stk.isEmpty() && stk.peek() <= x) {
+                int y = stk.pop();
+                // 这一步，y小于当前的x，然后出栈，出站后对比栈顶元素和x，哪个小哪个就和y相乘
+                if (stk.isEmpty() || stk.peek() > x) {
+                    res += y * x;
+                } else {
+                    res += stk.peek() * y;
+                }
+            }
+            stk.push(x);
+        }
 
+        // 这里是处理上面剩余的数据，每次处理一个数据
+        while (stk.size() >= 2) {
+            int x = stk.pop();
+            res += stk.peek() * x;
+        }
+
+        return res;
+    }
+
+    // 102. 二叉树的层序遍历
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.add(root);
+        List<Integer> list = new ArrayList<>();
+        list.add(root.val);
+
+        while (!queue.isEmpty()) {
+
+        }
+
+        return res;
+    }
 
     // 2455. 可被三整除的偶数的平均值
     public int averageValue(int[] nums) {
