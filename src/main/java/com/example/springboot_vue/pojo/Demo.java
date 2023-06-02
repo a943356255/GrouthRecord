@@ -1,7 +1,5 @@
 package com.example.springboot_vue.pojo;
 
-import com.alibaba.fastjson.JSONObject;
-
 public class Demo {
 
     private int id;
@@ -9,6 +7,16 @@ public class Demo {
     private String account;
     private String password;
 
+    public Demo(int id, String name, String account, String password) {
+        this.id = id;
+        this.name = name;
+        this.account = account;
+        this.password = password;
+    }
+
+    public Demo() {
+
+    }
     public int getId() {
         return id;
     }
