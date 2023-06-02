@@ -49,6 +49,27 @@ public class LeetCodeMain6 {
         System.out.println(Math.pow(-2, 900));
     }
 
+    // 2559. 统计范围内的元音字符串数
+    public int[] vowelStrings(String[] words, int[][] queries) {
+        Set<Character> set = new HashSet<>(Arrays.asList('a', 'e', 'i', 'o', 'u'));
+        int[] arr = new int[words.length + 1];
+        arr[0] = 0;
+        for (int i = 0; i < words.length; i++) {
+            if (set.contains(words[i].charAt(0)) && set.contains(words[i].charAt(words[i].length() - 1))) {
+                arr[i + 1] = arr[i] + 1;
+            } else {
+                arr[i + 1] = arr[i];
+            }
+        }
+
+        int[] res = new int[queries.length];
+        for (int i = 0; i < queries.length; i++) {
+            res[i] = arr[queries[i][1] + 1 ] - arr[queries[i][0]];
+        }
+
+        return res;
+    }
+
     // 1130. 叶值的最小代价生成树
     public int mctFromLeafValues(int[] arr) {
         int res = 0;
