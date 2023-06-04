@@ -8,6 +8,19 @@ public class LeetCodeMain7 {
 
     }
 
+    // 2465. 不同的平均值数目
+    public int distinctAverages(int[] nums) {
+        Arrays.sort(nums);
+        int left = 0, right = nums.length - 1;
+        Set<Double> map = new HashSet<>();
+        while (left < right) {
+            double val = (nums[left++] + nums[right--]) / 2.0;
+            map.add(val);
+        }
+
+        return map.size();
+    }
+
     // 1156. 单字符重复子串的最大长度
     public int maxRepOpt1(String text) {
 //        int res = 1;
