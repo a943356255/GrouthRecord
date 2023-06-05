@@ -8,6 +8,30 @@ public class LeetCodeMain7 {
 
     }
 
+    // 2460. 对数组执行操作
+    public int[] applyOperations(int[] nums) {
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] == nums[i + 1]) {
+                nums[i] *= 2;
+                nums[i + 1] = 0;
+            }
+        }
+
+        int index = 0;
+        int[] res = new int[nums.length];
+        for (int j : nums) {
+            if (j != 0) {
+                res[index++] = j;
+            }
+        }
+
+        for (int i = index; i < res.length; i++) {
+            res[i] = 0;
+        }
+
+        return res;
+    }
+
     // 2465. 不同的平均值数目
     public int distinctAverages(int[] nums) {
         Arrays.sort(nums);
