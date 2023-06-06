@@ -8,6 +8,32 @@ public class LeetCodeMain7 {
 
     }
 
+    // 2352. 相等行列对
+    public int equalPairs(int[][] grid) {
+        Map<String, Integer> map = new HashMap<>();
+        int res = 0;
+        for (int[] ints : grid) {
+            StringBuilder str = new StringBuilder();
+            for (int anInt : ints) {
+                str.append(anInt).append("-");
+            }
+            map.merge(str.toString(), 1, Integer::sum);
+        }
+
+        for (int i = 0; i < grid[0].length; i++) {
+            StringBuilder str = new StringBuilder();
+            for (int j = 0; j < grid.length; j++) {
+                str.append(grid[j][i]).append("-");
+            }
+
+            if (map.get(str.toString()) != null) {
+                res += map.get(str.toString());
+            }
+        }
+
+        return res;
+    }
+
     // 2460. 对数组执行操作
     public int[] applyOperations(int[] nums) {
         for (int i = 0; i < nums.length - 1; i++) {
