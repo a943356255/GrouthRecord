@@ -8,6 +8,37 @@ public class LeetCodeMain7 {
 
     }
 
+    // 2611. 老鼠和奶酪
+    public int miceAndCheese(int[] reward1, int[] reward2, int k) {
+//        PriorityQueue<Integer> first = new PriorityQueue<>();
+//        PriorityQueue<Integer> second = new PriorityQueue<>();
+//        int res = 0;
+//        for (int i = 0; i < reward1.length; i++) {
+//            if (reward1[i] > reward2[i]) {
+//                if (first.size() < k) {
+//                    first.add(reward1[i]);
+//                    res += reward1[i];
+//                } else {
+//
+//                }
+//            }
+//        }
+        int ans = 0;
+        int n = reward1.length;
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
+        for (int i = 0; i < n; i++) {
+            ans += reward2[i];
+            pq.offer(reward1[i] - reward2[i]);
+            if (pq.size() > k) {
+                pq.poll();
+            }
+        }
+        while (!pq.isEmpty()) {
+            ans += pq.poll();
+        }
+        return ans;
+    }
+
     // 2352. 相等行列对
     public int equalPairs(int[][] grid) {
         Map<String, Integer> map = new HashMap<>();
