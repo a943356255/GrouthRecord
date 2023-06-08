@@ -8,6 +8,29 @@ public class LeetCodeMain7 {
 
     }
 
+    // 222. 完全二叉树的节点个数
+    public int countNodes(TreeNode root) {
+        int res = 0;
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        if (root != null) {
+            queue.offer(root);
+        }
+
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            res++;
+            if (node.left != null) {
+                queue.offer(node.left);
+            }
+
+            if (node.right != null) {
+                queue.offer(node.right);
+            }
+        }
+
+        return res;
+    }
+
     // 2611. 老鼠和奶酪
     public int miceAndCheese(int[] reward1, int[] reward2, int k) {
 //        PriorityQueue<Integer> first = new PriorityQueue<>();
@@ -25,7 +48,7 @@ public class LeetCodeMain7 {
 //        }
         int ans = 0;
         int n = reward1.length;
-        PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
         for (int i = 0; i < n; i++) {
             ans += reward2[i];
             pq.offer(reward1[i] - reward2[i]);
