@@ -8,6 +8,36 @@ public class LeetCodeMain7 {
 
     }
 
+    // 129. 求根节点到叶节点数字之和
+    public int sumNumbers(TreeNode root) {
+        List<String> list = new ArrayList<>();
+        StringBuilder str = new StringBuilder();
+        dfs(root, str, list);
+
+        int res = 0;
+        for (String s : list) {
+            res += Integer.parseInt(s);
+        }
+
+        return res;
+    }
+
+    public void dfs(TreeNode root, StringBuilder last, List<String> res) {
+        if (root == null) {
+
+            return;
+        }
+
+        StringBuilder temp = new StringBuilder(last);
+        temp.append(root.val);
+        if (root.left == null && root.right == null) {
+            res.add(temp.toString());
+        }
+
+        dfs(root.left, temp, res);
+        dfs(root.right, temp, res);
+    }
+
     // 222. 完全二叉树的节点个数
     public int countNodes(TreeNode root) {
         int res = 0;
