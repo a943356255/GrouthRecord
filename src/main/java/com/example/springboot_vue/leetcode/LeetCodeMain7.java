@@ -8,6 +8,69 @@ public class LeetCodeMain7 {
 
     }
 
+    // 1170. 比较字符串最小字母出现频次
+    public int[] numSmallerByFrequency(String[] queries, String[] words) {
+        int[] count = new int[12];
+        // 记录个数
+        for (String s : words) {
+            count[getCount(s)]++;
+        }
+        // 倒置的前缀和，统计个数和
+        // 利用数组这样计算可以把中间缺失的也填充为上一个存在的数字，我自己用的map，没法填充
+        for (int i = 9; i >= 1; i--) {
+            count[i] += count[i + 1];
+        }
+
+        int[] res = new int[queries.length];
+        for (int i = 0; i < queries.length; i++) {
+            String s = queries[i];
+            res[i] = count[getCount(s) + 1];
+        }
+        return res;
+//        int[] res = new int[queries.length];
+//
+//        Map<Integer, Integer> map = new HashMap<>();
+//        for (int i = 0; i < queries.length; i++) {
+//            map.put(i, getCount(queries[i]));
+//        }
+//
+//        List<Integer> list = new ArrayList<>();
+//        for (String word : words) {
+//            int temp = getCount(word);
+//            list.add(temp);
+//        }
+//        Collections.sort(list);
+//
+//        Map<Integer, Integer> word = new HashMap<>();
+//        int[] arr = new int[list.size()];
+//        int index = 1;
+//        arr[0] = 1;
+//        word.put(list.get(list.size() - 1), 1);
+//        for (int i = list.size() - 2; i >= 0; i--) {
+//            arr[index] = arr[index - 1] + 1;
+//            word.put(list.get(i), arr[index]);
+//            index++;
+//        }
+//
+//        return res;
+    }
+
+    public int getCount(String str) {
+        int temp = 0;
+        char c = 'z';
+        for (int j = 0; j < str.length(); j++) {
+            char q = str.charAt(j);
+            if (q == c) {
+                temp++;
+            } else if (q < c) {
+                c = q;
+                temp = 1;
+            }
+        }
+
+        return temp;
+    }
+
     // 129. 求根节点到叶节点数字之和
     public int sumNumbers(TreeNode root) {
         List<String> list = new ArrayList<>();
@@ -24,7 +87,6 @@ public class LeetCodeMain7 {
 
     public void dfs(TreeNode root, StringBuilder last, List<String> res) {
         if (root == null) {
-
             return;
         }
 
