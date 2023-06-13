@@ -8,6 +8,22 @@ public class LeetCodeMain7 {
 
     }
 
+    // 2475. 数组中不等三元组的数目
+    public int unequalTriplets(int[] nums) {
+        int res = 0;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                for (int k = j + 1; k < nums.length; k++) {
+                    if (nums[i] != nums[j] && nums[i] != nums[k] && nums[k] != nums[j]) {
+                        res++;
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
+
     // 1171. 从链表中删去总和值为零的连续节点
     public ListNode removeZeroSumSublists(ListNode head) {
         ListNode dummy = new ListNode(0);
