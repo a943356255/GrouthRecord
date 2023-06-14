@@ -5,7 +5,22 @@ import java.util.*;
 public class LeetCodeMain7 {
 
     public static void main(String[] args) {
+        StringBuilder str = new StringBuilder("00000");
+        str.replace(3, 4, "1");
+        System.out.println(str.toString());
+    }
 
+    // 1375. 二进制字符串前缀一致的次数
+    public int numTimesAllBlue(int[] flips) {
+        int n = flips.length;
+        int ans = 0, right = 0;
+        for (int i = 0; i < n; ++i) {
+            right = Math.max(right, flips[i]);
+            if (right == i + 1) {
+                ++ans;
+            }
+        }
+        return ans;
     }
 
     // 2475. 数组中不等三元组的数目
