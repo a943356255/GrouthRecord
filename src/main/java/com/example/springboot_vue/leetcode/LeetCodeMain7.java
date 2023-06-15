@@ -10,6 +10,43 @@ public class LeetCodeMain7 {
         System.out.println(str.toString());
     }
 
+    // 1177. 构建回文串检测
+    public List<Boolean> canMakePaliQueries(String s, int[][] queries) {
+        int[] arr = new int[s.length() + 1];
+        arr[0] = 0;
+        Set<Character> set = new HashSet<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (set.contains(c)) {
+                arr[i + 1] = arr[i];
+            } else {
+                arr[i + 1] = arr[i] + 1;
+                set.add(c);
+            }
+        }
+//        [0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 9]
+        System.out.println(Arrays.toString(arr));
+        List<Boolean> res = new ArrayList<>();
+        for (int i = 0; i < queries.length; i++) {
+            int length = queries[i][1] - queries[i][0] + 1;
+            if (length % 2 == 0) {
+                if ((arr[queries[i][1] + 1] - arr[queries[i][0]]) / 2 <= queries[i][2]) {
+                    res.add(true);
+                } else {
+                    res.add(false);
+                }
+            } else {
+                if ((arr[queries[i][1] + 1] - arr[queries[i][0]] - 1) / 2 <= queries[i][2]) {
+                    res.add(true);
+                } else {
+                    res.add(false);
+                }
+            }
+        }
+
+        return res;
+    }
+
     // 1375. 二进制字符串前缀一致的次数
     public int numTimesAllBlue(int[] flips) {
         int n = flips.length;
