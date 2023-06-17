@@ -5,9 +5,20 @@ import java.util.*;
 public class LeetCodeMain7 {
 
     public static void main(String[] args) {
-        StringBuilder str = new StringBuilder("00000");
-        str.replace(3, 4, "1");
-        System.out.println(str.toString());
+
+    }
+    
+    // 2481. 分割圆的最少切割次数
+    public int numberOfCuts(int n) {
+        if (n == 1) {
+            return 0;
+        }
+
+        if (n % 2 == 0) {
+            return n / 2;
+        }
+
+        return n;
     }
 
     // 200. 岛屿数量
