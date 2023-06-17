@@ -7,7 +7,36 @@ public class LeetCodeMain7 {
     public static void main(String[] args) {
 
     }
-    
+
+    // 637. 二叉树的层平均值
+    public List<Double> averageOfLevels(TreeNode root) {
+        List<Double> list = new ArrayList<>();
+        if (root == null) {
+            return list;
+        }
+
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            double temp = 0.0;
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                temp += node.val;
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+            }
+            list.add(temp / size);
+        }
+
+        return list;
+    }
+
     // 2481. 分割圆的最少切割次数
     public int numberOfCuts(int n) {
         if (n == 1) {
