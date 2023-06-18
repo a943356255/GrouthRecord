@@ -8,6 +8,49 @@ public class LeetCodeMain7 {
 
     }
 
+    // 1254. 统计封闭岛屿的数目
+    public int closedIsland(int[][] grid) {
+        int res = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] == 0 && dfs(grid, i, j)) {
+                    res++;
+                }
+            }
+        }
+
+        return res;
+    }
+
+    public boolean dfs(int[][] grid, int x, int y) {
+        // 在这里，如果超过边界，说明此次遍历已经越界，说明存在与边缘接触的0，一定不是被包围的
+        if (!inArea(grid, x, y)) {
+            return false;
+        }
+
+        // 不等于0，不用管
+        if (grid[x][y] != 0) {
+            return true;
+        }
+        grid[x][y] = 2;
+
+        // 这里就是一直深度遍历，如果每一个都是true，说明没有与边界接触的，一定是被包围的
+        boolean a1 = dfs(grid, x + 1, y);
+        boolean a2 = dfs(grid, x, y + 1);
+        boolean a3 = dfs(grid, x - 1, y);
+        boolean a4 = dfs(grid, x, y - 1);
+
+        return a1 && a2 && a3 && a4;
+    }
+
+    boolean notSide(int[][] grid, int x, int y) {
+        return x != 0 && y != 0 && y!= grid[0].length && x != grid.length;
+    }
+
+    boolean inArea(int[][] grid, int r, int c) {
+        return 0 <= r && r < grid.length && 0 <= c && c < grid[0].length;
+    }
+
     // 637. 二叉树的层平均值
     public List<Double> averageOfLevels(TreeNode root) {
         List<Double> list = new ArrayList<>();
