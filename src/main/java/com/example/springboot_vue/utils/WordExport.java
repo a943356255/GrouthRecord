@@ -4,22 +4,95 @@ import com.deepoove.poi.XWPFTemplate;
 import com.deepoove.poi.config.Configure;
 import com.deepoove.poi.plugin.table.LoopRowTableRenderPolicy;
 import com.example.springboot_vue.pojo.Demo;
+import com.spire.doc.FileFormat;
+import com.spire.doc.documents.TextSelection;
 import org.apache.commons.io.FileUtils;
+
+import com.spire.doc.Document;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class WordExport {
 
     public static void main(String[] args) throws IOException {
         WordExport wordExport = new WordExport();
         wordExport.testLoop();
+        String path = "D:\\git\\result.docx";
+        replaceTextFont(path);
+        copyFile("result.docx", "D:\\git\\new.docx");
+    }
+
+    public static String outPath = "D:\\git\\result.docx";
+
+    public static void replaceTextFont(String filePath) throws IOException {
+        //创建一个Document实例
+        Document document = new Document();
+        //加载Word文档
+        document.loadFromFile(filePath);
+
+        String font2 = "方正楷体_GBK";
+        String str2 = "GDP增速,税收收入增速,全体居民人均可支配收入增速,规上工业增加值增速,规上工业企业利润增速,固定资产投资增速,制造业投资增速," +
+                "社会消费品零售总额增速,招商签约项目数（20亿元以上）,政府性债务化解成效,地方财政收入增速,税收收入占比,第一产业增加值增速,规上工业亩均税收," +
+                "第三产业增加值增速,数字经济核心产业增加值增速,房地产开发投资增速,民间投资（不含房地产）增速,高技术产业投资占比,进出口总额增速,市场主体新发展率," +
+                "民营经济增加值增速,民营经济增加值占比,招商项目资金到位额增速,全年目标为增长,以上";
+        String[] strings2 = str2.split(",");
+        setData(document, strings2, font2);
+
+        String str = "A档区县有,B档区县有,C档区县有,D档区县有,E档区县有,个";
+        String font = "方正黑体_GBK";
+        String[] strings1 = str.split(",");
+        setData(document, strings1, font);
+
+        String font3 = "Times New Roman";
+        String str3 = "0,1,2,3,4,5,6,7,8,9,%,-,GDP,.";
+        String[] strings3 = str3.split(",");
+        setData(document, strings3, font3);
+
+        // 保存结果文档
+        document.saveToFile("result.docx", FileFormat.Docx);
+    }
+
+    public static void setData(Document document, String[] strings, String font) {
+        for (String string : strings) {
+            TextSelection[] text = document.findAllString(string, false, true);
+            if (text != null) {
+                for (TextSelection selection : text) {
+                    selection.getAsOneRange().getCharacterFormat().setFontName(font);
+                }
+            }
+        }
+    }
+
+    public static void copyFile(String sourcePath, String destinationPath) {
+        try {
+            File sourceFile = new File(sourcePath);
+            File destinationFile = new File(destinationPath);
+
+            // 创建输入流和输出流
+            FileInputStream inputStream = new FileInputStream(sourceFile);
+            FileOutputStream outputStream = new FileOutputStream(destinationFile);
+
+            // 缓冲区大小
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+
+            // 逐个读取字节，并写入目标文件
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+
+            // 关闭流
+            inputStream.close();
+            outputStream.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void testLoop() {
@@ -161,5 +234,4 @@ public class WordExport {
             e.printStackTrace();
         }
     }
-
 }
