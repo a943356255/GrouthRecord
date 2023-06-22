@@ -8,6 +8,84 @@ public class LeetCodeMain7 {
 
     }
 
+    // 面试题 16.19. 水域大小
+    public int[] pondSizes(int[][] land) {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < land.length; i++) {
+            for (int j = 0; j < land[0].length; j++) {
+                if (land[i][j] == 0) {
+                    list.add(newDfs(land, i, j));
+                }
+            }
+        }
+
+        int [] arr = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            arr[i] = list.get(i);
+        }
+        Arrays.sort(arr);
+
+        return arr;
+    }
+
+    public int newDfs(int[][] land, int x, int y) {
+        if (!isA(land, x, y) || land[x][y] != 0) {
+            return 0;
+        }
+
+        int count = 1;
+        land[x][y] = -1;
+
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                if (dx == 0 && dy == 0) {
+                    continue;
+                }
+                count += newDfs(land, x + dx, y + dy);
+            }
+        }
+
+        return count;
+    }
+
+    public boolean isA(int[][] arr, int x, int y) {
+        return x < arr.length && x >= 0 && y >= 0 && y < arr[0].length;
+    }
+
+    // 101. 对称二叉树
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+
+        boolean res = false;
+        if (root.left != null && root.right != null) {
+            res = isSame(root.left, root.right);
+        }
+
+        return res;
+    }
+
+    public boolean isSame(TreeNode left, TreeNode right) {
+        boolean leftVal = false, rightVal = false;
+
+        if (left.val == right.val) {
+            if (left.left != null && right.left != null) {
+                leftVal = isSame(left.left, right.left);
+            } else if (left.left == null && right.left == null) {
+                leftVal = true;
+            }
+
+            if (left.right != null && right.right != null) {
+                rightVal = isSame(left.right, right.right);
+            } else if (left.right == null && right.right == null) {
+                leftVal = true;
+            }
+        }
+        System.out.println("left = " + leftVal + "  right = " + rightVal);
+        return leftVal && rightVal;
+    }
+
     // 226. 翻转二叉树
     public TreeNode invertTree(TreeNode root) {
         if (root == null) {
