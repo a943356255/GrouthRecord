@@ -43,13 +43,13 @@ public class WordExport {
         String[] strings2 = str2.split(",");
         setData(document, strings2, font2);
 
-        String str = "A档区县有,B档区县有,C档区县有,D档区县有,E档区县有,个";
+        String str = "A档区县有,B档区县有,C档区县有,D档区县有,E档区县有";
         String font = "方正黑体_GBK";
         String[] strings1 = str.split(",");
         setData(document, strings1, font);
 
         String font3 = "Times New Roman";
-        String str3 = "0,1,2,3,4,5,6,7,8,9,%,-,GDP,.";
+        String str3 = "%,-,GDP,.";
         String[] strings3 = str3.split(",");
         setData(document, strings3, font3);
 
@@ -62,7 +62,8 @@ public class WordExport {
             TextSelection[] text = document.findAllString(string, false, true);
             if (text != null) {
                 for (TextSelection selection : text) {
-                    selection.getAsOneRange().getCharacterFormat().setFontName(font);
+                    System.out.println("string = " + string + "  选中的字符为：" + selection.getSelectedText() + "  font = " + font);
+                    selection.getAsOneRange(false).getCharacterFormat().setFontName(font);
                 }
             }
         }

@@ -8,6 +8,30 @@ public class LeetCodeMain7 {
 
     }
 
+    // 2496. 数组中字符串的最大值
+    public int maximumValue(String[] strs) {
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < strs.length; i++) {
+            String str = strs[i];
+            int mark = 1;
+            for (int j = 0; j < str.length(); j++) {
+                char c = str.charAt(j);
+                if (c >= 'a' && c <= 'z') {
+                    max = Math.max(max, str.length());
+                    mark = 0;
+                    break;
+                }
+            }
+
+            // 纯数字
+            if (mark == 1) {
+                max = Math.max(max, Integer.parseInt(str));
+            }
+        }
+
+        return max;
+    }
+
     // 面试题 16.19. 水域大小
     public int[] pondSizes(int[][] land) {
         List<Integer> list = new ArrayList<>();
