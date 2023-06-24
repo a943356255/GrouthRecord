@@ -51,10 +51,10 @@ public class WriteExcel {
     // 设置导出的数据内容
     private List<List<Object>> dataList(List<Map<String, String>> dataList, String[] dataStrMap) {
         List<List<Object>> list = new ArrayList<>();
-        dataList.stream().forEach(map->{
+        dataList.forEach(map->{
             List<Object> data = new ArrayList<>();
-            for (int i = 0; i < dataStrMap.length; i++) {
-                data.add(map.get(dataStrMap[i]));
+            for (String s : dataStrMap) {
+                data.add(map.get(s));
             }
             list.add(data);
         });
