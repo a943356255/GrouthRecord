@@ -8,6 +8,30 @@ public class LeetCodeMain7 {
 
     }
 
+    // 73. 矩阵置零
+    public void setZeroes(int[][] matrix) {
+        Set<Integer> x = new HashSet<>();
+        Set<Integer> y = new HashSet<>();
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (matrix[i][j] == 0) {
+                    x.add(i);
+                    y.add(j);
+                }
+            }
+        }
+
+        for (Integer integer : x) {
+            Arrays.fill(matrix[integer], 0);
+        }
+
+        for (Integer integer : y) {
+            for (int i = 0; i < matrix.length; i++) {
+                matrix[i][integer] = 0;
+            }
+        }
+    }
+
     // 2496. 数组中字符串的最大值
     public int maximumValue(String[] strs) {
         int max = Integer.MIN_VALUE;
