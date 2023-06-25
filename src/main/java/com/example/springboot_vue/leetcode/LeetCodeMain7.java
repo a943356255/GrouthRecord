@@ -8,6 +8,57 @@ public class LeetCodeMain7 {
 
     }
 
+    // 289. 生命游戏
+    public void gameOfLife(int[][] board) {
+        int[][] arr = new int[board.length][board[0].length];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                arr[i][j] = live(board, i, j, board[i][j]);
+            }
+        }
+
+        for (int i = 0; i < board.length; i++) {
+            System.arraycopy(arr[i], 0, board[i], 0, board[0].length);
+        }
+    }
+
+    public boolean isLegal(int[][] board, int x, int y) {
+        return x >= 0 && x < board.length && y >= 0 && y < board[0].length;
+    }
+
+    public int live(int[][] board, int x, int y, int now) {
+        int count1 = 0, count0 = 0;
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                if (i == x && j == y) {
+                    continue;
+                }
+                if (isLegal(board, i, j)) {
+                    if (board[i][j] == 1) {
+                        count1++;
+                    } else {
+                        count0++;
+                    }
+                }
+            }
+        }
+
+        if (now == 1) {
+            if (count1 < 2 || count1 > 3) {
+                return 0;
+            }
+
+            return 1;
+        } else {
+            if (count1 == 3) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    }
+
+
     // 73. 矩阵置零
     public void setZeroes(int[][] matrix) {
         Set<Integer> x = new HashSet<>();
