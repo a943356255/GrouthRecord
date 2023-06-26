@@ -8,6 +8,24 @@ public class LeetCodeMain7 {
 
     }
 
+    // 2485. 找出中枢整数
+    public int pivotInteger(int n) {
+        int[] arr = new int[n];
+        arr[0] = 0;
+        for (int i = 1; i <= n; i++) {
+            arr[i] = i + arr[i - 1];
+        }
+
+        int sum = arr[n];
+        for (int i = 1; i <= n; i++) {
+            if (sum - arr[i] + i == arr[i]) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
     // 289. 生命游戏
     public void gameOfLife(int[][] board) {
         int[][] arr = new int[board.length][board[0].length];
