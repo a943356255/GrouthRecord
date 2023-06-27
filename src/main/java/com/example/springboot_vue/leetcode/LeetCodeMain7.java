@@ -8,6 +8,31 @@ public class LeetCodeMain7 {
 
     }
 
+    // 1186. 删除一次得到子数组最大和
+    public int maximumSum(int[] arr) {
+        // dp0表示在前i个元素删除0个的最大值，dp1表示前i个元素删除1个的最大值
+        // 初始时dp[0][0] = arr[0]，表示不删除元素，取第一个，而dp[0][1]不存在（选取第一个元素，并删除一个元素）
+        int dp0 = arr[0], dp1 = 0, res = arr[0];
+
+        // 因为dp[i][0]与dp[i][1]只与前一个状体有关，所以可以取两个数字而不是数组
+        // 完整的状态转移方程式如下：
+        // dp[i][0] = Math.max(dp[i - 1][0], 0) + arr[i]
+        // dp[i][1] = Math.max(dp[i - 1][1] + arr[i], dp[i - 1][0])
+        for (int i = 1; i < arr.length; i++) {
+            // 删除一个的最大值，要么是上一个删除一个的最大值加当前值，即 dp1 + arr[i]
+            // 要么是上一个不删除的元素（这里默认删除了当前的arr[i]）
+            // 其实这里是做了一个对比，删除的元素要么是之前已经计算过的可以达到最大值的，然后和再加上arr[i]，
+            // 要么是当前的arr[i]，那么总和就是之前不删除元素时的总和
+            dp1 = Math.max(dp0, dp1 + arr[i]);
+
+            // 当dp[i][0]大于0时，最大值可以是dp[i][0] + arr[i]，如果小于0，则直接取arr[i]（此处不需要管arr[i]是多大，因为负数加负数也会变得更小）
+            dp0 = Math.max(dp0, 0) + arr[i];
+            res = Math.max(res, Math.max(dp0, dp1));
+        }
+
+        return res;
+    }
+
     // 2485. 找出中枢整数
     public int pivotInteger(int n) {
         int[] arr = new int[n];
