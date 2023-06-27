@@ -141,6 +141,12 @@
             <version>2.13.2.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.77.Final</version>
+        </dependency>
+
         <!-- mybatis-plus依赖 -->
         <dependency>
             <groupId>com.baomidou</groupId>
