@@ -8,6 +8,54 @@ public class LeetCodeMain7 {
 
     }
 
+    private HashMap <Node, Node> visited = new HashMap <> ();
+    // 133. 克隆图
+    public Node cloneGraph(Node node) {
+        /**
+         * 这种写法会导致死循环，因为遍历后续节点的node，他们的neighbors会包含前边的节点
+         */
+//        Node first = new Node();
+//        first.val = node.val;
+//
+//        Queue<Node> queue = new ArrayDeque<>();
+//        queue.add(node);
+//        while (!queue.isEmpty()) {
+//            Node temp = queue.poll();
+//            List<Node> tempList = temp.neighbors;
+//
+//            temp.neighbors = new ArrayList<>(tempList);
+//            queue.addAll(tempList);
+//        }
+//
+//        return first;
+        if (node == null) {
+            return null;
+        }
+
+        // 如果该节点已经被访问过了，则直接从哈希表中取出对应的克隆节点返回
+        if (visited.containsKey(node)) {
+            return visited.get(node);
+        }
+
+        /**
+         * 这下面的思路大致是：
+         * 创建一个新的节点并赋值，然后递归遍历他的邻居节点，通过map来判断该节点是否已经遍历过
+         * 如果该节点已经遍历过，则直接返回，将他加入到邻居节点集合当中
+         * 如果没有遍历过，则遍历该节点的邻居节点
+         */
+        // 克隆节点，注意到为了深拷贝我们不会克隆它的邻居的列表
+        Node cloneNode = new Node(node.val, new ArrayList());
+        // 哈希表存储
+        visited.put(node, cloneNode);
+
+        // 遍历该节点的邻居并更新克隆节点的邻居列表
+        for (Node neighbor: node.neighbors) {
+            cloneNode.neighbors.add(cloneGraph(neighbor));
+        }
+
+        return cloneNode;
+    }
+
     // 1186. 删除一次得到子数组最大和
     public int maximumSum(int[] arr) {
         // dp0表示在前i个元素删除0个的最大值，dp1表示前i个元素删除1个的最大值
