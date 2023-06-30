@@ -8,6 +8,23 @@ public class LeetCodeMain7 {
 
     }
 
+    // 2490. 回环句
+    public boolean isCircularSentence(String sentence) {
+        String[] res = sentence.split(" ");
+        if (res.length == 1) {
+            return res[0].charAt(0) == res[0].charAt(res[0].length() - 1);
+        }
+
+        for (int i = 1; i < res.length; i++) {
+            if (res[i].charAt(0) != res[i - 1].charAt(res[i - 1].length() - 1)) {
+                return false;
+            }
+        }
+
+        String last = res[res.length - 1];
+        return last.charAt(last.length() - 1) == res[0].charAt(0);
+    }
+
     private HashMap <Node, Node> visited = new HashMap <> ();
     // 133. 克隆图
     public Node cloneGraph(Node node) {
