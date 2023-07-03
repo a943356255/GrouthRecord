@@ -7,6 +7,53 @@ public class LeetCodeMain7 {
     public static void main(String[] args) {
     }
 
+    // 445. 两数相加 II
+    public ListNode addTwoNumbers1(ListNode l1, ListNode l2) {
+        ListNode res = new ListNode();
+        List<Integer> list1 = new ArrayList<>();
+        List<Integer> list2 = new ArrayList<>();
+
+        while (l1 != null || l2 != null) {
+            if (l1 != null) {
+                list1.add(l1.val);
+                l1 = l1.next;
+            }
+
+            if (l2 != null) {
+                list2.add(l2.val);
+                l2 = l2.next;
+            }
+        }
+
+        int i = list1.size() - 1, j = list2.size() - 1, temp = 0;
+        while (i >= 0 || j >= 0) {
+            ListNode node = new ListNode();
+            int tempSum = temp;
+            if (i >= 0) {
+                tempSum += list1.get(i);
+            }
+            if (j >= 0) {
+                tempSum += list2.get(j);
+            }
+
+            node.val = tempSum % 10;
+            temp = tempSum / 10;
+            i--;
+            j--;
+
+            node.next = res.next;
+            res.next = node;
+        }
+
+        if (temp == 1) {
+            ListNode node = new ListNode(1);
+            node.next = res.next;
+            res.next = node;
+        }
+
+        return res.next;
+    }
+
     // 2. 两数相加
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         ListNode pre = new ListNode(0);
