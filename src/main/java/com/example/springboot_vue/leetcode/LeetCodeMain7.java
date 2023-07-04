@@ -7,6 +7,33 @@ public class LeetCodeMain7 {
     public static void main(String[] args) {
     }
 
+    // 2679. 矩阵中的和
+    public int matrixSum(int[][] nums) {
+        int max, index, res = 0, totalMax, count = nums[0].length;
+        while (count > 0) {
+            count--;
+            totalMax = -1;
+            for (int i = 0; i < nums.length; i++) {
+                max = -1; index = -1;
+                for (int j = 0; j < nums[0].length; j++) {
+                    if (max < nums[i][j]) {
+                        max = nums[i][j];
+                        index = j;
+                    }
+                }
+                nums[i][index] = -1;
+
+                if (max > totalMax) {
+                    totalMax = max;
+                }
+            }
+
+            res += totalMax;
+        }
+
+        return res;
+    }
+
     // 445. 两数相加 II
     public ListNode addTwoNumbers1(ListNode l1, ListNode l2) {
         ListNode res = new ListNode();

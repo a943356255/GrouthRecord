@@ -27,7 +27,7 @@ public class WordExport {
         copyFile("result.docx", "D:\\git\\new.docx");
     }
 
-    public static String outPath = "D:\\git\\result.docx";
+    public static String outPath = "D:\\git\\test_last.docx";
 
     public static void replaceTextFont(String filePath) throws IOException {
         //创建一个Document实例
