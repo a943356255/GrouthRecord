@@ -7,7 +7,28 @@ public class LeetCodeMain7 {
     public static void main(String[] args) {
     }
 
-    // 2679. 矩阵中的和
+    // 2600. K 件物品的最大和
+    public int kItemsWithMaximumSum(int numOnes, int numZeros, int numNegOnes, int k) {
+        int sum = 0;
+        if (k <= numOnes) {
+            return k;
+        }
+
+        sum += numOnes;
+        if (k - numOnes <= numZeros) {
+            return sum;
+        }
+
+        sum -= (k - numOnes - numZeros);
+        return sum;
+    }
+
+    /**
+     * 2679. 矩阵中的和
+     * @param nums
+     * @return int
+     * 这一题的一种更好的做法是，把每一行排序，然后竖着遍历数组，只取每一列的最大值
+     */
     public int matrixSum(int[][] nums) {
         int max, index, res = 0, totalMax, count = nums[0].length;
         while (count > 0) {
