@@ -7,6 +7,32 @@ public class LeetCodeMain7 {
     public static void main(String[] args) {
     }
 
+    // 2178. 拆分成最多数目的正偶数之和
+    public List<Long> maximumEvenSplit(long finalSum) {
+        if (finalSum % 2 != 0) {
+            return null;
+        }
+
+        List<Long> res = new ArrayList<>();
+        for (long i = 2; i <= finalSum; i += 2) {
+            res.add(i);
+            finalSum -= i;
+        }
+
+        res.set(res.size() - 1, res.get(res.size() - 1) + finalSum);
+        return res;
+    }
+
+    // 207. 课程表
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int i = 0; i < prerequisites.length; i++) {
+
+        }
+
+        return true;
+    }
+
     // 2600. K 件物品的最大和
     public int kItemsWithMaximumSum(int numOnes, int numZeros, int numNegOnes, int k) {
         int sum = 0;
