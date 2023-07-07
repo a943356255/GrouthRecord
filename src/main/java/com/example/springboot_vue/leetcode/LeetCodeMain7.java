@@ -7,6 +7,71 @@ public class LeetCodeMain7 {
     public static void main(String[] args) {
     }
 
+    // 18. 四数之和
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> quadruplets = new ArrayList<List<Integer>>();
+        if (nums == null || nums.length < 4) {
+            return quadruplets;
+        }
+        Arrays.sort(nums);
+        int length = nums.length;
+        for (int i = 0; i < length - 3; i++) {
+            // 重复则不计算在内，这里是因为已经有了一个以num[i]开头的组合，如果继续算则组合是一样的
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            // 如果最小的4个数加起来已经大于目标值，则直接结束循环
+            if ((long) nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target) {
+                break;
+            }
+            // 如果当前值加最大的3个值还小于target，说明当前值太小，结束此次循环
+            if ((long) nums[i] + nums[length - 3] + nums[length - 2] + nums[length - 1] < target) {
+                continue;
+            }
+
+            // 开始寻找从i开始满足条件的值
+            for (int j = i + 1; j < length - 2; j++) {
+                // 相同则跳过，这里是定了i也就是数组中第一个值，然后从第二个值往后找，如果第二个值相同则组合相同
+                // 比如说当前组合第一个数字为1，第一次遍历第二个数字为2，然后遍历结束后第二次遍历第二个数字还是2 ，则没有必要继续计算
+                if (j > i + 1 && nums[j] == nums[j - 1]) {
+                    continue;
+                }
+                // 下面这两句和上边意图一样
+                if ((long) nums[i] + nums[j] + nums[j + 1] + nums[j + 2] > target) {
+                    break;
+                }
+                if ((long) nums[i] + nums[j] + nums[length - 2] + nums[length - 1] < target) {
+                    continue;
+                }
+
+                int left = j + 1, right = length - 1;
+                while (left < right) {
+                    // 计算i以及i + 1，i + 2和最后一个值
+                    long sum = (long) nums[i] + nums[j] + nums[left] + nums[right];
+                    if (sum == target) {
+                        quadruplets.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));
+                        // 此时已经等于target，将left指向下一个值不等于left的下标
+                        while (left < right && nums[left] == nums[left + 1]) {
+                            left++;
+                        }
+                        left++;
+                        // right也是一样的思路
+                        while (left < right && nums[right] == nums[right - 1]) {
+                            right--;
+                        }
+                        right--;
+                    } else if (sum < target) {
+                        left++;
+                    } else {
+                        right--;
+                    }
+                }
+            }
+        }
+
+        return quadruplets;
+    }
+
     // 2178. 拆分成最多数目的正偶数之和
     public List<Long> maximumEvenSplit(long finalSum) {
         if (finalSum % 2 != 0) {
