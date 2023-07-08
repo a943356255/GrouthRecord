@@ -7,6 +7,27 @@ public class LeetCodeMain7 {
     public static void main(String[] args) {
     }
 
+    // 167. 两数之和 II - 输入有序数组
+    public int[] twoSum(int[] numbers, int target) {
+        int[] res = new int[2];
+        int left = 0, right = numbers.length - 1;
+        int sum;
+        while (left < right) {
+            sum = numbers[left] + numbers[right];
+            if (sum == target) {
+                res[0] = left + 1;
+                res[1] = right + 1;
+                break;
+            } else if (sum < target) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+
+        return res;
+    }
+
     // 18. 四数之和
     public List<List<Integer>> fourSum(int[] nums, int target) {
         List<List<Integer>> quadruplets = new ArrayList<List<Integer>>();
@@ -225,7 +246,7 @@ public class LeetCodeMain7 {
     }
 
     // 1. 两数之和
-    public int[] twoSum(int[] nums, int target) {
+    public int[] twoSum1(int[] nums, int target) {
         int[] res = new int[2];
         Map<Integer, Integer> map = new HashMap<>();
 
