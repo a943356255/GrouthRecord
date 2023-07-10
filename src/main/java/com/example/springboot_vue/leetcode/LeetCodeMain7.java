@@ -109,16 +109,6 @@ public class LeetCodeMain7 {
         return res;
     }
 
-    // 207. 课程表
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        Map<Integer, List<Integer>> map = new HashMap<>();
-        for (int i = 0; i < prerequisites.length; i++) {
-
-        }
-
-        return true;
-    }
-
     // 2600. K 件物品的最大和
     public int kItemsWithMaximumSum(int numOnes, int numZeros, int numNegOnes, int k) {
         int sum = 0;
