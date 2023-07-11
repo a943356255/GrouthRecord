@@ -8,6 +8,34 @@ public class LeetCodeMain8 {
 
     }
 
+    // 1911. 最大子序列交替和
+    public long maxAlternatingSum(int[] nums) {
+//        long ou = 0, ji = 0;
+//        long[] dp = new long[nums.length];
+//        dp[0] = nums[0];
+//        for (int i = 1; i < nums.length; i++) {
+//            if (i % 2 == 0) {
+//                long temp = dp[i - 1] + ou - ji + nums[i];
+//                if (temp > dp[i - 1]) {
+//                    dp[i] = temp;
+//                } else {
+//                    dp[i] = dp[i - 1];
+//                    ou += nums[i];
+//                }
+//            } else {
+//                dp[i] = dp[i - 1];
+//                ji += nums[i];
+//            }
+//        }
+//        return dp[nums.length - 1];
+        long even = nums[0], odd = 0;
+        for (int i = 1; i < nums.length; i++) {
+            even = Math.max(even, odd + nums[i]);
+            odd = Math.max(odd, even - nums[i]);
+        }
+        return even;
+    }
+
     List<List<Integer>> edges;
     int[] visited;
     boolean valid = true;
