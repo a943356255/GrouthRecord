@@ -8,6 +8,21 @@ public class LeetCodeMain8 {
 
     }
 
+    // 2544. 交替数字和
+    public int alternateDigitSum(int n) {
+        int res = 0;
+        String str = String.valueOf(n);
+
+        int temp = 1;
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            res += temp * Integer.parseInt(String.valueOf(c));
+            temp *= -1;
+        }
+
+        return res;
+    }
+
     // 1911. 最大子序列交替和
     public long maxAlternatingSum(int[] nums) {
 //        long ou = 0, ji = 0;
