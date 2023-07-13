@@ -8,6 +8,39 @@ public class LeetCodeMain8 {
 
     }
 
+    // 931. 下降路径最小和
+    public int minFallingPathSum(int[][] matrix) {
+        int[][] arr = new int[matrix.length][matrix[0].length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (i == 0) {
+                    arr[i][j] = matrix[i][j];
+                } else {
+                    arr[i][j] = arr[i - 1][j] + matrix[i][j];
+                    for (int temp = j - 1; temp <= j + 1; temp++) {
+                        if (temp >= 0 && temp < matrix[0].length) {
+                            arr[i][j] = Math.min(arr[i - 1][temp] + matrix[i][j], arr[i][j]);
+                        }
+                    }
+                }
+            }
+        }
+
+//        for (int i = 0; i < arr.length; i++) {
+//            for (int j = 0; j < arr[0].length; j++) {
+//                System.out.print(arr[i][j] + " ");
+//            }
+//            System.out.println();
+//        }
+
+        int min = 100 * 100 + 1;
+        for (int i = 0; i < arr[0].length; i++) {
+            min = Math.min(arr[arr.length - 1][i], min);
+        }
+
+        return min;
+    }
+
     // 2544. 交替数字和
     public int alternateDigitSum(int n) {
         int res = 0;
