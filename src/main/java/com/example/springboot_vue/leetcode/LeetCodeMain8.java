@@ -5,7 +5,9 @@ import java.util.*;
 public class LeetCodeMain8 {
 
     public static void main(String[] args) {
-
+        var list = new ArrayList<Integer>();
+        list.add(1);
+        System.out.println(list.get(0));
     }
 
     // 1851. 包含每个查询的最小区间
