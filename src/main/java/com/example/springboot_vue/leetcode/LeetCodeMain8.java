@@ -8,6 +8,104 @@ public class LeetCodeMain8 {
 
     }
 
+    // 1851. 包含每个查询的最小区间
+    public int[] minInterval(int[][] intervals, int[] queries) {
+        int n = intervals.length, m = queries.length;
+        // 按照左端点的大小进行排序
+        Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
+        int[][] qs = new int[m][0];
+
+        for (int i = 0; i < m; ++i) {
+            // 存储了每个查询的值以及它对应的下标
+            qs[i] = new int[] {queries[i], i};
+        }
+
+        // 对查询进行排序，然后通过下标来确定原来的顺序
+        Arrays.sort(qs, Comparator.comparingInt(a -> a[0]));
+
+        int[] ans = new int[m];
+        Arrays.fill(ans, -1);
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        int i = 0;
+
+        for (int[] q : qs) {
+            // intervals[i][0] < q[0]说明目前查询的数据大于给定区间下标i的值
+            // 这里是将所有区间开头小于当前查询的元素全部存储进一个队列
+            // 因为如果区间的开头已经大于查询元素，则肯定不在该区间内
+            // 比如查询为3，而区间开头元素已经是4,比如[4, 8]，那么3一定不在该区间
+            // 而且区间排序是按照区间的最小值排的，后续区间也不可能存在包含3的
+            while (i < n && intervals[i][0] <= q[0]) {
+                int a = intervals[i][0], b = intervals[i][1];
+                // 优先级队列存储一个数组，包含了区间大小以及区间的最大值，队列按照区间大小进行排序，小区间在前
+                pq.offer(new int[] {b - a + 1, b});
+                ++i;
+            }
+
+            // 这里是遍历已经存储于队列的元素，而且区间是按照由小到大排的，只要找到第一个满足它的右区间大于查询元素，则就是答案。
+            // 所以这里右区间小于q[0]，即右区间小于当前查询元素的都要出队
+            while (!pq.isEmpty() && pq.peek()[1] < q[0]) {
+                pq.poll();
+            }
+
+            // 如果队列不为空，则将元素添加到对应下标的位置
+            // 如果队列为空，因为已经提前全部存储为-1，则不需要处理
+            if (!pq.isEmpty()) {
+                ans[q[1]] = pq.peek()[0];
+            }
+        }
+
+        return ans;
+    }
+
+    // 415. 字符串相加
+    public String addStrings(String num1, String num2) {
+        int temp = 0, sum = 0;
+        int length1 = num1.length() - 1, length2 = num2.length() - 1;
+        StringBuilder res = new StringBuilder();
+
+        while (length1 >= 0 || length2 >= 0) {
+            if (length1 >= 0) {
+                sum += Integer.parseInt(String.valueOf(num1.charAt(length1)));
+                length1--;
+            }
+
+            if (length2 >= 0) {
+                sum += Integer.parseInt(String.valueOf(num2.charAt(length2)));
+                length2--;
+            }
+            sum += temp;
+            temp = sum / 10;
+            res.insert(0, sum % 10);
+            sum = 0;
+        }
+
+        if (temp == 1) {
+            res.insert(0, 1);
+        }
+
+        return res.toString();
+    }
+
+    // 834. 树中距离之和
+    public int[] sumOfDistancesInTree(int n, int[][] edges) {
+        List<List<Integer>> list = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            list.add(new ArrayList<>());
+        }
+
+        for (int[] edge : edges) {
+            list.get(edge[0]).add(edge[1]);
+        }
+
+        int[] res = new int[n];
+        for (int i = 0; i < edges.length; i++) {
+
+        }
+
+        return res;
+    }
+
     int move = 0;
 
     // 979. 在二叉树中分配硬币
