@@ -21,6 +21,31 @@
     </properties>
 
     <dependencies>
+        <!-- DEM工具包 -->
+        <dependency>
+            <groupId>net.sf.squirrel-sql.plugins</groupId>
+            <artifactId>dataimport</artifactId>
+            <version>3.5.0</version>
+        </dependency>
+
+        <!-- SHP读取 要钱 -->
+<!--        <dependency>-->
+<!--            <groupId>org.geotools</groupId>-->
+<!--            <artifactId>gt-shapefile</artifactId>-->
+<!--            <version>23-RC</version>-->
+<!--        </dependency>-->
+
+        <!-- IFC -->
+<!--        <dependency>-->
+<!--            <groupId>org.ifcopenshell</groupId>-->
+<!--            <artifactId>ifcopenshell</artifactId>-->
+<!--            <version>0.6.0</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>no.ntnu.ifcparser</groupId>-->
+<!--            <artifactId>ifc-step-parser</artifactId>-->
+<!--            <version>1.3.1</version>-->
+<!--        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-mongodb -->
         <dependency>
@@ -281,6 +306,15 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+        <!-- SHP镜像源 -->
+<!--        <repository>-->
+<!--            <id>geotools</id>-->
+<!--            <name>geotools</name>-->
+<!--            <url>http://maven.icm.edu.pl/artifactory/repo/</url>-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--            </releases>-->
+<!--        </repository>-->
 
         <repository>
             <id>com.e-iceblue</id>
