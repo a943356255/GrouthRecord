@@ -10,6 +10,44 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 874. 模拟行走机器人
+    public int robotSim(int[] commands, int[][] obstacles) {
+        int res = 0;
+        int[][] dirs = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+        int x = 0, y = 0, dir = 1;
+        Set<Integer> set = new HashSet<>();
+
+        for (int[] obstacle : obstacles) {
+            // 这里是添加障碍的位置，为什么要*60001
+            set.add(obstacle[0] * 60001 + obstacle[1]);
+        }
+
+        for (int command : commands) {
+            if (command < 0) {
+                dir += command == -1 ? 1 : -1;
+                // 这里是为了循环dirs数组,有可能加完1后超出边界
+                dir = dir % 4;
+                // 这里是为了处理-1后可能小于0
+                if (dir < 0) {
+                    dir += 4;
+                }
+            } else {
+                for (int j = 0; j < command; j++) {
+                    // 这里是因为遇到了障碍物，不能到达，下面已经计算过到达障碍物前的最远距离
+                    if (set.contains((x + dirs[dir][0]) * 60001 + y + dirs[dir][1])) {
+                        break;
+                    }
+
+                    x += dirs[dir][0];
+                    y += dirs[dir][1];
+                    res = Math.max(res, x * x + y * y);
+                }
+            }
+        }
+
+        return res;
+    }
+
     // 1851. 包含每个查询的最小区间
     public int[] minInterval(int[][] intervals, int[] queries) {
         int n = intervals.length, m = queries.length;
