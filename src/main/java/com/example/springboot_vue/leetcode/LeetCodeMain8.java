@@ -18,7 +18,7 @@ public class LeetCodeMain8 {
         Set<Integer> set = new HashSet<>();
 
         for (int[] obstacle : obstacles) {
-            // 这里是添加障碍的位置，为什么要*60001
+            // 这里是添加障碍的位置，这里*60001是为了防止不同坐标的x和y相加后结果一样，比如-1，1 和1，-1虽然不在一个点，但是直接相加结果一样
             set.add(obstacle[0] * 60001 + obstacle[1]);
         }
 
@@ -34,6 +34,8 @@ public class LeetCodeMain8 {
             } else {
                 for (int j = 0; j < command; j++) {
                     // 这里是因为遇到了障碍物，不能到达，下面已经计算过到达障碍物前的最远距离
+                    // 这里是一步一步加的，每个点走一次，然后判断是否和障碍物重合，如果重合就直接结束，否则计算一次距离
+                    // 因为dir已经确定了走的方向，所以直接x和y一起加就可以了
                     if (set.contains((x + dirs[dir][0]) * 60001 + y + dirs[dir][1])) {
                         break;
                     }
