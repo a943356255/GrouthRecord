@@ -10,6 +10,32 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 918. 环形子数组的最大和
+    public int maxSubarraySumCircular(int[] nums) {
+        int n = nums.length;
+        // 这个队列里面存放的是前缀和，然后前缀和越小的，越在前面
+        Deque<int[]> queue = new ArrayDeque<>();
+        int pre = nums[0], res = nums[0];
+        queue.offerLast(new int[]{0, pre});
+        for (int i = 1; i < 2 * n; i++) {
+            // 这里是为了避免队列中最前边的元素的下标到当前i的距离大于数组长度，如果大于的话则有元素被加了两次
+            while (!queue.isEmpty() && queue.peekFirst()[0] < i - n) {
+                queue.pollFirst();
+            }
+            // 这里，pre永远记录的是从0到i的前缀和
+            pre += nums[i % n];
+            // 队列的最前面存放的是小于i的前缀和的最小值
+            res = Math.max(res, pre - queue.peekFirst()[1]);
+            // 这里，找到了比当前元素最后一个值还要小的，就要出队
+            while (!queue.isEmpty() && queue.peekLast()[1] >= pre) {
+                queue.pollLast();
+            }
+            queue.offerLast(new int[]{i, pre});
+        }
+
+        return res;
+    }
+
     // 874. 模拟行走机器人
     public int robotSim(int[] commands, int[][] obstacles) {
         int res = 0;
