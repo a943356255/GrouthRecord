@@ -10,6 +10,39 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 860. 柠檬水找零
+    public boolean lemonadeChange(int[] bills) {
+        int five = 0, ten = 0;
+        for (int i = 0; i < bills.length; i++) {
+            if (bills[i] == 5) {
+                five++;
+            } else if (bills[i] == 10) {
+                if (five <= 0) {
+                    return false;
+                }
+                five--;
+                ten++;
+            } else {
+                if (five < 1) {
+                    return false;
+                }
+
+                if (ten > 0) {
+                    ten--;
+                    five--;
+                } else {
+                    if (five < 3) {
+                        return false;
+                    } else {
+                        five -= 3;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
     // 918. 环形子数组的最大和
     public int maxSubarraySumCircular(int[] nums) {
         int n = nums.length;
