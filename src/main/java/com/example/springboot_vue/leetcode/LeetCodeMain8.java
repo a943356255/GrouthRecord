@@ -10,6 +10,19 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 771. 宝石与石头
+    public int numJewelsInStones(String jewels, String stones) {
+        int res = 0;
+        for (int i = 0; i < stones.length(); i++) {
+            char c = stones.charAt(i);
+            if (jewels.indexOf(c) != -1) {
+                res++;
+            }
+        }
+
+        return res;
+    }
+
     // 860. 柠檬水找零
     public boolean lemonadeChange(int[] bills) {
         int five = 0, ten = 0;
