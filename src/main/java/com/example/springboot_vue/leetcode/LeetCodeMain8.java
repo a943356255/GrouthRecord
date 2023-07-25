@@ -10,6 +10,30 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 2208. 将数组和减半的最少操作次数
+    public int halveArray(int[] nums) {
+        int res = 0;
+        long sum = 0;
+        double temp = 0.0;
+        PriorityQueue<Double> queue = new PriorityQueue<>(Comparator.reverseOrder());
+        for (int num : nums) {
+            sum += num;
+            queue.offer((double) num);
+        }
+
+        while (!queue.isEmpty()) {
+            double tempQue = queue.poll();
+            temp += tempQue / 2;
+            res++;
+            if (temp >= sum / 2.0) {
+                break;
+            }
+            queue.offer(tempQue / 2.0);
+        }
+
+        return res;
+    }
+
     // 771. 宝石与石头
     public int numJewelsInStones(String jewels, String stones) {
         int res = 0;
