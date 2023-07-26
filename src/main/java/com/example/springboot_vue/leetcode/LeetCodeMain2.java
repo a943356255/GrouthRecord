@@ -133,18 +133,31 @@ public class LeetCodeMain2 {
 
     // 42. 接雨水
     public int trap(int[] height) {
-        int res = 0, stackBottom = 0;
-        Stack<Integer> stack = new Stack<>();
-
+        int res = 0;
+        Deque<Integer> stack = new LinkedList<>();
         for (int i = 0; i < height.length; i++) {
-
-            while (!stack.isEmpty() && height[i] > stack.peek()) {
-
+            // 单调栈维护的是一个由大到小的集合，栈低元素最大，栈顶元素最小。
+            // 意味着如果当前的height[i]大于栈顶元素，那么就要进入循环，直到所有小于当前height[i]的元素全部出栈
+            // 在出栈时，每出栈一个元素，都需要进行一次计算
+            // 计算从当前i到出栈元素的宽度，以及这两者之间的最小高度
+            while (!stack.isEmpty() && height[i] > height[stack.peek()]) {
+                // 先将栈顶元素出栈
+                int top = stack.poll();
+                // 如果当前元素出栈后栈为空，则结束本次循环
+                if (stack.isEmpty()) {
+                    break;
+                }
+                // 这个left就是当前出栈元素的前一个元素
+                int left = stack.peek();
+                // 计算从i到当前的宽度
+                int currentWidth = i - left - 1;
+                // 这里减去height[top]是为了处理栈里面两个元素大小相等的情况
+                // 因为相等的元素会同时保留在栈当中（循环中没有加等号），而且他们之间的积水量已经计算过了
+                // 所以减去height[top]可以使得currentHeight为0
+                int currentHeight = Math.min(height[left], height[i]) - height[top];
+                res += currentHeight * currentWidth;
             }
-            stack.add(height[i]);
-            if (height[i] > stackBottom) {
-                stackBottom = height[i];
-            }
+            stack.push(i);
         }
 
         return res;
