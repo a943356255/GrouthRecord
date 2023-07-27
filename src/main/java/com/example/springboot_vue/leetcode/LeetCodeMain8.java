@@ -10,6 +10,27 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 2500. 删除每行中的最大值
+    public int deleteGreatestValue(int[][] grid) {
+        for (int[] ints : grid) {
+            Arrays.sort(ints);
+        }
+
+        int sum = 0;
+        for (int i = 0; i < grid[0].length; i++) {
+            int temp = 0;
+            for (int[] ints : grid) {
+                if (ints[i] > temp) {
+                    temp = ints[i];
+                }
+            }
+
+            sum += temp;
+        }
+
+        return sum;
+    }
+
     // 2208. 将数组和减半的最少操作次数
     public int halveArray(int[] nums) {
         int res = 0;
