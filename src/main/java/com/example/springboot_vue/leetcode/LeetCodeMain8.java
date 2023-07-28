@@ -10,6 +10,104 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 2050. 并行课程 III
+    public int minimumTime(int n, int[][] relations, int[] time) {
+        int mx = 0;
+        List<Integer>[] prev = new List[n + 1];
+        // 存储邻接矩阵，即每个list[i]所存储的就是它的先学课程
+        for (int i = 0; i <= n; i++) {
+            prev[i] = new ArrayList<>();
+        }
+        for (int[] relation : relations) {
+            int x = relation[0], y = relation[1];
+            prev[y].add(x);
+        }
+
+
+        Map<Integer, Integer> memo = new HashMap<>();
+        for (int i = 1; i <= n; i++) {
+            mx = Math.max(mx, dp(i, time, prev, memo));
+        }
+        return mx;
+    }
+
+    public int dp(int i, int[] time, List<Integer>[] prev, Map<Integer, Integer> memo) {
+        if (!memo.containsKey(i)) {
+            int cur = 0;
+            for (int p : prev[i]) {
+                // 这里可以解决那种嵌套了很多层的课程,我自己的写法没办法解决这种情况
+                cur = Math.max(cur, dp(p, time, prev, memo));
+            }
+            cur += time[i - 1];
+            // 已经遍历过，则不进行后续的遍历，这里是做一个标记
+            memo.put(i, cur);
+        }
+        return memo.get(i);
+    }
+
+    // 2050. 并行课程 III
+//    public int minimumTime(int n, int[][] relations, int[] time) {
+//        int res = 0;
+//
+//        // 用于标记它是否是某个课程的先修课程
+//        boolean[] mark = new boolean[n];
+//        // 标记一门课程是否学习
+//        boolean[] learn = new boolean[n];
+//        Arrays.fill(mark, false);
+//        Arrays.fill(learn, false);
+//
+//        Map<Integer, Integer> timeToIndex = new HashMap<>();
+//        for (int i = 0; i < time.length; i++) {
+//            timeToIndex.put(time[i], i);
+//        }
+//
+//        Map<Integer, PriorityQueue<Integer>> map = new HashMap<>();
+//        for (int i = 0; i < relations.length; i++) {
+//            if (map.get(relations[i][1]) == null) {
+//                PriorityQueue<Integer> queue = new PriorityQueue<>((a, b) -> b - a);
+//                queue.offer(time[relations[i][0] - 1]);
+//                map.put(relations[i][1], queue);
+//            } else {
+//                map.get(relations[i][1]).offer(time[relations[i][0] - 1]);
+//            }
+//            mark[relations[i][0] - 1] = true;
+//        }
+//
+//        for (Map.Entry<Integer, PriorityQueue<Integer>> entry : map.entrySet()) {
+//            PriorityQueue<Integer> queue = entry.getValue();
+//            int temp = 0;
+//            while (!queue.isEmpty()) {
+//                int val = queue.poll();
+//                if (temp == 0) {
+//                    res += val;
+//                    temp = 1;
+//                }
+//                learn[timeToIndex.get(val)] = true;
+////                learn[val + 1] = true;
+//            }
+//
+//            if (!mark[entry.getKey() - 1]) {
+//                res += time[entry.getKey() - 1];
+//                learn[entry.getKey() - 1] = true;
+//            }
+//        }
+//
+//        int max = -1;
+//        for (int i = 0; i < learn.length; i++) {
+//            if (!learn[i]) {
+//                if (res < time[i]) {
+//                    max = Math.max(max, time[i]);
+//                }
+//            }
+//        }
+//
+//        if (max != -1) {
+//            res += (max - res);
+//        }
+//
+//        return res;
+//    }
+
     // 2500. 删除每行中的最大值
     public int deleteGreatestValue(int[][] grid) {
         for (int[] ints : grid) {
