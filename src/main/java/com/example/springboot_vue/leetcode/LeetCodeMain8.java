@@ -10,6 +10,32 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 141. 环形链表
+    public boolean hasCycle(ListNode head) {
+        // 一个更好的思路是快慢指针
+        Map<ListNode, String> map = new HashMap<>();
+        while (head != null) {
+            if (map.get(head) == null) {
+                map.put(head, "1");
+            } else {
+                return true;
+            }
+            head = head.next;
+        }
+
+        return false;
+
+        // 快慢指针做法
+//        if (head == null) return false;
+//        ListNode slow = head, fast = head;
+//        while (fast.next != null && fast.next.next != null){
+//            slow = slow.next;
+//            fast = fast.next.next;
+//            if (slow == fast) return true;
+//        }
+//        return false;
+    }
+
     // 2050. 并行课程 III
     public int minimumTime(int n, int[][] relations, int[] time) {
         int mx = 0;
@@ -39,7 +65,7 @@ public class LeetCodeMain8 {
                 cur = Math.max(cur, dp(p, time, prev, memo));
             }
             cur += time[i - 1];
-            // 已经遍历过，则不进行后续的遍历，这里是做一个标记
+            // 已经计算过学习当前课程包括他前边课程的时间，不需要后续计算，直接返回即可。
             memo.put(i, cur);
         }
         return memo.get(i);
