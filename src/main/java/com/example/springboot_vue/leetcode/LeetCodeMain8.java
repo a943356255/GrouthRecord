@@ -10,6 +10,21 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 142. 环形链表 II
+    public ListNode detectCycle(ListNode head) {
+        Map<ListNode, String> map = new HashMap<>();
+        while (head != null) {
+            if (map.get(head) == null) {
+                map.put(head, "1");
+            } else {
+                return head;
+            }
+            head = head.next;
+        }
+
+        return null;
+    }
+
     // 141. 环形链表
     public boolean hasCycle(ListNode head) {
         // 一个更好的思路是快慢指针
