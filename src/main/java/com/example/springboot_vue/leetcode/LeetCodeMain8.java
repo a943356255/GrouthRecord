@@ -10,6 +10,39 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 143. 重排链表
+    public void reorderList(ListNode head) {
+        List<ListNode> list = new ArrayList<>();
+        ListNode temp = head;
+        while (temp != null) {
+            list.add(temp);
+            temp = temp.next;
+        }
+
+        head = new ListNode();
+        temp = new ListNode();
+        head.next = temp;
+        int index = list.size() - 1;
+        for (int i = 0; i < list.size(); i++) {
+            temp.next = list.get(i);
+            list.get(i).next = null;
+            temp = temp.next;
+
+            if (index > 0) {
+                temp.next = list.get(index);
+                list.get(index).next = null;
+                temp = temp.next;
+                index --;
+            }
+
+            if (index <= i) {
+                break;
+            }
+        }
+
+        head = head.next;
+    }
+
     // 142. 环形链表 II
     public ListNode detectCycle(ListNode head) {
         Map<ListNode, String> map = new HashMap<>();
