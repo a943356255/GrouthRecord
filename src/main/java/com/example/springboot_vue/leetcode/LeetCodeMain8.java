@@ -10,6 +10,25 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 139. 单词拆分
+    public boolean wordBreak(String s, List<String> wordDict) {
+        Set<String> wordDictSet = new HashSet<>(wordDict);
+        boolean[] dp = new boolean[s.length() + 1];
+        dp[0] = true;
+        for (int i = 1; i <= s.length(); i++) {
+            // 每一次从0到i来进行截取，只要存在就为true
+            for (int j = 0; j < i; j++) {
+                // 如果之前是true，同时新截取的单词还包含在集合当中，则当前i为true
+                if (dp[j] && wordDictSet.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+
+        return dp[s.length()];
+    }
+
     // 143. 重排链表
     public void reorderList(ListNode head) {
         List<ListNode> list = new ArrayList<>();
