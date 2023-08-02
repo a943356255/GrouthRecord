@@ -10,6 +10,33 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 822. 翻转卡片游戏
+    public int flipgame(int[] fronts, int[] backs) {
+        Set<Integer> noneSet = new HashSet<>();
+        int res = 2001;
+
+        // 不交换的最小值
+        for (int i = 0; i < fronts.length; i++) {
+            if (backs[i] == fronts[i]) {
+                noneSet.add(backs[i]);
+            }
+        }
+
+        for (int front : fronts) {
+            if (front < res && !noneSet.contains(front)) {
+                res = front;
+            }
+        }
+
+        for (int back : backs) {
+            if (!noneSet.contains(back) && back < res) {
+                res = back;
+            }
+        }
+
+        return res % 2001;
+    }
+
     // 139. 单词拆分
     public boolean wordBreak(String s, List<String> wordDict) {
         Set<String> wordDictSet = new HashSet<>(wordDict);
