@@ -10,6 +10,37 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 722. 删除注释
+    public List<String> removeComments(String[] source) {
+        List<String> res = new ArrayList<String>();
+        StringBuilder newLine = new StringBuilder();
+        boolean inBlock = false;
+        for (String line : source) {
+            for (int i = 0; i < line.length(); i++) {
+                if (inBlock) {
+                    if (i + 1 < line.length() && line.charAt(i) == '*' && line.charAt(i + 1) == '/') {
+                        inBlock = false;
+                        i++;
+                    }
+                } else {
+                    if (i + 1 < line.length() && line.charAt(i) == '/' && line.charAt(i + 1) == '*') {
+                        inBlock = true;
+                        i++;
+                    } else if (i + 1 < line.length() && line.charAt(i) == '/' && line.charAt(i + 1) == '/') {
+                        break;
+                    } else {
+                        newLine.append(line.charAt(i));
+                    }
+                }
+            }
+            if (!inBlock && newLine.length() > 0) {
+                res.add(newLine.toString());
+                newLine.setLength(0);
+            }
+        }
+        return res;
+    }
+
     // 822. 翻转卡片游戏
     public int flipgame(int[] fronts, int[] backs) {
         Set<Integer> noneSet = new HashSet<>();
@@ -289,10 +320,10 @@ public class LeetCodeMain8 {
     // 860. 柠檬水找零
     public boolean lemonadeChange(int[] bills) {
         int five = 0, ten = 0;
-        for (int i = 0; i < bills.length; i++) {
-            if (bills[i] == 5) {
+        for (int bill : bills) {
+            if (bill == 5) {
                 five++;
-            } else if (bills[i] == 10) {
+            } else if (bill == 10) {
                 if (five <= 0) {
                     return false;
                 }
