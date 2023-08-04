@@ -10,25 +10,78 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    static int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    // 980. 不同路径 III
+    public int uniquePathsIII(int[][] grid) {
+        int r = grid.length, c = grid[0].length;
+        int si = 0, sj = 0, n = 0;
+        // 这里是先遍历grid，统计里面有多少个0，并且找到1所在的位置。
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                if (grid[i][j] == 0) {
+                    n++;
+                } else if (grid[i][j] == 1) {
+                    n++;
+                    si = i;
+                    sj = j;
+                }
+            }
+        }
+
+        return dfs(grid, si, sj, n);
+    }
+
+    public int dfs(int[][] grid, int i, int j, int n) {
+        // 这里，每次传递进来的n都是等于上一次的n - 1，如果到达2的时候n == 0，说明有一条路，否则没有
+        if (grid[i][j] == 2) {
+            return n == 0 ? 1 : 0;
+        }
+
+        int r = grid.length, c = grid[0].length;
+        // 这里是先记录i，j位置上的值，用于回溯完再将值赋回去
+        int t = grid[i][j];
+        // 将i，j的位置设置为-1，意思是不能再访问
+        grid[i][j] = -1;
+        int res = 0;
+
+        // 遍历dirs，模拟当前位置往上下左右四个方向移动
+        for (int[] dir : dirs) {
+            // 确定下一个位置
+            int ni = i + dir[0], nj = j + dir[1];
+            // 如果当前坐标在合理的范围内，并且值不是-1
+            if (ni >= 0 && ni < r && nj >= 0 && nj < c && (grid[ni][nj] == 0 || grid[ni][nj] == 2)) {
+                // 这里是累加的总过程
+                res += dfs(grid, ni, nj, n - 1);
+            }
+        }
+        grid[i][j] = t;
+
+        return res;
+    }
+
     // 722. 删除注释
     public List<String> removeComments(String[] source) {
-        List<String> res = new ArrayList<String>();
+        List<String> res = new ArrayList<>();
         StringBuilder newLine = new StringBuilder();
         boolean inBlock = false;
         for (String line : source) {
             for (int i = 0; i < line.length(); i++) {
                 if (inBlock) {
+                    // 之前有/*了，现在要一找到 */,然后中间的元素一律不追加到新的字符后边
                     if (i + 1 < line.length() && line.charAt(i) == '*' && line.charAt(i + 1) == '/') {
                         inBlock = false;
                         i++;
                     }
                 } else {
+                    // 找到 /* 的位置
                     if (i + 1 < line.length() && line.charAt(i) == '/' && line.charAt(i + 1) == '*') {
                         inBlock = true;
                         i++;
                     } else if (i + 1 < line.length() && line.charAt(i) == '/' && line.charAt(i + 1) == '/') {
+                        // 如果是//，则后边的都不要
                         break;
                     } else {
+                        // 否则将他追加到新的字符后边
                         newLine.append(line.charAt(i));
                     }
                 }
