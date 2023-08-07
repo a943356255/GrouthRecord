@@ -10,6 +10,19 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 344. 反转字符串
+    public void reverseString(char[] s) {
+        int first = 0, last = s.length - 1;
+        char temp;
+        while (first < last) {
+            temp = s[first];
+            s[first] = s[last];
+            s[last] = temp;
+            first++;
+            last--;
+        }
+    }
+
     // 24. 两两交换链表中的节点
     public ListNode swapPairs(ListNode head) {
         ListNode dummyHead = new ListNode(0);
