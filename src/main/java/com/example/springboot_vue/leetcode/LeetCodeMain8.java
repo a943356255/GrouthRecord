@@ -10,6 +10,19 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 1749. 任意子数组和的绝对值的最大值
+    public int maxAbsoluteSum(int[] nums) {
+        // 子数组和是连续的，那么可以求前缀和，然后找前缀和的最大值减去最小值，就是答案
+        int s = 0, mx = 0, mn = 0;
+        for (int x : nums) {
+            s += x;
+            if (s > mx) mx = s;
+            else if (s < mn) mn = s; // 效率更高的写法
+        }
+
+        return mx - mn;
+    }
+
     // 344. 反转字符串
     public void reverseString(char[] s) {
         int first = 0, last = s.length - 1;
