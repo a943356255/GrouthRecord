@@ -1,7 +1,6 @@
 package com.example.springboot_vue.mapper.crud;
 
 import org.apache.ibatis.annotations.Param;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -37,6 +36,7 @@ public interface CRUDMapper {
                @Param("condition") Map<String, Object> condition);
 
     int insertExcelData(@Param("table") String table,
-                        @Param("list") ArrayList<Map<String, String>> list
-                        );
+                        @Param("list") List<Map<String, String>> list,
+                        @Param("column") List<String> columnList
+    );
 }
