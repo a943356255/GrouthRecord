@@ -40,7 +40,7 @@ public class CRUDInterface {
 
     @RequestMapping("/testUser")
     public void test(@RequestBody Map<String, Object> map) {
-
+        crudServiceImpl.test(map);
     }
 
     public void testRedisTemplateStream() {

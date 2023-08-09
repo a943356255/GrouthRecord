@@ -65,9 +65,11 @@ public class ReadExcel {
 
     public static List<Map<String, String>> readExcelAndInsertIntoDB(String path, List<String> list) {
         ArrayList<Map<String, String>> res = new ArrayList<>();
+        FileInputStream fileInputStream;
         try {
+            fileInputStream = new FileInputStream(path);
             // 创建工作簿对象
-            XSSFWorkbook xssfWorkbook = new XSSFWorkbook(new FileInputStream(path));
+            XSSFWorkbook xssfWorkbook = new XSSFWorkbook(fileInputStream);
             // 获取工作簿下sheet的个数
             int sheetNum = xssfWorkbook.getNumberOfSheets();
 
@@ -93,6 +95,7 @@ public class ReadExcel {
                     res.add(map);
                 }
             }
+            fileInputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,8 +1,10 @@
 package com.example.springboot_vue.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.springboot_vue.mapper.crud.CRUDMapper;
 import com.example.springboot_vue.service.CRUDService;
+import com.example.springboot_vue.utils.excel_util.ReadExcel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -116,6 +119,10 @@ public class CRUDServiceImpl implements CRUDService {
 
     @Override
     public void test(Map<String, Object> map) {
+        String table = (String) map.get("table");
+        List<String> list = (List<String>) map.get("column");
 
+        List<Map<String, String>> res = ReadExcel.readExcelAndInsertIntoDB("D:\\git\\test.xlsx", list);
+        crudMapper.insertExcelData(table, res, list);
     }
 }
