@@ -10,6 +10,21 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 1281. 整数的各位积和之差
+    public int subtractProductAndSum(int n) {
+        int add = 0, mix = 1;
+        int length = String.valueOf(n).length() - 1;
+        while (length > 0) {
+            int temp = (int) (n / Math.pow(10, length));
+            add += temp;
+            mix *= temp;
+            n = (int) (n % Math.pow(10, length));
+            length --;
+        }
+
+        return mix - add;
+    }
+
     // 1749. 任意子数组和的绝对值的最大值
     public int maxAbsoluteSum(int[] nums) {
         // 子数组和是连续的，那么可以求前缀和，然后找前缀和的最大值减去最小值，就是答案
