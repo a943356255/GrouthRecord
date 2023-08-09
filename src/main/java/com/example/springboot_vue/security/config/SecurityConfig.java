@@ -34,11 +34,9 @@ import org.springframework.security.web.authentication.rememberme.RememberMeAuth
 import org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy;
 import org.springframework.security.web.session.ConcurrentSessionFilter;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.PrintWriter;
-import java.util.Arrays;
 
 @Configuration
 @ConditionalOnClass(WebSecurityConfigurerAdapter.class)
@@ -81,7 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 这里放行的接口是不需要登录就可以访问的
 //        web.ignoring().antMatchers("/crudInterface/*");
 //        web.ignoring().antMatchers("/search/*");
-//        web.ignoring().antMatchers("/user/*", "/crudInterface/*");
+        web.ignoring().antMatchers("/user/*", "/crudInterface/*");
     }
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -235,7 +233,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         System.out.println("进入HttpSecurity");
         http.authorizeRequests()
                 // 放行接口,这里放行的接口还是需要登录的
-//                .antMatchers("/user/getInfo").permitAll()
+//                .antMatchers("/crudInterface/testUser").permitAll()
                 // 登录会走这里
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
                     @Override
