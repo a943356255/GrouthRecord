@@ -7,4 +7,6 @@ import java.util.Map;
 public interface CRUDService {
 
     JSONObject getCrudValue(Map<String, Object> map);
+
+    void test(Map<String, Object> map);
 }

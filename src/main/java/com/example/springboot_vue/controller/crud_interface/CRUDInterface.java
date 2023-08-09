@@ -39,14 +39,11 @@ public class CRUDInterface {
     }
 
     @RequestMapping("/testUser")
-    public void test() {
-        ArrayList<TestUser> list = userMapper.getUser();
-        ReadExcel.disposeXlsx("D:\\git\\work.xlsx", list);
-        System.out.println(list.size());
+    public void test(@RequestBody Map<String, Object> map) {
+
     }
 
     public void testRedisTemplateStream() {
-
         List<MapRecord<String, Object, Object>> list = stringRedisTemplate.opsForStream().read(
                 Consumer.from("g1", "c1"),
                 StreamReadOptions.empty().count(1).block(Duration.ofSeconds(2)),

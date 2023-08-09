@@ -113,4 +113,9 @@ public class CRUDServiceImpl implements CRUDService {
 
         return jsonObject;
     }
+
+    @Override
+    public void test(Map<String, Object> map) {
+
+    }
 }

@@ -125,4 +125,8 @@
             and ${key} = #{value}
         </foreach>
     </delete>
+
+    <insert id="insertExcelData">
+
+    </insert>
 </mapper>
