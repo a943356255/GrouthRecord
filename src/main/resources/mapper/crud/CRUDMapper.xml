@@ -127,6 +127,16 @@
     </delete>
 
     <insert id="insertExcelData">
+        insert into ${table}
+        <foreach collection="column" index="idx" open="(" separator="," close=")" item="val">
+            ${val}
+        </foreach>
+        values
+        <foreach collection="list" item="val" index="idx" separator=",">
+            <foreach collection="val.entrySet()" item="value" index="key" separator="," open="(" close=")">
+                #{value}
+            </foreach>
 
+        </foreach>
     </insert>
 </mapper>
