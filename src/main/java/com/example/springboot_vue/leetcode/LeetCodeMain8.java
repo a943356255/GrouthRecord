@@ -10,6 +10,32 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 1289. 下降路径最小和 II
+    public int minFallingPathSum2(int[][] grid) {
+        int[][] arr = new int[grid.length][grid[0].length];
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (i == 0) {
+                    arr[i][j] = grid[i][j];
+                } else {
+                    int sum = 2000000;
+                    for (int temp = 0; temp < grid[0].length; temp++) {
+                        if (temp != j) {
+                            sum = Math.min(sum, grid[i][j] + arr[i - 1][temp]);
+                        }
+                    }
+                    arr[i][j] = sum;
+                }
+            }
+        }
+
+        int min = 200 * 100;
+        for (int i = 0; i < grid[0].length; i++) {
+            min = Math.min(arr[grid.length - 1][i], min);
+        }
+        return min;
+    }
+
     // 1281. 整数的各位积和之差
     public int subtractProductAndSum(int n) {
         int add = 0, mix = 1;
@@ -707,13 +733,6 @@ public class LeetCodeMain8 {
                 }
             }
         }
-
-//        for (int i = 0; i < arr.length; i++) {
-//            for (int j = 0; j < arr[0].length; j++) {
-//                System.out.print(arr[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
 
         int min = 100 * 100 + 1;
         for (int i = 0; i < arr[0].length; i++) {
