@@ -10,6 +10,33 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 1572. 矩阵对角线元素的和
+    public int diagonalSum(int[][] mat) {
+        int sum = 0;
+
+        boolean[][] mark = new boolean[mat.length][mat[0].length];
+        for (int i = 0; i < mat.length; i++) {
+            for (int j = 0; j < mat[0].length; j++) {
+                mark[i][j] = true;
+            }
+        }
+
+        int length = mat[0].length - 1;
+        for (int i = 0; i < mat.length; i++) {
+            if (mark[i][i]) {
+                sum += mat[i][i];
+                mark[i][i] = false;
+            }
+
+            if (mark[i][length - i]) {
+                sum += mat[i][length - i];
+                mark[i][length - i] = false;
+            }
+        }
+
+        return sum;
+    }
+
     // 1289. 下降路径最小和 II
     public int minFallingPathSum2(int[][] grid) {
         int[][] arr = new int[grid.length][grid[0].length];
