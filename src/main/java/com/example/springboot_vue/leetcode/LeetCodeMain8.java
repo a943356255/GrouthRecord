@@ -10,6 +10,12 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 88. 合并两个有序数组
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        if (nums1.length - m >= 0) System.arraycopy(nums2, m - m, nums1, m, nums1.length - m);
+        Arrays.sort(nums1);
+    }
+
     // 1572. 矩阵对角线元素的和
     public int diagonalSum(int[][] mat) {
         int sum = 0;
