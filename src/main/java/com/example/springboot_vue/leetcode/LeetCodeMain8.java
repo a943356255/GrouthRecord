@@ -10,6 +10,34 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 617. 合并二叉树
+    public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
+        // 这里，如果root1为空，则直接将root2剩下的节点全部返回，相当于剪枝，不需要继续遍历下去
+        // 而我自己的思路是，如果为空则就只遍历另外一个节点
+        if (root1 == null) {
+            return root2;
+        }
+        if (root2 == null) {
+            return root1;
+        }
+
+        // 我自己的写法无法判断是左子树还是右子树，这种写法直接利用返回值来赋值
+        TreeNode merged = new TreeNode(root1.val + root2.val);
+        merged.left = mergeTrees(root1.left, root2.left);
+        merged.right = mergeTrees(root1.right, root2.right);
+        return merged;
+    }
+
+    public void merge(TreeNode root1, TreeNode root2, TreeNode res) {
+        // 两个都为null，结束递归
+        if (root1 == null && root2 == null) {
+            return;
+        }
+
+        int val1 = root1 == null ? 0 : root1.val;
+        int val2 = root2 == null ? 0 : root2.val;
+    }
+
     // 88. 合并两个有序数组
     public void merge(int[] nums1, int m, int[] nums2, int n) {
         if (nums1.length - m >= 0) System.arraycopy(nums2, m - m, nums1, m, nums1.length - m);
