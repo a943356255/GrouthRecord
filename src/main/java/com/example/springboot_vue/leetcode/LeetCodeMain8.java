@@ -10,6 +10,40 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 833. 字符串中的查找与替换
+    public String findReplaceString(String s, int[] indices, String[] sources, String[] targets) {
+        StringBuilder res = new StringBuilder();
+        int index = 0, idx = -1;
+        for (int i = 0; i < s.length(); i++) {
+            if (index >= sources.length) {
+                idx = i;
+                break;
+            }
+
+            if (i != indices[index]) {
+                res.append(s.charAt(i));
+            } else {
+                String str = s.substring(i, i + sources[index].length());
+                System.out.println("截取结果 = " + str);
+                if (sources[index].equals(str)) {
+                    res.append(targets[index]);
+                    i += sources[index].length() - 1;
+                } else {
+                    res.append(s.charAt(i));
+                }
+                index++;
+            }
+        }
+
+        if (idx != - 1) {
+            for (int i = idx; i < s.length(); i++) {
+                res.append(s.charAt(i));
+            }
+        }
+
+        return res.toString();
+    }
+
     // 617. 合并二叉树
     public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
         // 这里，如果root1为空，则直接将root2剩下的节点全部返回，相当于剪枝，不需要继续遍历下去
