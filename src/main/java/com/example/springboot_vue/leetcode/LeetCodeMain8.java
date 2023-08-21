@@ -10,6 +10,29 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 2236. 判断根结点是否等于子结点之和
+    public boolean checkTree(TreeNode root) {
+        if (root == null) {
+            return false;
+        }
+
+        int left = checkTreeDfs(root.left);
+        int right = checkTreeDfs(root.right);
+
+        return left + right == root.val;
+    }
+
+    public int checkTreeDfs(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+
+        int left = checkTreeDfs(node.left);
+        int right = checkTreeDfs(node.right);
+
+        return left + right + node.val;
+    }
+
     // 833. 字符串中的查找与替换
     public String findReplaceString(String s, int[] indices, String[] sources, String[] targets) {
         StringBuilder res = new StringBuilder();
