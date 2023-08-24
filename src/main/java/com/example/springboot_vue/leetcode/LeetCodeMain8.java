@@ -10,6 +10,45 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    // 1267. 统计参与通信的服务器
+    public int countServers(int[][] grid) {
+        int count = 0;
+        Map<Integer, Integer> hangMap = new HashMap<>();
+        Map<Integer, Integer> lieMap = new HashMap<>();
+
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 1) {
+                    hangMap.merge(i, 1, Integer::sum);
+                    lieMap.merge(j, 1, Integer::sum);
+                }
+            }
+        }
+
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 1) {
+                    if (hangMap.get(i) != 1 || lieMap.get(j) != 1) {
+                        count++;
+                    }
+                }
+            }
+        }
+
+        return count;
+    }
+
+    public int merge(Map<Integer, Integer> map, int key) {
+        map.merge(key, 1, Integer::sum);
+
+        int val = map.get(key);
+        if (val >= 2) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     // 2236. 判断根结点是否等于子结点之和
     public boolean checkTree(TreeNode root) {
         if (root == null) {
