@@ -10,6 +10,31 @@ public class LeetCodeMain8 {
         System.out.println(list.get(0));
     }
 
+    int goodNodesCount = 0;
+    // 1448. 统计二叉树中好节点的数目
+    public int goodNodes(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        goodNodesDfs(root, root.val);
+        return goodNodesCount;
+    }
+
+    public void goodNodesDfs(TreeNode root, int max) {
+        if (root == null) {
+            return;
+        }
+
+        if (root.val >= max) {
+            goodNodesCount++;
+            max = root.val;
+        }
+
+        goodNodesDfs(root.left, max);
+        goodNodesDfs(root.right, max);
+    }
+
     // 1267. 统计参与通信的服务器
     public int countServers(int[][] grid) {
         int count = 0;
