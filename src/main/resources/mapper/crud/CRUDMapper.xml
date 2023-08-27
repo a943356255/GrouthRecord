@@ -136,7 +136,6 @@
             <foreach collection="val.entrySet()" item="value" index="key" separator="," open="(" close=")">
                 #{value}
             </foreach>
-
         </foreach>
     </insert>
 </mapper>
