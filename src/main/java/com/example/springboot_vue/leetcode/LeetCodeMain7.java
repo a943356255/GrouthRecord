@@ -270,9 +270,9 @@ public class LeetCodeMain7 {
         return last.charAt(last.length() - 1) == res[0].charAt(0);
     }
 
-    private HashMap <Node, Node> visited = new HashMap <> ();
+    private HashMap<GraphNode, GraphNode> visited = new HashMap<>();
     // 133. 克隆图
-    public Node cloneGraph(Node node) {
+    public GraphNode cloneGraph(GraphNode node) {
         /**
          * 这种写法会导致死循环，因为遍历后续节点的node，他们的neighbors会包含前边的节点
          */
@@ -306,12 +306,12 @@ public class LeetCodeMain7 {
          * 如果没有遍历过，则遍历该节点的邻居节点
          */
         // 克隆节点，注意到为了深拷贝我们不会克隆它的邻居的列表
-        Node cloneNode = new Node(node.val, new ArrayList());
+        GraphNode cloneNode = new GraphNode(node.val, new ArrayList());
         // 哈希表存储
         visited.put(node, cloneNode);
 
         // 遍历该节点的邻居并更新克隆节点的邻居列表
-        for (Node neighbor: node.neighbors) {
+        for (GraphNode neighbor: node.neighbors) {
             cloneNode.neighbors.add(cloneGraph(neighbor));
         }
 
