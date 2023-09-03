@@ -4,6 +4,27 @@ import java.util.*;
 
 public class LeetCodeMain9 {
 
+    // 1921. 消灭怪物的最大数量
+    public int eliminateMaximum(int[] dist, int[] speed) {
+        double[] arr = new double[dist.length];
+        for (int i = 0; i < dist.length; i++) {
+            arr[i] = (double) dist[i] / speed[i];
+        }
+        Arrays.sort(arr);
+
+        int res = 1, count = 1;
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] - count > 0) {
+                res++;
+                count++;
+            } else {
+                break;
+            }
+        }
+
+        return res;
+    }
+
     // 116. 填充每个节点的下一个右侧节点指针
     public Node connect(Node root) {
         if (root == null) {
