@@ -4,6 +4,27 @@ import java.util.*;
 
 public class LeetCodeMain9 {
 
+    // 2605. 从两个数字数组里生成最小数字
+    public int minNumber(int[] nums1, int[] nums2) {
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        Set<Integer> set = new HashSet<>();
+        for (int j : nums2) {
+            set.add(j);
+        }
+        int temp = Math.min(nums1[0], nums2[0]) * 10 + Math.max(nums1[0], nums2[0]);
+        for (int j : nums1) {
+            if (j <= temp && set.contains(j)) {
+                return j;
+            } else if (j > temp) {
+                System.out.println(j + " " + temp);
+                break;
+            }
+        }
+
+        return temp;
+    }
+
     // 1921. 消灭怪物的最大数量
     public int eliminateMaximum(int[] dist, int[] speed) {
         double[] arr = new double[dist.length];
