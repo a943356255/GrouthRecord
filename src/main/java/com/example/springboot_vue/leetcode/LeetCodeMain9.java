@@ -4,9 +4,42 @@ import java.util.*;
 
 public class LeetCodeMain9 {
 
+    // 2594. 修车的最少时间
+    public long repairCars(int[] ranks, int cars) {
+        // 这里时直接计算任意一个人修全部车的时间，那么总的修车时间一定从1到该时间之内
+        // 然后利用二分即可
+        long l = 1, r = (long) ranks[0] * cars * cars;
+        while (l < r) {
+            // m是二分后的总时间
+            long m = l + r >> 1;
+            if (check(ranks, cars, m)) {
+                r = m;
+            } else {
+                l = m + 1;
+            }
+        }
+        return l;
+    }
+
+    public boolean check(int[] ranks, int cars, long m) {
+        long cnt = 0;
+        for (int x : ranks) {
+            // 因为计算修车时间是x * n * n，所以这里m / x再开根号就是i员工在改时间内修车的数量
+            // cnt计算出了所有员工在改时间内修车的总数量
+            cnt += (long) Math.sqrt(m / x);
+        }
+        return cnt >= cars;
+    }
+
+    // 912. 排序数组
+    public int[] sortArray(int[] nums) {
+        Arrays.sort(nums);
+        return nums;
+    }
+
     private TreeNode ans;
     private int maxDepth = -1; // 全局最大深度
-    // c
+    // 1123.最深叶节点的最近公共祖先
     public TreeNode lcaDeepestLeaves(TreeNode root) {
         dfs(root, 0);
         return ans;
