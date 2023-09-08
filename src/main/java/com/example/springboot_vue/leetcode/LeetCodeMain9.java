@@ -4,6 +4,22 @@ import java.util.*;
 
 public class LeetCodeMain9 {
 
+    // 2240. 买钢笔和铅笔的方案数
+    public long waysToBuyPensPencils(int total, int cost1, int cost2) {
+        long res = 0;
+        for (int i = 0; i < total / cost1; i++) {
+            int temp = total - i * cost1;
+            res += temp / cost2;
+        }
+
+        return res;
+    }
+
+    // 2651. 计算列车到站时间
+    public int findDelayedArrivalTime(int arrivalTime, int delayedTime) {
+        return (arrivalTime + delayedTime) % 24;
+    }
+
     // 2594. 修车的最少时间
     public long repairCars(int[] ranks, int cars) {
         // 这里时直接计算任意一个人修全部车的时间，那么总的修车时间一定从1到该时间之内
