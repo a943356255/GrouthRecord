@@ -4,6 +4,63 @@ import java.util.*;
 
 public class LeetCodeMain9 {
 
+    List<List<Integer>> list = new ArrayList<>();
+    int[] visited;
+    int index;
+    int[] res;
+    boolean valid = true;
+
+    // 210. 课程表 II
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        for (int i = 0; i < numCourses; i++) {
+            list.add(new ArrayList<>());
+        }
+        for (int[] prerequisite : prerequisites) {
+            list.get(prerequisite[1]).add(prerequisite[0]);
+        }
+
+        res = new int[numCourses];
+        visited = new int[numCourses];
+        index = numCourses - 1;
+
+        for (int i = 0; i < numCourses && valid; i++) {
+            if (visited[i] == 0) {
+                dfs(i);
+            }
+        }
+
+        // 如果没有环，这里是不会触发的
+        if (!valid) {
+            return new int[0];
+        }
+
+        return res;
+    }
+
+    public void dfs(int u) {
+        // 1表示为在搜索
+        visited[u] = 1;
+        // 这里是遍历他的子节点
+        for (int i = 0; i < list.get(u).size(); i++) {
+            // 如果发现节点未遍历，则遍历
+            if (visited[list.get(u).get(i)] == 0) {
+                dfs(list.get(u).get(i));
+                // 如果没有环，这里是不会触发的
+                if (!valid) {
+                    return;
+                }
+            } else if (visited[list.get(u).get(i)] == 1) {
+                // 标记未1的说明是当前的起始顶点，后续再碰到的话，说明有环了
+                valid = false;
+                return;
+            }
+        }
+
+        // 为2说明遍历完了
+        visited[u] = 2;
+        res[index--] = u;
+    }
+
     // 2240. 买钢笔和铅笔的方案数
     public long waysToBuyPensPencils(int total, int cost1, int cost2) {
         long res = 0;
