@@ -6,18 +6,24 @@ public class LeetCodeMain9 {
 
     // 630. 课程表 III
     public int scheduleCourse(int[][] courses) {
+        // 按照课程结束时间进行排序,结束越早的越靠前
         Arrays.sort(courses, Comparator.comparingInt(a -> a[1]));
 
+        // 优先级队列按照从大往小排序
         PriorityQueue<Integer> q = new PriorityQueue<>((a, b) -> b - a);
         // 优先队列中所有课程的总时间
         int total = 0;
-
         for (int[] course : courses) {
+            // ti是课程持续时间，di是课程结束时间
             int ti = course[0], di = course[1];
+            // 这里是要拿之前总的上课时间与当前课程的结束时间进行比较，如果小于当前课程的结束时间，那么就可以上
             if (total + ti <= di) {
                 total += ti;
                 q.offer(ti);
             } else if (!q.isEmpty() && q.peek() > ti) {
+                // 这里，如果当前课程不能进行学习，那么就去判断优先级队列的最上边元素
+                // 如果该课程的持续时间大于当前的课程，那么就将之前队列中的课程出队，然后总时间减去出队课程
+                // 之后当前课程进入队列，作为最后一个课程
                 total -= q.poll() - ti;
                 q.offer(ti);
             }
