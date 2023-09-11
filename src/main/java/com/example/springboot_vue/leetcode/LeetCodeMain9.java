@@ -4,13 +4,69 @@ import java.util.*;
 
 public class LeetCodeMain9 {
 
+    // 630. 课程表 III
+    public int scheduleCourse(int[][] courses) {
+        Arrays.sort(courses, Comparator.comparingInt(a -> a[1]));
+
+        PriorityQueue<Integer> q = new PriorityQueue<>((a, b) -> b - a);
+        // 优先队列中所有课程的总时间
+        int total = 0;
+
+        for (int[] course : courses) {
+            int ti = course[0], di = course[1];
+            if (total + ti <= di) {
+                total += ti;
+                q.offer(ti);
+            } else if (!q.isEmpty() && q.peek() > ti) {
+                total -= q.poll() - ti;
+                q.offer(ti);
+            }
+        }
+
+        return q.size();
+    }
+
+    // 849. 到最近的人的最大距离
+    public int maxDistToClosest(int[] seats) {
+        int res = 0;
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < seats.length; i++) {
+            if (seats[i] == 1) {
+                list.add(i);
+            }
+        }
+        if (list.size() == 1) {
+            return Math.max(list.get(0), seats.length - list.get(0) - 1);
+        }
+
+        int left = list.get(0), right = list.get(1), index = 1;
+        for (int i = 0; i < seats.length; i++) {
+            if (i == right) {
+                left = right;
+                index ++;
+                if (index < list.size()) {
+                    right = list.get(index);
+                }
+            }
+            if (seats[i] == 0) {
+                if (i < left) {
+                    res = Math.max(left - i, res);
+                } else {
+                    res = Math.max(res, Math.abs(Math.min(i - left, right - i)));
+                }
+            }
+        }
+
+        return res;
+    }
+
+    // 210. 课程表 II
     List<List<Integer>> list = new ArrayList<>();
     int[] visited;
     int index;
     int[] res;
     boolean valid = true;
 
-    // 210. 课程表 II
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         for (int i = 0; i < numCourses; i++) {
             list.add(new ArrayList<>());
