@@ -4,6 +4,41 @@ import java.util.*;
 
 public class LeetCodeMain9 {
 
+    // 1462. 课程表 IV
+    public List<Boolean> checkIfPrerequisite(int numCourses, int[][] prerequisites, int[][] queries) {
+        List<List<Integer>> edge = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++) {
+            edge.add(new ArrayList<>());
+        }
+
+        for (int[] prerequisite : prerequisites) {
+            edge.get(prerequisite[1]).add(prerequisite[0]);
+        }
+
+        List<Boolean> res = new ArrayList<>();
+        for (int i = 0; i < queries.length; i++) {
+            int child = queries[i][1], father = queries[i][0];
+            res.add(dfs(edge, child, father));
+        }
+        return res;
+    }
+
+    public boolean dfs(List<List<Integer>> edge, int child, int father) {
+        List<Integer> list = edge.get(child);
+        if (list == null) {
+            return false;
+        }
+        boolean result = false;
+        for (Integer integer : list) {
+            if (integer == father) {
+                return true;
+            }
+            result = dfs(edge, integer, father);
+        }
+
+        return result;
+    }
+
     // 630. 课程表 III
     public int scheduleCourse(int[][] courses) {
         // 按照课程结束时间进行排序,结束越早的越靠前
