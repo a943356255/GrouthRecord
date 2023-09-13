@@ -4,6 +4,32 @@ import java.util.*;
 
 public class LeetCodeMain9 {
 
+    int minDepthMin = 100001;
+    // 111. 二叉树的最小深度
+    public int minDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        dfsMinDepth(root, 0);
+        return minDepthMin + 1;
+    }
+
+    public void dfsMinDepth(TreeNode treeNode, int high) {
+        if (treeNode == null) {
+            return;
+        }
+
+        if (treeNode.left == null && treeNode.right == null) {
+            minDepthMin = Math.min(high, minDepthMin);
+            return;
+        }
+
+        high++;
+        dfsMinDepth(treeNode.left, high);
+        dfsMinDepth(treeNode.right, high);
+    }
+    
     // 2596. 检查骑士巡视方案
     public boolean checkValidGrid(int[][] grid) {
         int[][] arr = {{2, 1}, {1, 2}, {2, -1}, {1, -2}, {-2, -1}, {-1, -2}, {-2, 1}, {-1, 2}};
