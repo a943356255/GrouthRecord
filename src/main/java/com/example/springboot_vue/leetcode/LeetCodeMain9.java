@@ -4,6 +4,42 @@ import java.util.*;
 
 public class LeetCodeMain9 {
 
+    // 2596. 检查骑士巡视方案
+    public boolean checkValidGrid(int[][] grid) {
+        int[][] arr = {{2, 1}, {1, 2}, {2, -1}, {1, -2}, {-2, -1}, {-1, -2}, {-2, 1}, {-1, 2}};
+        if (grid[0][0] != 0) {
+            return false;
+        }
+        int count = 0, x = 0, y = 0;
+        while (count != grid.length * grid.length - 1) {
+            int mark = 0;
+            for (int i = 0; i < 8; i++) {
+                if (isValid(x, y, grid.length, i, arr)) {
+                    if (grid[x + arr[i][0]][y + arr[i][1]] == count + 1) {
+                        x = x + arr[i][0];
+                        y = y + arr[i][1];
+                        mark = 1;
+                        count++;
+                        break;
+                    }
+                }
+            }
+            if (mark == 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean isValid(int x, int y, int n, int i, int[][] arr) {
+        if (x + arr[i][0] >= n || x + arr[i][0] < 0 || y + arr[i][1] >= n || y + arr[i][1] < 0) {
+            return false;
+        }
+
+        return true;
+    }
+
     // 1462. 课程表 IV
     public List<Boolean> checkIfPrerequisite(int numCourses, int[][] prerequisites, int[][] queries) {
         List<List<Integer>> edge = new ArrayList<>();
