@@ -4,6 +4,32 @@ import java.util.*;
 
 public class LeetCodeMain9 {
 
+    // 1222. 可以攻击国王的皇后
+    public List<List<Integer>> queensAttackTheKing(int[][] queens, int[] king) {
+        int[][] arr = {{1, 0}, {0, 1}, {0, -1}, {-1, 0}, {1, -1}, {-1, -1}, {1, 1}, {-1, 1}};
+
+        Set<String> set = new HashSet<>();
+        for (int i = 0; i < queens.length; i++) {
+            set.add(queens[i][0] + " + " + queens[i][1]);
+        }
+
+        List<List<Integer>> res = new ArrayList<>();
+        for (int i = 0; i < arr.length; i++) {
+            int x = king[0], y = king[1];
+            while (isValid(x, y, 8, i, arr)) {
+                x += arr[i][0];
+                y += arr[i][1];
+                String temp = x + " + " + y;
+                if (set.contains(temp)) {
+                    res.add(new ArrayList<>(Arrays.asList(x, y)));
+                    break;
+                }
+            }
+        }
+
+        return res;
+    }
+
     int minDepthMin = 100001;
     // 111. 二叉树的最小深度
     public int minDepth(TreeNode root) {
