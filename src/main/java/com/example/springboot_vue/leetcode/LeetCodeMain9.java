@@ -4,6 +4,24 @@ import java.util.*;
 
 public class LeetCodeMain9 {
 
+    // LCP 50. 宝石补给
+    public int giveGem(int[] gem, int[][] operations) {
+
+        for (int[] operation : operations) {
+            int temp = gem[operation[0]] / 2;
+            gem[operation[0]] -= temp;
+            gem[operation[1]] += temp;
+        }
+
+        int min = 100001, max = -1;
+        for (int j : gem) {
+            min = Math.min(min, j);
+            max = Math.max(max, j);
+        }
+
+        return max - min;
+    }
+
     // 1222. 可以攻击国王的皇后
     public List<List<Integer>> queensAttackTheKing(int[][] queens, int[] king) {
         int[][] arr = {{1, 0}, {0, 1}, {0, -1}, {-1, 0}, {1, -1}, {-1, -1}, {1, 1}, {-1, 1}};
