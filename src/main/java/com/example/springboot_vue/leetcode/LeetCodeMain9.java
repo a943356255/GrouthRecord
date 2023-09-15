@@ -4,6 +4,49 @@ import java.util.*;
 
 public class LeetCodeMain9 {
 
+    public static void main(String[] args) {
+        char[][] arr = new char[3][3];
+        for (int i = 0; i < arr.length; i++) {
+            System.out.println(arr[i][0]);
+        }
+    }
+
+    // 6. N 字形变换
+    public String convert(String s, int numRows) {
+        char[][] arr = new char[numRows][s.length()];
+        for (char[] chars : arr) {
+            Arrays.fill(chars, '1');
+        }
+
+        int indexX = 0, indexY = 0, direction = 1;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            arr[indexX][indexY] = c;
+            indexX += direction;
+            if (indexX == numRows) {
+                direction = - 1;
+                indexX -= 2;
+                indexX = Math.max(0, indexX);
+            }
+            if (direction == -1) {
+                indexY++;
+            }
+            if (indexX == 0) {
+                direction = 1;
+            }
+        }
+
+        StringBuilder res = new StringBuilder();
+        for (char[] chars : arr) {
+            for (int j = 0; j < arr[0].length; j++) {
+                if (chars[j] != '1') {
+                    res.append(chars[j]);
+                }
+            }
+        }
+        return res.toString();
+    }
+
     // LCP 50. 宝石补给
     public int giveGem(int[] gem, int[][] operations) {
 
