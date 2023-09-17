@@ -5,10 +5,41 @@ import java.util.*;
 public class LeetCodeMain9 {
 
     public static void main(String[] args) {
-        char[][] arr = new char[3][3];
-        for (int i = 0; i < arr.length; i++) {
-            System.out.println(arr[i][0]);
+
+    }
+
+    // 213. 打家劫舍 II
+    public int robTwo(int[] nums) {
+        if (nums.length == 1) {
+            return nums[0];
+        } else if (nums.length == 2) {
+            return Math.max(nums[0], nums[1]);
         }
+
+        int length = nums.length;
+        return Math.max(robRange(0, length - 2, nums), robRange(1, length - 1, nums));
+    }
+
+    public int robRange(int start, int end, int[] nums) {
+//        int[] dp = new int[nums.length];
+//        Arrays.fill(dp, 0);
+//        dp[0] = 0;
+//        dp[1] = nums[start];
+//        dp[2] = Math.max(nums[start], nums[start + 1]);
+//        for (int i = start + 2; i <= end; i++) {
+//            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i - 1]);
+//        }
+//        return dp[nums.length - 1];
+
+        // 这里的first和second相当于计算了nums从start开始的两个数的较大值，相当于dp[0],dp[1]
+        int first = nums[start], second = Math.max(nums[start], nums[start + 1]);
+        for (int i = start + 2; i <= end; i++) {
+            int temp = second;
+            second = Math.max(first + nums[i], second);
+            first = temp;
+        }
+
+        return second;
     }
 
     // 198. 打家劫舍
