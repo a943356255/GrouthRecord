@@ -13,7 +13,26 @@ public class LeetCodeMain9 {
         return null;
     }
 
-    // 337. 打家劫舍 III
+    Map<TreeNode, Integer> f = new HashMap<TreeNode, Integer>();
+    Map<TreeNode, Integer> g = new HashMap<TreeNode, Integer>();
+
+    // 正确的打家劫舍 III
+    public int rob(TreeNode root) {
+        dfs(root);
+        return Math.max(f.getOrDefault(root, 0), g.getOrDefault(root, 0));
+    }
+
+    public void dfs(TreeNode node) {
+        if (node == null) {
+            return;
+        }
+        dfs(node.left);
+        dfs(node.right);
+        f.put(node, node.val + g.getOrDefault(node.left, 0) + g.getOrDefault(node.right, 0));
+        g.put(node, Math.max(f.getOrDefault(node.left, 0), g.getOrDefault(node.left, 0)) + Math.max(f.getOrDefault(node.right, 0), g.getOrDefault(node.right, 0)));
+    }
+
+    // 337. 打家劫舍 III，该版本有点问题
     public int robThree(TreeNode root) {
         if (root == null) {
             return 0;
