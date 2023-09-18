@@ -8,6 +8,57 @@ public class LeetCodeMain9 {
 
     }
 
+    // 373. 查找和最小的 K 对数字
+    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+        return null;
+    }
+
+    // 337. 打家劫舍 III
+    public int robThree(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        int first = root.val, second = 0, tempVal;
+        if (root.left != null) {
+            second += root.left.val;
+            queue.add(root.left.left);
+            queue.add(root.left.right);
+        }
+        if (root.right != null) {
+            second += root.right.val;
+            queue.add(root.right.left);
+            queue.add(root.right.right);
+        }
+        second = Math.max(first, second);
+        if (queue.size() == 0) {
+            return second;
+        }
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            int temp = 0;
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                if (node != null) {
+                    if (node.left != null) {
+                        queue.add(node.left);
+                    }
+
+                    if (node.right != null) {
+                        queue.add(node.right);
+                    }
+                    temp += node.val;
+                }
+            }
+            tempVal = second;
+            second = Math.max(first + temp, second);
+            first = tempVal;
+        }
+
+        return second;
+    }
+
     // 213. 打家劫舍 II
     public int robTwo(int[] nums) {
         if (nums.length == 1) {
