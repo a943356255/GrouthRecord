@@ -8,9 +8,79 @@ public class LeetCodeMain9 {
 
     }
 
+    // 240. 搜索二维矩阵 II
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int indexX = 0, indexY = 0;
+        if (matrix[indexX][indexY] == target) {
+            return true;
+        }
+
+        while (matrix[indexX][indexY] <= target && indexY != matrix[0].length - 1) {
+            indexY++;
+        }
+
+        // 这里是indexY走到最后了
+        if (indexY != matrix[0].length - 1) {
+            indexY--;
+        }
+
+        while (indexY >= 0) {
+            if (matrix[indexX][indexY] == target) {
+                return true;
+            } else if (matrix[indexX][indexY] < target) {
+                indexX++;
+                if (indexX == matrix.length) {
+                    return false;
+                }
+            } else if (matrix[indexX][indexY] > target) {
+                indexY--;
+            }
+        }
+
+        return false;
+    }
+
     // 373. 查找和最小的 K 对数字
     public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
-        return null;
+        List<List<Integer>> res = new ArrayList<>();
+        int index1 = 0, index2 = 0;
+        for (int i = 0; i < k; i++) {
+            List<Integer> list = new ArrayList<>();
+            list.add(nums1[index1]);
+            list.add(nums2[index2]);
+            res.add(list);
+
+            if (nums1[index1] > nums2[index2]) {
+
+            }
+        }
+
+//        PriorityQueue<Integer> first = new PriorityQueue<>();
+//        for (int value : nums1) {
+//            first.offer(value);
+//        }
+//        PriorityQueue<Integer> second = new PriorityQueue<>();
+//        for (int j : nums2) {
+//            second.offer(j);
+//        }
+//
+//
+//        int temp1 = first.poll(), temp2 = second.poll();
+//        List<Integer> a = new ArrayList<>();
+//        a.add(temp1); a.add(temp2);
+//        res.add(a);
+//
+//        for (int i = 1; i < k; i++) {
+//            List<Integer> list = new ArrayList<>();
+//            if (temp1 > temp2) {
+//                int part = second.poll();
+//            } else {
+//
+//            }
+//
+//            res.add(list);
+//        }
+        return res;
     }
 
     Map<TreeNode, Integer> f = new HashMap<TreeNode, Integer>();
