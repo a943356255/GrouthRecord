@@ -8,6 +8,20 @@ public class LeetCodeMain9 {
 
     }
 
+    // LCP 06. 拿硬币
+    public int minCount(int[] coins) {
+        int res = 0;
+        for (int coin : coins) {
+            if (coin % 2 == 0) {
+                res += coin / 2;
+            } else {
+                res += coin / 2 + 1;
+            }
+        }
+
+        return res;
+    }
+
     // 240. 搜索二维矩阵 II
     public boolean searchMatrix(int[][] matrix, int target) {
         int indexX = 0, indexY = 0;
