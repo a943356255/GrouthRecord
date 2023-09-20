@@ -8,6 +8,43 @@ public class LeetCodeMain9 {
 
     }
 
+    // 763. 划分字母区间
+    // 这个题，只需要记录每个字符最后的位置就可以了，不需要记录开始位置，用一个一维数组就可以了
+    public List<Integer> partitionLabels(String s) {
+        Map<Character, int[]> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (map.get(c) == null) {
+                int[] arr = new int[2];
+                arr[0] = i;
+                arr[1] = i;
+                map.put(c,arr);
+            } else {
+                map.get(c)[1] = i;
+            }
+        }
+
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            int last = map.get(c)[1], temp = i;
+            while (i < last) {
+                if (i == s.length()) {
+                    System.out.println("temp = " + temp);
+                    res.add(s.length() - temp + 1);
+                    break;
+                }
+                char tempChar = s.charAt(i);
+                last = Math.max(last, map.get(tempChar)[1]);
+                i++;
+            }
+            System.out.println("last = " + last + "temp = " + temp);
+            res.add(last - temp + 1);
+        }
+
+        return res;
+    }
+
     // LCP 06. 拿硬币
     public int minCount(int[] coins) {
         int res = 0;
