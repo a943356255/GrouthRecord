@@ -8,6 +8,28 @@ public class LeetCodeMain9 {
 
     }
 
+    // 230. 二叉搜索树中第K小的元素
+    public int kthSmallest(TreeNode root, int k) {
+        PriorityQueue<Integer> queue = new PriorityQueue<>(k);
+        dfsKthSmallest(root, queue);
+        System.out.println(queue.toString());
+        int res = 0;
+        for (int i = 0; i < k; i++) {
+            res = queue.poll();
+        }
+        return res;
+    }
+
+    public void dfsKthSmallest(TreeNode treeNode, PriorityQueue<Integer> queue) {
+        if (treeNode == null) {
+            return;
+        }
+
+        queue.add(treeNode.val);
+        dfsKthSmallest(treeNode.left, queue);
+        dfsKthSmallest(treeNode.right, queue);
+    }
+
     // 36. 有效的数独
     public boolean isValidSudoku(char[][] board) {
         int[][] hang = new int[9][9];
