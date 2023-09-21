@@ -8,6 +8,30 @@ public class LeetCodeMain9 {
 
     }
 
+    // 36. 有效的数独
+    public boolean isValidSudoku(char[][] board) {
+        int[][] hang = new int[9][9];
+        int[][] lie = new int[9][9];
+        int[][][] map = new int[3][3][9];
+
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                int index = board[i][j] - '0' - 1;
+                if (board[i][j] != '.') {
+                    hang[i][index]++;
+                    lie[index][j]++;
+                    map[i / 3][j / 3][index]++;
+
+                    if (hang[i][index] > 1 || lie[index][j] > 1 || map[i / 3][j / 3][index] > 1) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
     // 763. 划分字母区间
     // 这个题，只需要记录每个字符最后的位置就可以了，不需要记录开始位置，用一个一维数组就可以了
     public List<Integer> partitionLabels(String s) {
