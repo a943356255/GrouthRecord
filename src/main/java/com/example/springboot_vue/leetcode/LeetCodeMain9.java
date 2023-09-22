@@ -8,11 +8,34 @@ public class LeetCodeMain9 {
 
     }
 
+    // 2591. 将钱分给最多的儿童
+    public int distMoney(int money, int children) {
+        if (money < children) {
+            return -1;
+        }
+
+        int count = 0;
+        money -= children;
+
+        if (money > children * 7) {
+            return children - 1;
+        }
+
+        count += money / 7;
+        int result = money % 7;
+
+        if (result == 3 && count == children - 1) {
+            count -= 1;
+        }
+
+        return Math.min(count, children);
+    }
+
     // 230. 二叉搜索树中第K小的元素
     public int kthSmallest(TreeNode root, int k) {
         PriorityQueue<Integer> queue = new PriorityQueue<>(k);
         dfsKthSmallest(root, queue);
-        System.out.println(queue.toString());
+
         int res = 0;
         for (int i = 0; i < k; i++) {
             res = queue.poll();
