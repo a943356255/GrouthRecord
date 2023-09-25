@@ -1,11 +1,45 @@
 package com.example.springboot_vue.leetcode;
 
+import org.apache.poi.ss.formula.functions.T;
+
 import java.util.*;
 
 public class LeetCodeMain9 {
 
     public static void main(String[] args) {
 
+    }
+
+    // 236. 二叉树的最近公共祖先
+//    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+
+//    }
+
+    // 114. 二叉树展开为链表
+    public void flatten(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        List<Integer> list = new ArrayList<>();
+        flattenDfs(root, list);
+
+        TreeNode temp = root;
+        for (int i = 1; i < list.size(); i++) {
+            temp.right = new TreeNode(list.get(i));
+            temp.left = null;
+            temp = temp.right;
+        }
+    }
+
+    public void flattenDfs(TreeNode root, List<Integer> list) {
+        if (root == null) {
+            return;
+        }
+
+        list.add(root.val);
+        flattenDfs(root.left, list);
+        flattenDfs(root.right, list);
     }
 
     // 199. 二叉树的右视图
