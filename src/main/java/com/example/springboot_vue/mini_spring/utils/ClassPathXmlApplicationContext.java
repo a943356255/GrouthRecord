@@ -6,11 +6,12 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
 
 public class ClassPathXmlApplicationContext {
-    // 这里是存储所有的bean
+    // 这里是用一个BeanDefinition，来存储xml中的id以及bean的路径
     private final List<BeanDefinition> beanDefinitions = new ArrayList<>();
 
     private final Map<String, Object> singletons = new HashMap<>();
@@ -21,9 +22,11 @@ public class ClassPathXmlApplicationContext {
         this.instanceBeans();
     }
 
+    // 该方法只是从xml中读取所有定义的bean，获取到id以及他们的路径，并且存储
     private void readXml(String fileName) {
         SAXReader saxReader = new SAXReader();
         try {
+            // 这种方法是从编译后的classes目录来加载资源
             URL xmlPath = this.getClass().getClassLoader().getResource(fileName);
             Document document = saxReader.read(xmlPath);
             Element rootElement = document.getRootElement();
@@ -45,8 +48,8 @@ public class ClassPathXmlApplicationContext {
     private void instanceBeans() {
         for (BeanDefinition beanDefinition : beanDefinitions) {
             try {
-                singletons.put(beanDefinition.getId(), Class.forName(beanDefinition.getClassName()).newInstance());
-            } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
+                singletons.put(beanDefinition.getId(), Class.forName(beanDefinition.getClassName()).getDeclaredConstructor().newInstance());
+            } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
                 e.printStackTrace();
             }
         }
