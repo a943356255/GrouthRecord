@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans>
+    <bean id = "aService" class = "com.example.springboot_vue.mini_spring.service.impl.AServiceImpl"></bean>
+</beans>
