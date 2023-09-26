@@ -15,6 +15,22 @@ public class LeetCodeMain9 {
 
 //    }
 
+    // 2582. 递枕头
+    public int passThePillow(int n, int time) {
+        int index = 1, direction = 1;
+        for (int i = 0; i < time; i++) {
+            if (index == n) {
+                direction = -1;
+            } else if (index == 1) {
+                direction = 1;
+            }
+
+            index += direction;
+        }
+
+        return index;
+    }
+
     // 114. 二叉树展开为链表
     public void flatten(TreeNode root) {
         if (root == null) {
