@@ -1,7 +1,5 @@
 package com.example.springboot_vue.leetcode;
 
-import org.apache.poi.ss.formula.functions.T;
-
 import java.util.*;
 
 public class LeetCodeMain9 {
@@ -14,6 +12,36 @@ public class LeetCodeMain9 {
 //    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 
 //    }
+
+    // 107. 二叉树的层序遍历 II
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        List<List<Integer>> res = new LinkedList<>();
+        if (root == null) {
+            return res;
+        }
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            List<Integer> list = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+
+                list.add(node.val);
+            }
+            res.add(0, list);
+        }
+
+        return res;
+    }
 
     // 2582. 递枕头
     public int passThePillow(int n, int time) {
