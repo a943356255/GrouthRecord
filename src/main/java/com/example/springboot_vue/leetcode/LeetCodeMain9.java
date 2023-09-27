@@ -13,6 +13,26 @@ public class LeetCodeMain9 {
 
 //    }
 
+    // 234. 回文链表
+    public boolean isPalindrome(ListNode head) {
+        List<Integer> list = new ArrayList<>();
+        while (head != null) {
+            list.add(head.val);
+            head = head.next;
+        }
+
+        int left = 0, right = list.size() - 1;
+        while (left < right) {
+            if (!list.get(left).equals(list.get(right))) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+
+        return true;
+    }
+
     // 1333. 餐厅过滤器
     public List<Integer> filterRestaurants(int[][] restaurants, int veganFriendly, int maxPrice, int maxDistance) {
         Arrays.sort(restaurants, (ints, t1) -> {
