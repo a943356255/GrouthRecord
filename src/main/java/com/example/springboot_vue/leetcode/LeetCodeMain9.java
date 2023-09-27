@@ -13,6 +13,33 @@ public class LeetCodeMain9 {
 
 //    }
 
+    // 1333. 餐厅过滤器
+    public List<Integer> filterRestaurants(int[][] restaurants, int veganFriendly, int maxPrice, int maxDistance) {
+        Arrays.sort(restaurants, (ints, t1) -> {
+            if (ints[1] != t1[1]) {
+                return t1[1] - ints[1];
+            } else {
+                return t1[0] - ints[0];
+            }
+        });
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < restaurants.length; i++) {
+            if (veganFriendly == 1) {
+                if (restaurants[i][2] == 0) {
+                    continue;
+                }
+            }
+
+            if (restaurants[i][2] > maxPrice || restaurants[i][3] > maxDistance) {
+                continue;
+            }
+
+            res.add(restaurants[i][0]);
+        }
+
+        return res;
+    }
+
     // 107. 二叉树的层序遍历 II
     public List<List<Integer>> levelOrderBottom(TreeNode root) {
         List<List<Integer>> res = new LinkedList<>();
