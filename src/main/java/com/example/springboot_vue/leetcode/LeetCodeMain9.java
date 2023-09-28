@@ -13,6 +13,40 @@ public class LeetCodeMain9 {
 
 //    }
 
+    // 2251. 花期内花的数目
+    public int[] fullBloomFlowers(int[][] flowers, int[] people) {
+        int[] starts = new int[flowers.length];
+        int[] ends = new int[flowers.length];
+        for (int i = 0; i < flowers.length; i++) {
+            starts[i] = flowers[i][0];
+            ends[i] = flowers[i][1];
+        }
+
+        Arrays.sort(starts);
+        Arrays.sort(ends);
+
+        int[] res = new int[people.length];
+        for (int i = 0; i < people.length; i++) {
+            res[i] = lowerBound(starts, people[i]) - lowerBound(ends, people[i]);
+        }
+
+        return res;
+    }
+
+    public int lowerBound(int[] nums, int x) {
+        int left = -1, right = nums.length;
+        while (left + 1 < right) {
+            int mid = (left + right) / 2;
+            if (nums[mid] > x) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return right;
+    }
+
     // 234. 回文链表
     public boolean isPalindrome(ListNode head) {
         List<Integer> list = new ArrayList<>();
