@@ -13,6 +13,20 @@ public class LeetCodeMain10 {
         return null;
     }
 
+    // 121. 买卖股票的最佳时机
+    public int maxProfit(int[] prices) {
+        int max = 0, count = prices[0];
+        // 只能买卖一次，那么就每个价格都尝试买入和卖出，看看最多是多少
+        for (int i = 1; i < prices.length; i++) {
+            // 买入
+            count = Math.min(count, prices[i]);
+            // 卖出
+            max = Math.max(max, prices[i] - count);
+        }
+
+        return max;
+    }
+
     // 2136. 全部开花的最早一天
     public int earliestFullBloom(int[] plantTime, int[] growTime) {
         int[][] arr = new int[plantTime.length][2];
