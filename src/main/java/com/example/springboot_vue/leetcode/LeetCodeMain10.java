@@ -13,7 +13,7 @@ public class LeetCodeMain10 {
         return null;
     }
 
-    // 122. 买卖股票的最佳时机 II
+    // 122. 买卖股票的最佳时机 II,贪心写法
     public int maxProfit2(int[] prices) {
         int buy = prices[0], max = 0;
 
@@ -26,6 +26,31 @@ public class LeetCodeMain10 {
         }
 
         return max;
+    }
+
+    // 122. 买卖股票的最佳时机 II,Dp写法
+    public int maxProfit2ByDp(int[] prices) {
+        int len = prices.length;
+        if (len < 2) {
+            return 0;
+        }
+
+        // 0：持有现金
+        // 1：持有股票
+        // 状态转移：0 → 1 → 0 → 1 → 0 → 1 → 0
+        int[][] dp = new int[len][2];
+        dp[0][0] = 0;
+        dp[0][1] = -prices[0];
+
+        for (int i = 1; i < len; i++) {
+            // 这两行调换顺序也是可以的
+            // 0代表持有现金，那么当前时刻持有的现金就等于上一时刻持有现金和在当前时刻卖出上一时刻持有股票价格的较大值
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+            // 1代表持有股票，取上一时刻的较大值或者拿上一时刻持有的现金买入当前价格的股票
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+        }
+
+        return dp[len - 1][0];
     }
 
     // 121. 买卖股票的最佳时机
