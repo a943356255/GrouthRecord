@@ -13,6 +13,21 @@ public class LeetCodeMain10 {
         return null;
     }
 
+    // 122. 买卖股票的最佳时机 II
+    public int maxProfit2(int[] prices) {
+        int buy = prices[0], max = 0;
+
+        for (int i = 1; i < prices.length; i++) {
+            // 之前买入的价格大于当天的价格
+            if (buy <= prices[i]) {
+                max += prices[i] - buy;
+            }
+            buy = prices[i];
+        }
+
+        return max;
+    }
+
     // 121. 买卖股票的最佳时机
     public int maxProfit(int[] prices) {
         int max = 0, count = prices[0];
