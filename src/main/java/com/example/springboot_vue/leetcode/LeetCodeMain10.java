@@ -8,6 +8,11 @@ public class LeetCodeMain10 {
 
     }
 
+    // 123. 买卖股票的最佳时机 III
+    public int maxProfit3(int[] prices) {
+        return 0;
+    }
+
     // 394. 字符串解码
     public String decodeString(String s) {
         return null;
