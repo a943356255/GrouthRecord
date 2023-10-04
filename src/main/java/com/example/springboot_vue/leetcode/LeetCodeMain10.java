@@ -1,12 +1,30 @@
 package com.example.springboot_vue.leetcode;
 
 import java.util.Arrays;
-import java.util.PriorityQueue;
 
 public class LeetCodeMain10 {
 
     public static void main(String[] args) {
 
+    }
+
+    int ans;
+    // 543. 二叉树的直径
+    public int diameterOfBinaryTree(TreeNode root) {
+        ans = 1;
+        getLength(root);
+        return ans - 1;
+    }
+
+    public int getLength(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        int left = getLength(root.left);
+        int right = getLength(root.right);
+        ans = Math.max(ans, left + right + 1);
+        return Math.max(left, right) + 1;
     }
 
     // 188. 买卖股票的最佳时机 IV
