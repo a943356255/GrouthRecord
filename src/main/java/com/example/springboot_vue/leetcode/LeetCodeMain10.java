@@ -1,6 +1,7 @@
 package com.example.springboot_vue.leetcode;
 
 import java.util.Arrays;
+import java.util.PriorityQueue;
 
 public class LeetCodeMain10 {
 
@@ -8,9 +9,49 @@ public class LeetCodeMain10 {
 
     }
 
+    // 188. 买卖股票的最佳时机 IV
+    public int maxProfit(int k, int[] prices) {
+        if (prices.length == 0) {
+            return 0;
+        }
+
+        int n = prices.length;
+        // 当k大于prices长度的一半时，多出去的部分是没有意义的
+        k = Math.min(k, n / 2);
+        // buy和sell 都表示进行j笔交易后的最大利润,不同的是buy此时还持有一只股票，而sell是不持有
+        int[][] buy = new int[n][k + 1];
+        int[][] sell = new int[n][k + 1];
+
+        // 后续都是取较大值，所以这里先给第0天的每一笔交易都赋予最小值
+        buy[0][0] = -prices[0];
+        sell[0][0] = 0;
+        for (int i = 1; i <= k; ++i) {
+            buy[0][i] = sell[0][i] = Integer.MIN_VALUE / 2;
+        }
+
+        for (int i = 1; i < n; ++i) {
+            // 这里是记录第i天不进行交易时，他们的最大值是多少
+            // buy代表持有一只股票，那么它的取值就是i - 1天的值（i - 1天持有股票）
+            // 或者i - 1天卖出股票后，再买入今天股票的值(因为buy要求必须持有一只股票)
+            buy[i][0] = Math.max(buy[i - 1][0], sell[i - 1][0] - prices[i]);
+            // 后续模拟在第i天进行k笔交易
+            for (int j = 1; j <= k; ++j) {
+                // 这里的buy和上面的一样
+                buy[i][j] = Math.max(buy[i - 1][j], sell[i - 1][j] - prices[i]);
+                // 这里的第一个值也很好理解，因为sell的i - 1肯定也是卖出股票后的价格
+                // buy[i - 1][j - 1]是上一个持有股票时的最大值，加上今天卖出股票的收益
+                // 两者取最大值
+                // 这里为什么不是buy[i - 1][j]呢？因为buy[i - 1][j]是第j次交易的最大值
+                sell[i][j] = Math.max(sell[i - 1][j], buy[i - 1][j - 1] + prices[i]);
+            }
+        }
+
+        return Arrays.stream(sell[n - 1]).max().getAsInt();
+    }
+
     // 123. 买卖股票的最佳时机 III
     public int maxProfit3(int[] prices) {
-        return 0;
+        return maxProfit(2, prices);
     }
 
     // 394. 字符串解码
