@@ -8,6 +8,32 @@ public class LeetCodeMain10 {
 
     }
 
+    // 309. 买卖股票的最佳时机含冷冻期
+    public int maxProfitCold(int[] prices) {
+        if (prices.length < 2) {
+            return 0;
+        }
+
+        int[][] dp = new int[prices.length][3];
+        // 0代表持有现金，1代表持有股票，2代表在冷冻期
+        dp[0][1] = -prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            // 手上持有股票的最大利益
+            // dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+
+            // 没有股票，处于冷冻期的最大利益
+            // dp[i][2] = Math.max(dp[i][2], dp[i - 1][1]);
+            dp[i][2] = dp[i - 1][1] + prices[i];
+
+            // 没有股票，不处于冷冻期的最大利益
+            // dp[i][0] = Math.max(dp[i - 1][0], dp[i - 2][1] + prices[i]);
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][2]);
+        }
+
+        return Math.max(dp[prices.length - 1][0], dp[prices.length - 1][2]);
+    }
+
     int ans;
     // 543. 二叉树的直径
     public int diameterOfBinaryTree(TreeNode root) {
