@@ -1,11 +1,26 @@
 package com.example.springboot_vue.leetcode;
 
-import java.util.Arrays;
+import java.util.*;
 
 public class LeetCodeMain10 {
 
     public static void main(String[] args) {
 
+    }
+
+    // 219. 存在重复元素 II
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (map.get(nums[i]) != null) {
+                if (Math.abs(map.get(nums[i]) - i) <= k) {
+                    return true;
+                }
+            }
+            map.put(nums[i], i);
+        }
+
+        return false;
     }
 
     // 714. 买卖股票的最佳时机含手续费
