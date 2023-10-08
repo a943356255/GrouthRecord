@@ -8,6 +8,23 @@ public class LeetCodeMain10 {
 
     }
 
+    // 452. 用最少数量的箭引爆气球
+    public int findMinArrowShots(int[][] points) {
+        Arrays.sort(points, Comparator.comparingInt(a -> a[0]));
+        int res = 1;
+        int right = points[0][1];
+        for (int i = 1; i < points.length; i++) {
+            if (points[i][0] > right) {
+                res++;
+                right = points[i][1];
+            } else {
+                right = Math.min(right, points[i][1]);
+            }
+        }
+
+        return res;
+    }
+
     // 219. 存在重复元素 II
     public boolean containsNearbyDuplicate(int[] nums, int k) {
         Map<Integer, Integer> map = new HashMap<>();
