@@ -8,6 +8,31 @@ public class LeetCodeMain10 {
 
     }
 
+    // 2578. 最小和分割
+    public int splitNum(int num) {
+        List<Integer> list = new ArrayList<>();
+        while (num > 0) {
+            list.add(num % 10);
+            num /= 10;
+        }
+        list.sort(Comparator.comparingInt(a -> a));
+
+        StringBuilder first = new StringBuilder();
+        StringBuilder second = new StringBuilder();
+        int mark = 0;
+        for (int i = 0; i < list.size(); i++) {
+            if (mark == 0) {
+                first.append(list.get(i));
+                mark = 1;
+            } else {
+                second.append(list.get(i));
+                mark = 0;
+            }
+        }
+
+        return Integer.parseInt(first.toString()) + Integer.parseInt(second.toString());
+    }
+
     // 452. 用最少数量的箭引爆气球
     public int findMinArrowShots(int[][] points) {
         Arrays.sort(points, Comparator.comparingInt(a -> a[0]));
