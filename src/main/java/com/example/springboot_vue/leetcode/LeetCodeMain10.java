@@ -5,7 +5,80 @@ import java.util.*;
 public class LeetCodeMain10 {
 
     public static void main(String[] args) {
+        new LeetCodeMain10().simplifyPath("/../");
+    }
 
+    /**
+     * 没想到使用/进行分割，自己写的解决不了多个/./穿插的问题
+     */
+    // 71. 简化路径
+    public String simplifyPath(String path) {
+//        Stack<Character> stack = new Stack<>();
+//        for (int i = 0; i < path.length(); i++) {
+//            char c = path.charAt(i);
+//            if (c == '.') {
+//                if (stack.peek() == '.') {
+//                    int count = 0, mark = 0;
+//                    while (!stack.isEmpty()) {
+//                        char temp = stack.pop();
+//                        if (temp == '/') {
+//                            count++;
+//                        }
+//                        if (temp >= 'a' && temp <= 'z' || temp >= 'A' && temp <= 'Z') {
+//                            mark = 1;
+//                        }
+//
+//                        if (count >= 2 && mark != 0) {
+//                            break;
+//                        }
+//                    }
+//                } else {
+//                    stack.push(c);
+//                }
+//            } else if (c == '/') {
+//                if (stack.isEmpty()) {
+//                    stack.push(c);
+//                } else {
+//                    if (stack.peek() != '/' && i != path.length() - 1) {
+//                        stack.push(c);
+//                    }
+//                }
+//            } else {
+//                stack.push(c);
+//            }
+//        }
+//
+//        StringBuilder res = new StringBuilder();
+//        while (!stack.isEmpty()) {
+//            res.append(stack.pop());
+//        }
+//        return res.reverse().toString();
+
+        // 官方写法，用split分割
+        String[] names = path.split("/");
+        System.out.println(Arrays.toString(names));
+        Deque<String> stack = new ArrayDeque<>();
+        for (String name : names) {
+            if ("..".equals(name)) {
+                if (!stack.isEmpty()) {
+                    stack.pollLast();
+                }
+            } else if (name.length() > 0 && !".".equals(name)) {
+                stack.offerLast(name);
+            }
+        }
+
+        StringBuffer ans = new StringBuffer();
+        if (stack.isEmpty()) {
+            ans.append('/');
+        } else {
+            while (!stack.isEmpty()) {
+                ans.append('/');
+                ans.append(stack.pollFirst());
+            }
+        }
+
+        return ans.toString();
     }
 
     // 13. 罗马数字转整数
