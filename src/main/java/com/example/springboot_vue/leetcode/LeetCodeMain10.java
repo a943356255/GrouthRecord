@@ -8,6 +8,70 @@ public class LeetCodeMain10 {
 
     }
 
+    // 2731. 移动机器人
+    public int sumDistance(int[] nums, String s, int d) {
+//        int res = 0, temp = 1000000007;
+//
+//        for (int i = 0; i < nums.length; i++) {
+//            if (s.charAt(i) == 'L') {
+//                nums[i] = (nums[i] - d) % temp;
+//            } else {
+//                nums[i] = (nums[i] + d) % temp;
+//            }
+//
+//            if (i >= 1) {
+//                res += (Math.abs(nums[i] - nums[i - 1]) % temp) * (i % temp);
+//            }
+//        }
+//
+//        return res;
+        int MOD = 1000000007;
+        int n = nums.length;
+        long[] pos = new long[n];
+        for (int i = 0; i < n; i++) {
+            if (s.charAt(i) == 'L') {
+                pos[i] = (long) nums[i] - d;
+            } else {
+                pos[i] = (long) nums[i] + d;
+            }
+        }
+        Arrays.sort(pos);
+        long res = 0;
+        for (int i = 1; i < n; i++) {
+            res += 1L * (pos[i] - pos[i - 1]) * i % MOD * (n - i) % MOD;
+            res %= MOD;
+        }
+
+        return (int) res;
+    }
+
+    // 54. 螺旋矩阵
+    public List<Integer> spiralOrder(int[][] matrix) {
+        // 右，下，左，上
+        int[][] arr = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        List<Integer> res = new ArrayList<>();
+        int xLength = 0, yLength = 0;
+
+        int x = 0, y = 0, direction = 0;
+        while (res.size() != matrix.length * matrix[0].length) {
+            res.add(matrix[x][y]);
+
+            if ((x == matrix.length - xLength - 1 || x == xLength + 1)) {
+                direction = (direction + 1) % 4;
+                if (x == xLength + 1) {
+                    xLength++;
+                    yLength++;
+                }
+            }
+
+            x += arr[direction][0];
+            y += arr[direction][1];
+            System.out.println("x = " + x + " y = " + y);
+        }
+
+        return res;
+    }
+
     // 2578. 最小和分割
     public int splitNum(int num) {
         List<Integer> list = new ArrayList<>();
