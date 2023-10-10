@@ -8,6 +8,64 @@ public class LeetCodeMain10 {
 
     }
 
+    // 13. 罗马数字转整数
+    public int romanToInt(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+        map.put('I', 1);
+        map.put('V', 5);
+        map.put('X', 10);
+        map.put('L', 50);
+        map.put('C', 100);
+        map.put('D', 500);
+        map.put('M', 1000);
+
+        int res = 0, mark;
+        for (int i = 0; i < s.length(); i++) {
+            mark = 0;
+            char c = s.charAt(i);
+            if (i + 1 < s.length()) {
+                char temp = s.charAt(i + 1);
+                if (c == 'I') {
+                    if (temp == 'V') {
+                        res += 4;
+                        i++;
+                        mark = 1;
+                    } else if (temp == 'X') {
+                        res += 9;
+                        i++;
+                        mark = 1;
+                    }
+                } else if (c == 'X') {
+                    if (temp == 'L') {
+                        res += 40;
+                        i++;
+                        mark = 1;
+                    } else if (temp == 'C') {
+                        res += 90;
+                        i++;
+                        mark = 1;
+                    }
+                } else if (c == 'C') {
+                    if (temp == 'D') {
+                        res += 400;
+                        i++;
+                        mark = 1;
+                    } else if (temp == 'M') {
+                        res += 900;
+                        i++;
+                        mark = 1;
+                    }
+                }
+            }
+
+            if (mark == 0) {
+                res += map.get(c);
+            }
+        }
+
+        return res;
+    }
+
     // 2731. 移动机器人
     public int sumDistance(int[] nums, String s, int d) {
 //        int res = 0, temp = 1000000007;
