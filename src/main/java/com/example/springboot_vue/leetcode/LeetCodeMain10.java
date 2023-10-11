@@ -8,6 +8,39 @@ public class LeetCodeMain10 {
         new LeetCodeMain10().simplifyPath("/../");
     }
 
+    // 150. 逆波兰表达式求值
+    public int evalRPN(String[] tokens) {
+        int res = 0;
+        Set<String> set = new HashSet<>();
+        set.add("+");set.add("-");set.add("*");set.add("/");
+
+        Stack<String> stack = new Stack<>();
+        for (String token : tokens) {
+            if (!set.contains(token)) {
+                stack.push(token);
+            } else {
+                int first = Integer.parseInt(stack.pop());
+                int second = Integer.parseInt(stack.pop());
+                switch (token) {
+                    case "+":
+                        stack.push(String.valueOf(first + second));
+                        break;
+                    case "-":
+                        stack.push(String.valueOf(first - second));
+                        break;
+                    case "*":
+                        stack.push(String.valueOf(first * second));
+                        break;
+                    default:
+                        stack.push(String.valueOf(second / first));
+                        break;
+                }
+            }
+        }
+
+        return Integer.parseInt(stack.peek());
+    }
+
     // LCR 161. 连续天数的最高销售额
     public int maxSales(int[] sales) {
         if (sales.length == 1) {
