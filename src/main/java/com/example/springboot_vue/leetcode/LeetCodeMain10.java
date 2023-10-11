@@ -8,6 +8,51 @@ public class LeetCodeMain10 {
         new LeetCodeMain10().simplifyPath("/../");
     }
 
+    // 2512. 奖励最顶尖的 K 名学生
+    public List<Integer> topStudents(String[] positive_feedback, String[] negative_feedback, String[] report, int[] student_id, int k) {
+        PriorityQueue<int[]> queue = new PriorityQueue<>(k, (a, b) -> {
+            // 分数相等，按照id由小到大排，否则按照分数由大到小排序
+            if (a[1] != b[1]) {
+                return b[1] - a[1];
+            } else {
+                return a[0] - b[0];
+            }
+        });
+
+        Set<String> good = new HashSet<>(Arrays.asList(positive_feedback));
+        Set<String> bad = new HashSet<>(Arrays.asList(negative_feedback));
+
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < report.length; i++) {
+            int id = student_id[i];
+            int score = 0;
+            String[] word = report[i].split(" ");
+
+            for (String s : word) {
+                if (good.contains(s)) {
+                    score += 3;
+                }
+
+                if (bad.contains(s)) {
+                    score -= 1;
+                }
+            }
+
+            int[] temp = new int[2];
+            temp[0] = id;
+            temp[1] = score;
+            queue.add(temp);
+        }
+
+        while (!queue.isEmpty() && k > 0) {
+            System.out.println(Arrays.toString(queue.peek()));
+            res.add(queue.poll()[0]);
+            k--;
+        }
+
+        return res;
+    }
+
     /**
      * 没想到使用/进行分割，自己写的解决不了多个/./穿插的问题
      */
