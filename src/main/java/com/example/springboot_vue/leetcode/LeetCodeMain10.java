@@ -8,6 +8,23 @@ public class LeetCodeMain10 {
         new LeetCodeMain10().simplifyPath("/../");
     }
 
+    // LCR 161. 连续天数的最高销售额
+    public int maxSales(int[] sales) {
+        if (sales.length == 1) {
+            return sales[0];
+        }
+
+        int max = sales[0];
+        int[] dp = new int[sales.length];
+        dp[0] = sales[0];
+        for (int i = 1; i < sales.length; i++) {
+            dp[i] = Math.max(dp[i - 1] + sales[i], sales[i]);
+            max = Math.max(dp[i], max);
+        }
+
+        return max;
+    }
+
     // 2512. 奖励最顶尖的 K 名学生
     public List<Integer> topStudents(String[] positive_feedback, String[] negative_feedback, String[] report, int[] student_id, int k) {
         PriorityQueue<int[]> queue = new PriorityQueue<>(k, (a, b) -> {

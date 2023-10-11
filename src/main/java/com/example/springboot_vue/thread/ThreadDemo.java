@@ -1,5 +1,7 @@
 package com.example.springboot_vue.thread;
 
+import java.util.concurrent.ThreadPoolExecutor;
+
 public class ThreadDemo {
 
     public static volatile int race = 0;
@@ -29,4 +31,7 @@ public class ThreadDemo {
         System.out.println(race);
     }
 
+    public void testThreadPoll() {
+
+    }
 }
