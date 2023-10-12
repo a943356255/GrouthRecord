@@ -5,7 +5,29 @@ import java.util.*;
 public class LeetCodeMain10 {
 
     public static void main(String[] args) {
-        new LeetCodeMain10().simplifyPath("/../");
+//        new LeetCodeMain10().simplifyPath("/../");
+        String first = "1";
+        String second = "2";
+        System.out.println(first + second);
+    }
+
+    // 2562. 找出数组的串联值
+    public long findTheArrayConcVal(int[] nums) {
+        long res = 0;
+        int left = 0, right = nums.length - 1;
+        String temp;
+        while (left < right) {
+            temp = String.valueOf(nums[left]) + String.valueOf(nums[right]);
+            res += Long.parseLong(temp);
+            left++;
+            right--;
+        }
+
+        if (nums.length % 2 != 0) {
+            res += nums[nums.length / 2];
+        }
+
+        return res;
     }
 
     // 150. 逆波兰表达式求值
