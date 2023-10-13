@@ -11,6 +11,74 @@ public class LeetCodeMain10 {
         System.out.println(first + second);
     }
 
+    // 1488. 避免洪水泛滥
+    public int[] avoidFlood(int[] rains) {
+//        int[] res = new int[rains.length];
+//        Set<Integer> set = new HashSet<>();
+//        int count = 0, temp = 0;
+//        // 拿来存储0的下标
+//        List<Integer> list = new LinkedList<>();
+//        for (int i = 0; i < rains.length; i++) {
+//            if (rains[i] != 0) {
+//                if (set.contains(rains[i])) {
+//                    if (count <= 0) {
+//                        return new int[0];
+//                    } else {
+//                        set.remove(rains[i]);
+//                        res[i] = -1;
+//                        count--;
+//                        res[list.get(0)] = rains[i];
+//                        list.remove(0);
+//                    }
+//                } else {
+//                    if (temp == 0) {
+//                        temp = rains[i];
+//                    }
+//                    set.add(rains[i]);
+//                    res[i] = -1;
+//                }
+//            } else {
+//                if (set.size() > 0) {
+//                    count++;
+//                    list.add(i);
+//                }
+//            }
+//        }
+//
+//        // 说明多了几个没下雨的天，随便抽干哪一个
+//        while (count >= 0) {
+//            count--;
+//            res[list.get(0)] = temp;
+//        }
+//        return res;
+        int[] ans = new int[rains.length];
+        Arrays.fill(ans, 1);
+        // 这里按顺序记录了出现0的下标
+        TreeSet<Integer> st = new TreeSet<>();
+        Map<Integer, Integer> mp = new HashMap<>();
+        for (int i = 0; i < rains.length; ++i) {
+            if (rains[i] == 0) {
+                st.add(i);
+            } else {
+                ans[i] = -1;
+                if (mp.containsKey(rains[i])) {
+                    // ceiling是为了找到比传入的数据大或等于的元素
+                    // 这里是找到最接近的一个下标，mp.get(rains[i])获取到当前下雨的下标，然后获取离他最近的一个下标为0的元素的下标
+                    // 这个it，是获取到的下标为0的元素的元素的下标
+                    Integer it = st.ceiling(mp.get(rains[i]));
+                    if (it == null) {
+                        return new int[0];
+                    }
+                    ans[it] = rains[i];
+                    st.remove(it);
+                }
+                mp.put(rains[i], i);
+            }
+        }
+
+        return ans;
+    }
+
     // 2562. 找出数组的串联值
     public long findTheArrayConcVal(int[] nums) {
         long res = 0;
