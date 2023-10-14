@@ -1,4 +1,4 @@
-package juc;
+package juc.block_queue;
 
 public interface Queue {
 
