@@ -11,6 +11,22 @@ public class LeetCodeMain10 {
         System.out.println(first + second);
     }
 
+    /**
+     * 这题要求使用常量的空间，即不能使用map等集合
+     * 所以使用位运算
+     * a ⊕ a = 0 , a ⊕ 0 = a
+     * 而且 ⊕ 支持交换律和结合律
+     * 那么在本题中，只有一个元素出现了1次，当所有元素全部做⊕时，最终留下来的就是该元素
+     */
+    // 136. 只出现一次的数字
+    public int singleNumber(int[] nums) {
+        int single = 0;
+        for (int num : nums) {
+            single ^= num;
+        }
+        return single;
+    }
+
     // 1488. 避免洪水泛滥
     public int[] avoidFlood(int[] rains) {
 //        int[] res = new int[rains.length];
