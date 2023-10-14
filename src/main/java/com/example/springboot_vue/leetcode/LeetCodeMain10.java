@@ -6,9 +6,65 @@ public class LeetCodeMain10 {
 
     public static void main(String[] args) {
 //        new LeetCodeMain10().simplifyPath("/../");
-        String first = "1";
-        String second = "2";
-        System.out.println(first + second);
+        int a = 4;
+        int n = 3;
+        System.out.println(a ^= n);
+    }
+
+    // 138. 随机链表的复制
+    public Node copyRandomList(Node head) {
+        if (head == null) {
+            return null;
+        }
+
+        Map<Node, Node> map = new HashMap<>();
+
+        Node res = new Node(1);
+        Node temp = head;
+        Node resTemp = res;
+        Node resVal = res;
+
+        int index = 0;
+        while (head != null) {
+            res.val = head.val;
+            map.put(head, res);
+            index++;
+            head = head.next;
+            if (head != null) {
+                res.next = new Node(1);
+                res = res.next;
+            }
+        }
+
+        index = 0;
+        while (temp != null) {
+            if (temp.random != null) {
+                resTemp.random = map.get(temp.random);
+            } else {
+                resTemp.random = null;
+            }
+            index++;
+            temp = temp.next;
+            resTemp = resTemp.next;
+        }
+
+        return resVal;
+    }
+
+    public void copyNode(Node newNode, Node oldNode) {
+        newNode.val = oldNode.val;
+        Node next = new Node(0);
+        Node random = new Node(0);
+        if (oldNode.next != null) {
+            next.val = oldNode.next.val;
+            newNode.next = next;
+            newNode = newNode.next;
+        }
+
+        if (oldNode.random != null) {
+            random.val = oldNode.random.val;
+            newNode.random = random;
+        }
     }
 
     /**
