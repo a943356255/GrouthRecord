@@ -12,27 +12,45 @@ public class LeetCodeMain10 {
         System.out.println(a ^= n);
     }
 
-    // 137. 只出现一次的数字 II
+    // 137. 只出现一次的数字 II（题解写法）
     public int singleNumber2(int[] nums) {
-        Map<Integer, Integer> map = new HashMap<>();
-
-        for (int i = 0; i < nums.length; i++) {
-            if (map.get(nums[i]) == null) {
-                map.put(nums[i], 1);
-            } else {
-                map.put(nums[i], map.get(nums[i]) + 1);
+        int ans = 0;
+        for (int i = 0; i < 32; ++i) {
+            int total = 0;
+            // 这里是遍历所有nums，然后取他们的第i位的值，是0还是1，然后把所有的都加一起
+            for (int num: nums) {
+                total += ((num >> i) & 1);
+            }
+            // 因为只有一个元素是唯一的，其他都是3的倍数，把他们加一起然后%3，得到的就是唯一的那个元素在第i位的值
+            if (total % 3 != 0) {
+                ans |= (1 << i);
             }
         }
 
-        int[] mark = new int[1];
-        map.forEach((key, val) -> {
-            if (val == 1) {
-                mark[0] = key;
-            }
-        });
-
-        return mark[0];
+        return ans;
     }
+
+    // 137. 只出现一次的数字 II
+//    public int singleNumber2(int[] nums) {
+//        Map<Integer, Integer> map = new HashMap<>();
+//
+//        for (int i = 0; i < nums.length; i++) {
+//            if (map.get(nums[i]) == null) {
+//                map.put(nums[i], 1);
+//            } else {
+//                map.put(nums[i], map.get(nums[i]) + 1);
+//            }
+//        }
+//
+//        int[] mark = new int[1];
+//        map.forEach((key, val) -> {
+//            if (val == 1) {
+//                mark[0] = key;
+//            }
+//        });
+//
+//        return mark[0];
+//    }
 
     // 138. 随机链表的复制
     public Node copyRandomList(Node head) {
