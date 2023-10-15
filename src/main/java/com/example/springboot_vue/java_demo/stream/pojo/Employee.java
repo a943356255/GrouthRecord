@@ -63,4 +63,10 @@ public class Employee {
     public void setDepartmentId(int departmentId) {
         this.departmentId = departmentId;
     }
+
+
+    @Override
+    public String toString() {
+        return "姓名：" + getName() + " 年龄：" + getAge() + " 薪水：" + getSalary();
+    }
 }
