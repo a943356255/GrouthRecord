@@ -1,6 +1,7 @@
 package com.example.springboot_vue.leetcode;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class LeetCodeMain10 {
 
@@ -9,6 +10,28 @@ public class LeetCodeMain10 {
         int a = 4;
         int n = 3;
         System.out.println(a ^= n);
+    }
+
+    // 137. 只出现一次的数字 II
+    public int singleNumber2(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            if (map.get(nums[i]) == null) {
+                map.put(nums[i], 1);
+            } else {
+                map.put(nums[i], map.get(nums[i]) + 1);
+            }
+        }
+
+        int[] mark = new int[1];
+        map.forEach((key, val) -> {
+            if (val == 1) {
+                mark[0] = key;
+            }
+        });
+
+        return mark[0];
     }
 
     // 138. 随机链表的复制
