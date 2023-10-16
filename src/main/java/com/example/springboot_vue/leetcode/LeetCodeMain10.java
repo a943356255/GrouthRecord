@@ -13,6 +13,34 @@ public class LeetCodeMain10 {
         System.out.println(4 & 12);
     }
 
+    // 117. 填充每个节点的下一个右侧节点指针 II
+    public Node connect(Node root) {
+        if (root == null) {
+            return null;
+        }
+
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                Node temp = queue.poll();
+                assert temp != null;
+                if (i < size - 1) {
+                    temp.next = queue.peek();
+                }
+                if (temp.left != null) {
+                    queue.offer(temp.left);
+                }
+                if (temp.right != null) {
+                    queue.offer(temp.right);
+                }
+            }
+        }
+
+        return root;
+    }
+
     // 260. 只出现一次的数字 III
     public int[] singleNumber3(int[] nums) {
         int[] res = new int[2];
