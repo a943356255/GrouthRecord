@@ -7,9 +7,36 @@ public class LeetCodeMain10 {
 
     public static void main(String[] args) {
 //        new LeetCodeMain10().simplifyPath("/../");
-        int a = 4;
+        int a = 5;
         int n = 3;
-        System.out.println(a ^= n);
+
+        System.out.println(4 & 12);
+    }
+
+    // 260. 只出现一次的数字 III
+    public int[] singleNumber3(int[] nums) {
+        int[] res = new int[2];
+        int temp = 0;
+        for (int num : nums) {
+            temp ^= num;
+        }
+
+        // 这里是防止数据溢出，如果temp正好是最小值，它取负数就溢出了
+        int lowOne = temp == Integer.MIN_VALUE ? temp : temp & (-temp);
+        int first = 0, second = 0;
+        for (int num : nums) {
+            // 这里，lowOne只有1位的值是1，而lowOne是两个不相同的数做^得到的
+            // 最低位的1说明这俩数字在该位上一个为1，一个为0
+            if ((lowOne & num) != 0) {
+                first ^= num;
+            } else {
+                second ^= num;
+            }
+        }
+
+        res[0] = first;
+        res[1] = second;
+        return res;
     }
 
     private Map<Integer, Integer> indexMap;
