@@ -13,6 +13,70 @@ public class LeetCodeMain10 {
         System.out.println(4 & 12);
     }
 
+    // 8. 字符串转换整数 (atoi)
+    public int myAtoi(String s) {
+        if (s.equals("")) {
+            return 0;
+        }
+        // 去除前导空格
+        int i = 0, mark = 1;
+        if (s.charAt(i) == ' ') {
+            while (i < s.length() && s.charAt(i) == ' ') {
+                i++;
+            }
+        }
+        if (s.charAt(i) == '-' || s.charAt(i) == '+') {
+            if (s.charAt(i) == '-') {
+                mark = -1;
+            } else {
+                mark = 1;
+            }
+            i++;
+        }
+        long res = 0;
+        StringBuilder stringBuilder = new StringBuilder();
+        int markZero = 0;
+        for (; i < s.length(); i++) {
+            if (s.charAt(i) < '0' || s.charAt(i) > '9') {
+                break;
+            }
+            if (s.charAt(i) == '0' && markZero == 0) {
+                while (s.charAt(i) == '0' && i < s.length()) {
+                    i++;
+                }
+                markZero = 1;
+            }
+
+            stringBuilder.append(s.charAt(i));
+        }
+        if (stringBuilder.length() > 10) {
+            if (mark == 1) {
+                return Integer.MAX_VALUE;
+            } else {
+                return Integer.MIN_VALUE;
+            }
+        }
+
+        stringBuilder.reverse();
+        int index = 0;
+        for (int j = 0; j < stringBuilder.length(); j++) {
+            res += (stringBuilder.charAt(j) - '0') * Math.pow(10, index);
+            index++;
+        }
+
+        System.out.println("String = " + stringBuilder.toString() + " res = " + res);
+
+        res *= mark;
+        if (res > Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
+        }
+        if (res < Integer.MIN_VALUE) {
+            return Integer.MIN_VALUE;
+        }
+
+        return (int) res;
+    }
+
     // 2652. 倍数求和
     public int sumOfMultiples(int n) {
         int res = 0;
