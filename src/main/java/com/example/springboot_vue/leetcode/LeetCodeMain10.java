@@ -13,6 +13,29 @@ public class LeetCodeMain10 {
         System.out.println(4 & 12);
     }
 
+    // 530. 二叉搜索树的最小绝对差
+    public int getMinimumDifference(TreeNode root) {
+        int res = Integer.MAX_VALUE;
+        List<Integer> list = new ArrayList<>();
+        dfs(root, list);
+        list.sort(Comparator.comparing(a -> a));
+        for (int i = 1; i < list.size(); i++) {
+            res = Math.min(list.get(i) - list.get(i - 1), res);
+        }
+
+        return res;
+    }
+
+    public void dfs(TreeNode treeNode, List<Integer> list) {
+        if (treeNode == null) {
+            return;
+        }
+
+        list.add(treeNode.val);
+        dfs(treeNode.left, list);
+        dfs(treeNode.right, list);
+    }
+
     // 8. 字符串转换整数 (atoi)
     public int myAtoi(String s) {
         if (s.equals("")) {
@@ -844,7 +867,26 @@ public class LeetCodeMain10 {
 
     // 123. 买卖股票的最佳时机 III
     public int maxProfit3(int[] prices) {
-        return maxProfit(2, prices);
+        int n = prices.length;
+        // 这里是记录每一天结束后的四个状态
+        // 1.买入股票，但未卖出 buy1
+        // 2.将状态1买入的股票卖出，即完成了一笔交易，但是没有买入下一个股票 sell1
+        // 3.买入第二支股票 buy2
+        // 4.卖出股票，即完成两次交易 sell2
+        int buy1 = -prices[0], sell1 = 0;
+        int buy2 = -prices[0], sell2 = 0;
+
+        for (int i = 1; i < n; ++i) {
+            // 第i天，如果只考虑买入但不卖出，那么最大值就是i-1天buy1的状态和当天买入比较，取较大的
+            // 这里的状态是只买入一支股票
+            buy1 = Math.max(buy1, -prices[i]);
+            // 这里是只卖出，但是不买入，
+            sell1 = Math.max(sell1, buy1 + prices[i]);
+            buy2 = Math.max(buy2, sell1 - prices[i]);
+            sell2 = Math.max(sell2, buy2 + prices[i]);
+        }
+
+        return sell2;
     }
 
     // 394. 字符串解码
