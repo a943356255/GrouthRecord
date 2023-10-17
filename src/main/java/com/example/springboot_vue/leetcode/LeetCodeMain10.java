@@ -13,6 +13,17 @@ public class LeetCodeMain10 {
         System.out.println(4 & 12);
     }
 
+    // 2652. 倍数求和
+    public int sumOfMultiples(int n) {
+        int res = 0;
+        for (int i = 1; i <= n; i++) {
+            if (i % 3 == 0 || i % 5 == 0 || i % 7 == 0) {
+                res += i;
+            }
+        }
+        return res;
+    }
+
     // 117. 填充每个节点的下一个右侧节点指针 II
     public Node connect(Node root) {
         if (root == null) {
