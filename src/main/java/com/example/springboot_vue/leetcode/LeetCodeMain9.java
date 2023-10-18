@@ -873,12 +873,12 @@ public class LeetCodeMain9 {
         return nums;
     }
 
-    private TreeNode ans;
+    private TreeNode ans1;
     private int maxDepth = -1; // 全局最大深度
     // 1123.最深叶节点的最近公共祖先
     public TreeNode lcaDeepestLeaves(TreeNode root) {
         dfs(root, 0);
-        return ans;
+        return ans1;
     }
 
     private int dfs(TreeNode node, int depth) {
@@ -894,7 +894,7 @@ public class LeetCodeMain9 {
         // 这一步，深度遍历完又回到了根节点，如果他的左子树深度和右子树深度一样，返回改节点即可。
         // 它会一步一步的回退到最开始的根节点，每次回退都会判断一次
         if (leftMaxDepth == rightMaxDepth && leftMaxDepth == maxDepth) {
-            ans = node;
+            ans1 = node;
         }
 
         // 当前子树最深叶节点的深度
