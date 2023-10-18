@@ -5,7 +5,55 @@ import java.util.*;
 public class LeetCodeMain11 {
 
     public static void main(String[] args) {
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(1, 1);
+        map.put(2, 1);
+        map.put(3, 1);
+        map.put(4, 1);
 
+        int val = map.get(1);
+        System.out.println(val);
+    }
+
+    // 61. 旋转链表
+    public ListNode rotateRight(ListNode head, int k) {
+        if (head == null) {
+            return null;
+        }
+
+        int count = 0;
+        ListNode tempNode = head;
+        while (tempNode != null) {
+            count++;
+            tempNode = tempNode.next;
+        }
+
+        k = k % count;
+
+        ListNode fast = head;
+        ListNode slow = head;
+        int temp = 0;
+        while (temp < k) {
+            fast = fast.next;
+            temp++;
+            if (fast == null) {
+                fast = head;
+            }
+        }
+
+        if (fast == slow) {
+            return head;
+        }
+
+        while (fast.next != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+
+        fast.next = head;
+        head = slow.next;
+        slow.next = null;
+        return head;
     }
 
     // 103. 二叉树的锯齿形层序遍历
