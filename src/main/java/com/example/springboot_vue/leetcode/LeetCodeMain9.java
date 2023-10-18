@@ -8,10 +8,30 @@ public class LeetCodeMain9 {
 
     }
 
+    private TreeNode ans;
     // 236. 二叉树的最近公共祖先
-//    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        dfs(root, p, q);
+        return ans;
+    }
 
-//    }
+    public boolean dfs(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null) {
+            return false;
+        }
+
+        boolean left = dfs(root.left, p, q);
+        boolean right = dfs(root.right, p, q);
+
+        // 这里，左子树和右子树都返回真
+        // 或者有一个为真，并且当前根节点等于p或者q中的一个，即满足自己是自己的祖先节点
+        if ((left && right) || (root.val == p.val || root.val == q.val) && (left || right)) {
+            // 只会有一个ans，其他的都不会满足条件
+            ans = root;
+        }
+
+        return left || right || root.val == p.val || root.val == q.val;
+    }
 
     // 2251. 花期内花的数目
     public int[] fullBloomFlowers(int[][] flowers, int[] people) {
