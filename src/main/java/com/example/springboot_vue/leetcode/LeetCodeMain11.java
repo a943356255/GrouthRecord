@@ -1,6 +1,7 @@
 package com.example.springboot_vue.leetcode;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class LeetCodeMain11 {
 
@@ -13,6 +14,82 @@ public class LeetCodeMain11 {
 
         int val = map.get(1);
         System.out.println(val);
+        ConcurrentHashMap<Integer, Integer> testMap = new ConcurrentHashMap<>();
+        Map<Integer, Integer> hashTable = new Hashtable<>();
+        testMap.size();
+    }
+
+
+    // 78. 子集
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        res.add(new ArrayList<>());
+        LinkedList<Integer> list = new LinkedList<>();
+        traceBack(nums, 0, res, list);
+        return res;
+    }
+
+    public void traceBack(int[] nums, int index, List<List<Integer>> res, LinkedList<Integer> temp) {
+        for (int i = index; i < nums.length; i++) {
+            if (!temp.contains(nums[i])) {
+                temp.add(nums[i]);
+                res.add(new ArrayList<>(temp));
+                traceBack(nums, index + 1, res, temp);
+                temp.removeLast();
+            }
+        }
+    }
+
+    // 437. 路径总和 III
+    public int pathSum(TreeNode root, int targetSum) {
+        if (root == null) {
+            return 0;
+        }
+        int res;
+
+        res = dfsPathSum(root, targetSum);
+        res += pathSum(root.left, targetSum);
+        res += pathSum(root.right, targetSum);
+
+        return res;
+    }
+
+    public int dfsPathSum(TreeNode root, long targetSum) {
+        if (root == null) {
+            return 0;
+        }
+
+        int res = 0;
+
+        int val = root.val;
+        if (val == targetSum) {
+            res++;
+        }
+
+        res += dfsPathSum(root.left, targetSum - val);
+        res += dfsPathSum(root.right, targetSum - val);
+        return res;
+    }
+
+    // 1004. 最大连续1的个数 III
+    public int longestOnes(int[] nums, int k) {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 0) {
+                list.add(i);
+            }
+        }
+        if (list.size() == 0) {
+            return nums.length;
+        }
+
+        for (int i = list.get(0); i < list.size() - k; i++) {
+            for (int j = i; j < i + k; j++) {
+
+            }
+        }
+
+        return 0;
     }
 
     // 1726. 同积元组

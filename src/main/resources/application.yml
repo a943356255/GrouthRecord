@@ -23,7 +23,7 @@ spring:
       max-request-size: 20MB
   data:
     mongodb:
-      enabled: true #设置为true才开启mongodb服务
+      enabled: false #设置为true才开启mongodb服务
       host: 127.0.0.1
       port: 27017
 server:
