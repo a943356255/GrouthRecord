@@ -15,6 +15,27 @@ public class LeetCodeMain11 {
         System.out.println(val);
     }
 
+    // 1726. 同积元组
+    public int tupleSameProduct(int[] nums) {
+        int res = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                if (map.get(nums[i] * nums[j]) == null) {
+                    map.put(nums[i] * nums[j], 1);
+                } else {
+                    map.put(nums[i] * nums[j], map.get(nums[i] * nums[j]) + 1);
+                }
+            }
+        }
+
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            res += entry.getValue() * (entry.getValue() - 1) * 4;
+        }
+
+        return res;
+    }
+
     // 61. 旋转链表
     public ListNode rotateRight(ListNode head, int k) {
         if (head == null) {
