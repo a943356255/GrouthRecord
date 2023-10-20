@@ -19,6 +19,30 @@ public class LeetCodeMain11 {
         testMap.size();
     }
 
+    // 2525. 根据规则将箱子分类
+    public String categorizeBox(int length, int width, int height, int mass) {
+        int Heavy = 0, Bulky = 0, temp = 10000;
+        long res = (long) length * width * height;
+        if (res >= Math.pow(10, 9) || length >= temp || width >= temp || height >= temp) {
+            Bulky = 1;
+        }
+
+        if (mass >= 100) {
+            Heavy = 1;
+        }
+
+        if (Heavy == 1 && Bulky == 1) {
+            return "Both";
+        } else if (Heavy == 0 && Bulky == 0) {
+            return "Neither";
+        } else {
+            if (Heavy == 1) {
+                return "Heavy";
+            } else {
+                return "Bulky";
+            }
+        }
+    }
 
     // 78. 子集
     public List<List<Integer>> subsets(int[] nums) {
