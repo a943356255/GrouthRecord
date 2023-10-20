@@ -58,7 +58,7 @@ public class LeetCodeMain11 {
             if (!temp.contains(nums[i])) {
                 temp.add(nums[i]);
                 res.add(new ArrayList<>(temp));
-                traceBack(nums, index + 1, res, temp);
+                traceBack(nums, i, res, temp);
                 temp.removeLast();
             }
         }
