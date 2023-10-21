@@ -19,6 +19,91 @@ public class LeetCodeMain11 {
         testMap.size();
     }
 
+    int[][] direction = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+    boolean result = false;
+    // 79. 单词搜索
+    public boolean exist(char[][] board, String word) {
+        int h = board.length, w = board[0].length;
+        boolean[][] visited = new boolean[h][w];
+        // 这一块思路和我一样，遍历board，以每个点为起点进行一次深度遍历，看是否可以组合成对应单词
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
+                boolean flag = check(board, visited, i, j, word, 0);
+                if (flag) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean check(char[][] board, boolean[][] visited, int i, int j, String s, int k) {
+        // 这个k记录str对应的下标，如果s的对应下标k与当前需要遍历的字符i,j不对应，则直接返回
+        if (board[i][j] != s.charAt(k)) {
+            return false;
+        } else if (k == s.length() - 1) {
+            return true;
+        }
+        visited[i][j] = true;
+        int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        boolean result = false;
+        for (int[] dir : directions) {
+            int newi = i + dir[0], newj = j + dir[1];
+            if (newi >= 0 && newi < board.length && newj >= 0 && newj < board[0].length) {
+                // 这里，每次判断下一个位置是否被访问过
+                // 我自己写的存在反复横跳导致无限递归的问题，主要是回溯写的有问题，所以还没出现，但是写对后会出现这个问题
+                if (!visited[newi][newj]) {
+                    // 没有访问过，则递归的进行访问
+                    boolean flag = check(board, visited, newi, newj, s, k + 1);
+                    if (flag) {
+                        result = true;
+                        break;
+                    }
+                }
+            }
+        }
+        // 这里，每一次递归的访问结束后，对应的位置会被改为false
+        visited[i][j] = false;
+        return result;
+    }
+
+    /**
+     * 79. 单词搜索 错误代码
+     */
+//    public boolean exist(char[][] board, String word) {
+//        StringBuilder stringBuilder;
+//        for (int i = 0; i < board.length; i++) {
+//            for (int j = 0; j < board[0].length; j++) {
+//                stringBuilder = new StringBuilder();
+//                dfsExist(board, word, stringBuilder, i, j);
+//            }
+//        }
+//
+//        return result;
+//    }
+//
+//    public void dfsExist(char[][] board, String word, StringBuilder res, int x, int y) {
+//        for (int i = 0; i < direction.length; i++) {
+//            if (legal(x, y, board)) {
+//                res.append(board[x][y]);
+//                System.out.println("res = " + res);
+//                if (res.length() > word.length()) {
+//                    return;
+//                }
+//                if (res.toString().equals(word)) {
+//                    result = true;
+//                    return;
+//                }
+//                dfsExist(board, word, res, x + direction[i][0], y + direction[i][1]);
+//                res.deleteCharAt(res.length() - 1);
+//            }
+//        }
+//    }
+
+    public boolean legal(int x, int y, char[][] board) {
+        return x >= 0 && y >= 0 && x < board.length && y < board[0].length;
+    }
+
     // 2525. 根据规则将箱子分类
     public String categorizeBox(int length, int width, int height, int mass) {
         int Heavy = 0, Bulky = 0, temp = 10000;
