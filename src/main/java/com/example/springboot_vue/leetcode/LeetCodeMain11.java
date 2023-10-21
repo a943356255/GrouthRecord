@@ -19,6 +19,67 @@ public class LeetCodeMain11 {
         testMap.size();
     }
 
+    // 2316. 统计无向图中无法互相到达点对数
+    int[] arr;
+    public long countPairs(int n, int[][] edges) {
+        arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            // arr[i] = i 表示该节点已经是根节点，这是一个设定
+            arr[i] = i;
+        }
+
+        // 遍历所有元素，将他们加入并查集
+        for (int[] edge : edges) {
+            union(edge[0], edge[1]);
+        }
+
+        List<List<Integer>> list = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            list.add(new ArrayList<>());
+        }
+
+        int temp;
+        for (int i = 0; i < n; i++) {
+            temp = find(i);
+            list.get(temp).add(i);
+        }
+
+        List<Integer> result = new ArrayList<>();
+        for (List<Integer> integers : list) {
+            if (integers.size() != 0) {
+                result.add(integers.size());
+            }
+        }
+
+        int[] houArr = new int[result.size()];
+        houArr[result.size() - 1] = result.get(result.size() - 1);
+        for (int i = result.size() - 2; i >= 0; i--) {
+            houArr[i] = houArr[i + 1] + result.get(i);
+        }
+
+        long res = 0;
+        for (int i = 1; i < houArr.length; i++) {
+            res += (long) result.get(i - 1) * houArr[i];
+        }
+        return res;
+    }
+
+    public void union(int x, int y) {
+        int a = find(x);
+        int b = find(y);
+        arr[b] = a;
+    }
+
+    public int find(int x) {
+        if (arr[x] == x) {
+            return x;
+        }
+
+        // 这一步，在递归的过程中赋值，会一直减少并查集的高度
+        // 这里要传递arr[x]，即找x的父节点
+        return arr[x] = find(arr[x]);
+    }
+
     int[][] direction = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
     boolean result = false;
     // 79. 单词搜索
