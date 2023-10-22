@@ -19,6 +19,37 @@ public class LeetCodeMain11 {
         testMap.size();
     }
 
+    // 1402. 做菜顺序
+    public int maxSatisfaction(int[] satisfaction) {
+        Arrays.sort(satisfaction);
+        int index = -1;
+        for (int i = 0; i < satisfaction.length; i++) {
+            if (satisfaction[i] >= 0) {
+                index = i;
+                break;
+            }
+        }
+        if (index == -1) {
+            return 0;
+        }
+
+        int sum = 0, max = 0, count = 1;
+        for (int i = index; i < satisfaction.length; i++) {
+            sum += satisfaction[i];
+            max += count * satisfaction[i];
+            count++;
+        }
+
+        int temp = max, tempSum = 0;
+        for (int i = index - 1; i >= 0; i--) {
+            temp = temp + satisfaction[i] + sum + tempSum;
+            max = Math.max(max, temp);
+            tempSum += satisfaction[i];
+        }
+
+        return max;
+    }
+
     // 2316. 统计无向图中无法互相到达点对数
     int[] arr;
     public long countPairs(int n, int[][] edges) {
