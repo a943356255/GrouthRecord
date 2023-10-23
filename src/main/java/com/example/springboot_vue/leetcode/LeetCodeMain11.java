@@ -19,6 +19,72 @@ public class LeetCodeMain11 {
         testMap.size();
     }
 
+    // 84. 柱状图中最大的矩形
+    public int largestRectangleArea(int[] heights) {
+        int n = heights.length;
+        int[] left = new int[n];
+        int[] right = new int[n];
+
+        // 单调栈存储的是由小到大的
+        Deque<Integer> monoStack = new ArrayDeque<>();
+
+        // 左边界和有边界都是指在该范围内，heights[i]的高度是最小的
+        // 记录每一个柱子可以到达的最左边界
+        for (int i = 0; i < n; ++i) {
+            while (!monoStack.isEmpty() && heights[monoStack.peek()] >= heights[i]) {
+                monoStack.pop();
+            }
+            left[i] = (monoStack.isEmpty() ? -1 : monoStack.peek());
+            monoStack.push(i);
+        }
+
+        // 记录右边界
+        monoStack.clear();
+        for (int i = n - 1; i >= 0; --i) {
+            while (!monoStack.isEmpty() && heights[monoStack.peek()] >= heights[i]) {
+                monoStack.pop();
+            }
+            right[i] = (monoStack.isEmpty() ? n : monoStack.peek());
+            monoStack.push(i);
+        }
+
+        // 这里是计算最终结果
+        int ans = 0;
+        for (int i = 0; i < n; ++i) {
+            ans = Math.max(ans, (right[i] - left[i] - 1) * heights[i]);
+        }
+        return ans;
+    }
+
+    // 84. 柱状图中最大的矩形，错误写法
+//    public int largestRectangleArea(int[] heights) {
+//        Stack<Integer> stack = new Stack<>();
+//        int max = 0, min = Integer.MAX_VALUE, lastMin = 0;
+//        for (int i = 0; i < heights.length; i++) {
+//            if (stack.isEmpty()) {
+//                stack.push(i);
+//            } else {
+//                while (!stack.isEmpty() && heights[stack.peek()] < heights[i]) {
+//                    int index = stack.pop();
+//                    min = Math.min(min, heights[index]);
+//                    max = Math.max(max, heights[i]);
+//                    max = Math.max(max, min * (i - index + 1));
+//                }
+//                stack.push(i);
+//                lastMin = Math.min(min, heights[i]);
+//                min = Integer.MAX_VALUE;
+//            }
+//        }
+//        System.out.println(stack.toString());
+//        while (!stack.isEmpty()) {
+//            int index = stack.pop();
+//            min = Math.max(min, heights[index]);
+//            max = Math.max(max, lastMin * (heights.length - index));
+//        }
+//
+//        return max;
+//    }
+
     // 2678. 老人的数目
     public int countSeniors(String[] details) {
         int res = 0;
