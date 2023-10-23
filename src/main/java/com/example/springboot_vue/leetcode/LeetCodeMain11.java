@@ -19,6 +19,57 @@ public class LeetCodeMain11 {
         testMap.size();
     }
 
+    int[][] direction = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+    // 994. 腐烂的橘子
+    public int orangesRotting(int[][] grid) {
+        int res = 0, count = 0;
+        Queue<int[]> queue = new ArrayDeque<>();
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 2) {
+                    queue.offer(new int[]{i, j});
+                    count++;
+                } else if (grid[i][j] == 1) {
+                    count++;
+                }
+            }
+        }
+
+        if (count == 0) {
+            return 0;
+        }
+        int temp = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            temp += size;
+            for (int i = 0; i < size; i++) {
+                int[] arr = queue.poll();
+                for (int j = 0; j < direction.length; j++) {
+                    int x = arr[0] + direction[j][0];
+                    int y = arr[1] + direction[j][1];
+                    if (legal(x, y, grid)) {
+                        // 腐蚀橘子
+                        if (grid[x][y] == 1) {
+                            grid[x][y] = 2;
+                            queue.offer(new int[]{x, y});
+                        }
+                    }
+                }
+            }
+            res++;
+        }
+
+        if (temp != count) {
+            return -1;
+        }
+
+        return res - 1;
+    }
+
+    public boolean legal(int x, int y, int[][] board) {
+        return x >= 0 && y >= 0 && x < board.length && y < board[0].length;
+    }
+
     // 84. 柱状图中最大的矩形
     public int largestRectangleArea(int[] heights) {
         int n = heights.length;
@@ -194,7 +245,7 @@ public class LeetCodeMain11 {
         return arr[x] = find(arr[x]);
     }
 
-    int[][] direction = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+
     boolean result = false;
     // 79. 单词搜索
     public boolean exist(char[][] board, String word) {
@@ -274,10 +325,6 @@ public class LeetCodeMain11 {
 //            }
 //        }
 //    }
-
-    public boolean legal(int x, int y, char[][] board) {
-        return x >= 0 && y >= 0 && x < board.length && y < board[0].length;
-    }
 
     // 2525. 根据规则将箱子分类
     public String categorizeBox(int length, int width, int height, int mass) {
