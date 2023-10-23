@@ -19,6 +19,23 @@ public class LeetCodeMain11 {
         testMap.size();
     }
 
+    // 2678. 老人的数目
+    public int countSeniors(String[] details) {
+        int res = 0;
+        for (int i = 0; i < details.length; i++) {
+            if (details[i].charAt(11) > '6') {
+                res++;
+            } else {
+                if (details[i].charAt(11) == '6') {
+                    if (details[i].charAt(12) != '0') {
+                        res++;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
     // 1402. 做菜顺序
     public int maxSatisfaction(int[] satisfaction) {
         Arrays.sort(satisfaction);
