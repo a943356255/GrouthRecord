@@ -19,6 +19,28 @@ public class LeetCodeMain11 {
         testMap.size();
     }
 
+    // 148. 排序链表
+    public ListNode sortList(ListNode head) {
+        List<Integer> list = new ArrayList<>();
+        if (head == null) {
+            return null;
+        }
+        while (head != null) {
+            list.add(head.val);
+            head = head.next;
+        }
+
+        list.sort(Comparator.comparingInt(integer -> integer));
+        ListNode resHead = new ListNode(list.get(0));
+        ListNode temp = resHead;
+        for (int i = 1; i < list.size(); i++) {
+            temp.next = new ListNode(list.get(i));
+            temp = temp.next;
+        }
+
+        return resHead;
+    }
+
     // 1155. 掷骰子等于目标和的方法数
     public int numRollsToTarget(int d, int f, int target) {
         int MOD = 1000000007;
