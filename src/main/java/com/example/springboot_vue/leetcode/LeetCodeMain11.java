@@ -6,17 +6,81 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LeetCodeMain11 {
 
     public static void main(String[] args) {
-        Map<Integer, Integer> map = new HashMap<>();
-        map.put(1, 1);
-        map.put(2, 1);
-        map.put(3, 1);
-        map.put(4, 1);
+//        Map<Integer, Integer> map = new HashMap<>();
+//        map.put(1, 1);
+//        map.put(2, 1);
+//        map.put(3, 1);
+//        map.put(4, 1);
+//
+//        int val = map.get(1);
+//        System.out.println(val);
+//        ConcurrentHashMap<Integer, Integer> testMap = new ConcurrentHashMap<>();
+//        Map<Integer, Integer> hashTable = new Hashtable<>();
+//        testMap.size();
+        String str = "123456";
+        System.out.println(str.substring(2));
+    }
 
-        int val = map.get(1);
-        System.out.println(val);
-        ConcurrentHashMap<Integer, Integer> testMap = new ConcurrentHashMap<>();
-        Map<Integer, Integer> hashTable = new Hashtable<>();
-        testMap.size();
+    // 2698. 求一个整数的惩罚数
+    public int punishmentNumber(int n) {
+        int res = 1;
+        for (int i = 9; i <= n; i++) {
+            String temp = String.valueOf(i * i);
+            if (spiltNumber(temp, i * i)) {
+                res += i * i;
+            }
+        }
+
+        return res;
+    }
+
+    public boolean spiltNumber(String str, int target) {
+        boolean result, temp = false;
+        for (int i = 1; i < str.length(); i++) {
+            int val = Integer.parseInt(str.substring(0, i));
+            String last = str.substring(i);
+            target -= val;
+            if (target == Integer.parseInt(last)) {
+                return true;
+            }
+            result = spiltNumber(last, target);
+            if (result) {
+                temp = true;
+            }
+            target += val;
+        }
+
+        return temp;
+    }
+
+    // 322. 零钱兑换
+    public int coinChange(int[] coins, int amount) {
+        Arrays.sort(coins);
+        int count = 0;
+        for (int i = coins.length - 1; i >= 0; i--) {
+
+        }
+
+        return 0;
+    }
+
+    // 160. 相交链表
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        Map<ListNode, String> map = new HashMap<>();
+        while (headA != null) {
+            map.put(headA, "1");
+            headA = headA.next;
+        }
+
+        while (headB != null) {
+            if (map.get(headB) != null) {
+                return headB;
+            }
+
+            headB = headB.next;
+        }
+
+        return null;
     }
 
     // 148. 排序链表
