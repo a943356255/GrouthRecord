@@ -1,7 +1,6 @@
 package com.example.springboot_vue.leetcode;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class LeetCodeMain11 {
 
@@ -19,6 +18,22 @@ public class LeetCodeMain11 {
 //        testMap.size();
         String str = "123456";
         System.out.println(str.substring(2));
+    }
+
+    // 2520. 统计能整除数字的位数
+    public int countDigits(int num) {
+        int res = 0;
+        int temp = num;
+        while (temp > 0) {
+            int tempNum = temp % 10;
+            if (num % tempNum == 0) {
+                res++;
+            }
+
+            temp /= 10;
+        }
+
+        return res;
     }
 
     // 2698. 求一个整数的惩罚数
