@@ -16,8 +16,60 @@ public class LeetCodeMain11 {
 //        ConcurrentHashMap<Integer, Integer> testMap = new ConcurrentHashMap<>();
 //        Map<Integer, Integer> hashTable = new Hashtable<>();
 //        testMap.size();
-        String str = "123456";
-        System.out.println(str.substring(2));
+//        String str = "123456";
+//        System.out.println(str.substring(2));
+        byte[] bytes = new byte[20];
+        bytes[0] = 12;
+        System.out.println(bytes[0]);
+    }
+
+    // 725. 分隔链表
+    public ListNode[] splitListToParts(ListNode head, int k) {
+        ListNode temp = head;
+        int count = 0;
+        while (temp != null) {
+            count++;
+            temp = temp.next;
+        }
+
+        ListNode[] res = new ListNode[k];
+        if (count <= k) {
+            for (int i = 0; i < k; i++) {
+                if (head != null) {
+                    ListNode node = new ListNode(head.val);
+                    head = head.next;
+                    res[i] = node;
+                } else {
+                    res[i] = null;
+                }
+            }
+        } else {
+            int result = count % k, single = count / k;
+            for (int i = 0; i < k; i++) {
+                int tempSingle = single;
+                if (result > 0) {
+                    tempSingle++;
+                    result--;
+                }
+                ListNode resNode = new ListNode();
+                if (head != null) {
+                    resNode.val = head.val;
+                    head = head.next;
+                }
+                res[i] = resNode;
+                for (int j = 1; j < tempSingle; j++) {
+                    ListNode partNode = null;
+                    if (head != null) {
+                        partNode = new ListNode(head.val);
+                        head = head.next;
+                    }
+                    resNode.next = partNode;
+                    resNode = resNode.next;
+                }
+            }
+        }
+
+        return res;
     }
 
     // 2520. 统计能整除数字的位数
