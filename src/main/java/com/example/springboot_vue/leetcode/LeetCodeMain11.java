@@ -23,6 +23,30 @@ public class LeetCodeMain11 {
         System.out.println(bytes[0]);
     }
 
+    // 1465. 切割后面积最大的蛋糕
+    public int maxArea(int h, int w, int[] horizontalCuts, int[] verticalCuts) {
+        Arrays.sort(horizontalCuts);
+        Arrays.sort(verticalCuts);
+        int lastIndex = 0, max = Integer.MIN_VALUE, temp, MOD = 1000000007;
+        // 找到水平切的最大值
+        for (int horizontalCut : horizontalCuts) {
+            temp = horizontalCut - lastIndex;
+            lastIndex = horizontalCut;
+            max = Math.max(max, temp);
+        }
+        max = Math.max(h - horizontalCuts[horizontalCuts.length - 1], max);
+
+        long res = Integer.MIN_VALUE;
+        lastIndex = 0;
+        for (int verticalCut : verticalCuts) {
+            res = Math.max(res, (long) (verticalCut - lastIndex) * max);
+            lastIndex = verticalCut;
+        }
+        res = Math.max(res, (long) (w - verticalCuts[verticalCuts.length - 1]) * max);
+
+        return (int) (res % MOD);
+    }
+
     // 725. 分隔链表
     public ListNode[] splitListToParts(ListNode head, int k) {
         ListNode temp = head;
