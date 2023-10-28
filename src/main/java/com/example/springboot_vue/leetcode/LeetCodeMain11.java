@@ -18,9 +18,33 @@ public class LeetCodeMain11 {
 //        testMap.size();
 //        String str = "123456";
 //        System.out.println(str.substring(2));
-        byte[] bytes = new byte[20];
-        bytes[0] = 12;
-        System.out.println(bytes[0]);
+//        byte[] bytes = new byte[20];
+//        bytes[0] = 12;
+//        System.out.println(bytes[0]);
+        System.out.println(Math.floor(Math.sqrt(15)));
+
+    }
+
+    // 2558. 从数量最多的堆取走礼物
+    public long pickGifts(int[] gifts, int k) {
+        PriorityQueue<Integer> queue = new PriorityQueue<>((a, b) -> b - a);
+        for (int gift : gifts) {
+            queue.offer(gift);
+        }
+        if (queue.size() == 0) {
+            return 0;
+        }
+
+        for (int i = 0; i < k; i++) {
+            queue.offer((int) Math.floor(Math.sqrt(queue.poll())));
+        }
+
+        long res = 0;
+        while (!queue.isEmpty()) {
+            res += queue.poll();
+        }
+
+        return res;
     }
 
     // 1465. 切割后面积最大的蛋糕

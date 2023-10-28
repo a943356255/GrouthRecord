@@ -9,4 +9,7 @@ public class Test {
         StpUtil.createLoginSession("testId");
     }
 
+    public void testExe() {
+
+    }
 }
