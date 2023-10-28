@@ -5,24 +5,27 @@ import java.util.*;
 public class LeetCodeMain11 {
 
     public static void main(String[] args) {
-//        Map<Integer, Integer> map = new HashMap<>();
-//        map.put(1, 1);
-//        map.put(2, 1);
-//        map.put(3, 1);
-//        map.put(4, 1);
-//
-//        int val = map.get(1);
-//        System.out.println(val);
-//        ConcurrentHashMap<Integer, Integer> testMap = new ConcurrentHashMap<>();
-//        Map<Integer, Integer> hashTable = new Hashtable<>();
-//        testMap.size();
-//        String str = "123456";
-//        System.out.println(str.substring(2));
-//        byte[] bytes = new byte[20];
-//        bytes[0] = 12;
-//        System.out.println(bytes[0]);
-        System.out.println(Math.floor(Math.sqrt(15)));
 
+    }
+
+    // 279. 完全平方数
+    public int numSquares(int n) {
+        // 用f[i]表示最少需要多少个数字来表示i
+        int[] f = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            int minn = Integer.MAX_VALUE;
+            // 这里是遍历从1到根号i的所有值，
+            for (int j = 1; j * j <= i; j++) {
+                // 这一步，i - j * j 有点类似于背包问题
+                // i的最小值，一次考虑去除j之后的最小值
+                // 比如j = 1和j = 2，i - 1就是不考虑加入1
+                // i - 4就是不考虑加入4
+                minn = Math.min(minn, f[i - j * j]);
+            }
+            f[i] = minn + 1;
+        }
+
+        return f[n];
     }
 
     // 2558. 从数量最多的堆取走礼物
