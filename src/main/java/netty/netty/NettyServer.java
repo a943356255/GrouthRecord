@@ -12,7 +12,6 @@ import io.netty.handler.codec.string.StringDecoder;
 public class NettyServer {
 
     /**
-     *
      * 这一段代码，实现了NIO模型中服务端的启动，接受新连接，以及打印客户端传来的数据
      */
     public static void main(String[] args) {

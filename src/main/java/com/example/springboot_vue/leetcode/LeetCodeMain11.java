@@ -8,6 +8,53 @@ public class LeetCodeMain11 {
 
     }
 
+    // 25. K 个一组翻转链表
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if (k == 1) {
+            return head;
+        }
+        int countNode = 0;
+        ListNode tempNode = head;
+        while (tempNode != null) {
+            countNode++;
+            tempNode = tempNode.next;
+        }
+
+        ListNode temp = new ListNode();
+        Map<Integer, ListNode> map = new HashMap<>();
+        map.put(0, temp);
+        int count = 0;
+        while (head != null) {
+            if (countNode < k) {
+                map.get(count).next = head;
+                break;
+            } else {
+                countNode -= k;
+            }
+
+            ListNode tempHead = new ListNode();
+            ListNode tail = new ListNode(head.val);
+            tempHead.next = tail;
+            head = head.next;
+            for (int i = 1; i < k; i++) {
+                if (head != null) {
+                    ListNode node = new ListNode(head.val);
+                    node.next = tempHead.next;
+                    tempHead.next = node;
+                    head = head.next;
+                } else {
+                    break;
+                }
+            }
+
+            map.get(count).next = tempHead.next;
+            count++;
+            map.put(count, tail);
+        }
+
+        return temp.next;
+    }
+
     // 279. 完全平方数
     public int numSquares(int n) {
         // 用f[i]表示最少需要多少个数字来表示i
