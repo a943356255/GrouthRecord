@@ -5,12 +5,127 @@ import java.util.*;
 public class LeetCodeMain11 {
 
     public static void main(String[] args) {
-
+        long a = 2;
+        int b = 3;
     }
 
     // LCR 077. 排序链表(采用归并排序)
     public ListNode sortListByMerge(ListNode head) {
+        return null;
+    }
 
+    // 556. 下一个更大元素 III
+    public int nextGreaterElement(int n) {
+        char[] nums = Integer.toString(n).toCharArray();
+        int i = nums.length - 2;
+        // 这里，从倒数第二个和倒数第一个元素进行比较，找到第一个满足 i + 1 > i的元素
+        // 这里就是找到第一个不是正序的   比如说54321，他就会一直执行，直到i = -1
+        // 但是12345,第一次就会结束，i = 3
+        while (i >= 0 && nums[i] >= nums[i + 1]) {
+            i--;
+        }
+        if (i < 0) {
+            return -1;
+        }
+
+        int j = nums.length - 1;
+        // 这里是从后往前找到第一个比num[i]大的元素
+        while (j >= 0 && nums[i] >= nums[j]) {
+            j--;
+        }
+        swap(nums, i, j);
+        // 这一步，交换从i + 1 到数组结尾的所有元素
+        reverse(nums, i + 1);
+        long ans = Long.parseLong(new String(nums));
+        return ans > Integer.MAX_VALUE ? -1 : (int) ans;
+    }
+
+    public void reverse(char[] nums, int begin) {
+        int i = begin, j = nums.length - 1;
+        while (i < j) {
+            swap(nums, i, j);
+            i++;
+            j--;
+        }
+    }
+
+    public void swap(char[] nums, int i, int j) {
+        char temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    // 556. 下一个更大元素 III
+//    public int nextGreaterElement(int n) {
+//        List<Integer> list = new ArrayList<>();
+//        int temp = n;
+//        while (temp > 0) {
+//            list.add(0, temp % 10);
+//            temp /= 10;
+//        }
+//
+//        int mark = 0;
+//        for (int i = list.size() - 2; i >= 0; i--) {
+//            for (int j = i + 1; j < list.size(); j++) {
+//                if (list.get(j) < list.get(i)) {
+//                    mark = 1;
+//                    temp = list.get(j);
+//                    list.set(j, list.get(i));
+//                    list.set(i, temp);
+//                    break;
+//                }
+//            }
+//
+//            if (mark == 1) {
+//                break;
+//            }
+//        }
+//
+//        if (mark == 0) {
+//            return -1;
+//        }
+//
+//        long res = 0;
+//        for (int i = 0; i < list.size(); i++) {
+//            res = res * 10 + list.get(i);
+//        }
+//
+//        if (res > Integer.MAX_VALUE) {
+//            return -1;
+//        }
+//        return (int) res;
+//    }
+
+    public void dfs(List<Integer> list, int index) {
+        int mark = 0;
+        for (int i = index; i >= 0; i--) {
+            for (int j = i + 1; j < list.size(); j++) {
+                if (list.get(j) < list.get(i)) {
+                    mark = 1;
+                    int temp = list.get(j);
+                    list.set(j, list.get(i));
+                    list.set(i, temp);
+                }
+            }
+
+            if (mark == 1) {
+                break;
+            }
+        }
+    }
+
+    public void swap(List<Integer> list, int i, int j) {
+        int temp = list.get(j);
+        list.set(j, list.get(i));
+        list.set(i, temp);
+    }
+
+    public long getResult(List<Integer> list) {
+        long res = 0;
+        for (int i = 0; i < list.size(); i++) {
+            res = res * 10 + list.get(i);
+        }
+        return res;
     }
 
     // 274. H 指数
