@@ -8,6 +8,59 @@ public class LeetCodeMain11 {
 
     }
 
+    // LCR 077. 排序链表(采用归并排序)
+    public ListNode sortListByMerge(ListNode head) {
+
+    }
+
+    // 274. H 指数
+    public int hIndex(int[] citations) {
+        int n = citations.length, tot = 0;
+        int[] counter = new int[n + 1];
+        for (int citation : citations) {
+            // 这里是关键，因为指数h无法超过发表的论文总数n，所以引用次数大于n的就直接按照n来计算
+            // 就是这里，导致无法算出来
+            if (citation >= n) {
+                counter[n]++;
+            } else {
+                counter[citation]++;
+            }
+        }
+        for (int i = n; i >= 0; i--) {
+            tot += counter[i];
+            if (tot >= i) {
+                return i;
+            }
+        }
+
+        return 0;
+//        if (citations.length == 1) {
+//            return citations[0] == 0 ? 0 : 1;
+//        }
+//        int[] arr = new int[1001];
+//        for (int citation : citations) {
+//            arr[citation]++;
+//        }
+//
+//        int max = Integer.MIN_VALUE, count = 0;
+//        // 这里的i是对应值不为0的引用次数
+//        for (int i = 0; i < arr.length; i++) {
+//            if (arr[i] != 0) {
+//                if (citations.length - count >= i) {
+//                    max = Math.max(max, i);
+//                } else if (arr[i] >= count) {
+//                    max = Math.max(count, max);
+//                }
+//                // 统计到目前位置所有论文被引用了多少次
+//                count += arr[i];
+//            }
+//        }
+//        if (max == Integer.MIN_VALUE) {
+//            return citations.length;
+//        }
+//        return max;
+    }
+
     // 25. K 个一组翻转链表
     public ListNode reverseKGroup(ListNode head, int k) {
         if (k == 1) {
