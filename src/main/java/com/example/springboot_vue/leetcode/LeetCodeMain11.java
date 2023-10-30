@@ -9,16 +9,6 @@ public class LeetCodeMain11 {
         int b = 3;
     }
 
-    // LCR 077. 排序链表(采用归并排序)
-    public ListNode sortListByMerge(ListNode head) {
-        return null;
-    }
-
-    // 31. 下一个排列
-    public void nextPermutation(int[] nums) {
-
-    }
-
     // 275. H 指数 II
     public int hIndex2(int[] citations) {
         int total = citations.length;
