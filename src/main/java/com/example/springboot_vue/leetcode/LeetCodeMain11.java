@@ -152,6 +152,8 @@ public class LeetCodeMain11 {
         }
 
         return f[n];
+    }
+
     public void dfs(List<Integer> list, int index) {
         int mark = 0;
         for (int i = index; i >= 0; i--) {
@@ -280,7 +282,7 @@ public class LeetCodeMain11 {
     }
 
     // 279. 完全平方数
-    public int numSquares(int n) {
+    public int numSquares1(int n) {
         // 用f[i]表示最少需要多少个数字来表示i
         int[] f = new int[n + 1];
         for (int i = 1; i <= n; i++) {
