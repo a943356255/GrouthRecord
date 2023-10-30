@@ -14,6 +14,44 @@ public class LeetCodeMain11 {
         return null;
     }
 
+    // 31. 下一个排列
+    public void nextPermutation(int[] nums) {
+
+    }
+
+    // 275. H 指数 II
+    public int hIndex2(int[] citations) {
+        int total = citations.length;
+        int left = 0, right = total - 1;
+        // n−mid 篇论文被引用了至少citations[mid]
+        while (left <= right) {
+            int mid = (left + right) >> 1;
+            // int mid = left + (right - left) / 2;
+            if (citations[mid] >= total - mid) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return total - left;
+    }
+//    public int hIndex2(int[] citations) {
+//        int total = citations.length;
+//        int left = 0, right = total - 1, max = -1;
+//        // n−mid 篇论文被引用了至少citations[mid]
+//        while (left < right) {
+//            int mid = (left + right) >> 1;
+//            if (citations[mid] > total || citations[mid] > total - mid) {
+//                right = mid - 1;
+//            } else {
+//                max = Math.max(max, Math.min(mid + 1, citations[mid]));
+//                left = mid + 1;
+//            }
+//        }
+//
+//        return total - left;
+//    }
+
     // 556. 下一个更大元素 III
     public int nextGreaterElement(int n) {
         char[] nums = Integer.toString(n).toCharArray();
