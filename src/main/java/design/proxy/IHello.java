@@ -4,4 +4,5 @@ public interface IHello {
 
     int sayHello();
 
+    int testFuncTwo();
 }

@@ -16,6 +16,9 @@ public class MyInvocationHandler implements InvocationHandler {
         this.target = target;
     }
 
+    /**
+     * 这里的Method，我们通过new Proxy创建的一个代理对象，调用它的哪个方法，这里传过来的就是哪个
+     */
     @Override
     public Object invoke(Object o, Method method, Object[] args) throws Throwable {
         System.out.println("------插入前置通知代码-------------");

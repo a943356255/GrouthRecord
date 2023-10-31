@@ -29,6 +29,7 @@ public class MyProxyTest {
                 new Class[]{IHello.class}, // 一组接口
                 new MyInvocationHandler(new HelloImpl())); // 自定义的InvocationHandle
         iHello2.sayHello();
+        iHello2.testFuncTwo();
     }
 
 }
