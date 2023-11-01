@@ -28,7 +28,67 @@ public class LeetCodeMain12 {
 
     // LCR 077. 排序链表(采用归并排序)
     public ListNode sortListByMerge(ListNode head) {
-        return null;
+        return sortList(head, null);
+    }
+
+    public ListNode sortList(ListNode head, ListNode tail) {
+        if (head == null) {
+            return null;
+        }
+
+        // 这里是为什么
+        if (head.next == tail) {
+            head.next = null;
+            return head;
+        }
+
+        ListNode fast = head, slow = head;
+        // 这里，fast每次比slow多走一步，当fast到最后时，slow正好到中间
+        // 这里不能走到最后，要走到tail，即本次分割后的队列末尾
+        while (fast != tail) {
+            fast = fast.next;
+            slow = slow.next;
+
+            if (fast != tail) {
+                fast = fast.next;
+            }
+        }
+
+        ListNode left = sortList(head, slow);
+        // 这里为什么是slow，而不是slow.next
+        ListNode right = sortList(slow, tail);
+        ListNode sorted = merge(left, right);
+
+        return sorted;
+    }
+
+    private ListNode merge(ListNode left, ListNode right) {
+        ListNode tempLeft = left, res = new ListNode(), tempRight = right, tempHead = res;
+        while (tempLeft != null && tempRight != null) {
+            if (tempLeft.val > tempRight.val) {
+                res.next = tempRight;
+                tempRight = tempRight.next;
+            } else {
+                res.next = tempLeft;
+                tempLeft = tempLeft.next;
+            }
+
+            res = res.next;
+        }
+
+        while (tempLeft != null) {
+            res.next = tempLeft;
+            res = res.next;
+            tempLeft = tempLeft.next;
+        }
+
+        while (tempRight != null) {
+            res.next = tempRight;
+            res = res.next;
+            tempRight = tempRight.next;
+        }
+
+        return tempHead.next;
     }
 
     // 2127. 参加会议的最多员工数
