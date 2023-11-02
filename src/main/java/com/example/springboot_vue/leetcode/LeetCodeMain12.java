@@ -26,6 +26,27 @@ public class LeetCodeMain12 {
 
     }
 
+    // 2103. 环和杆
+    public int countPoints(String rings) {
+        int res = 0;
+        Map<Integer, Set<Character>> map = new HashMap<>();
+        for (int i = 0; i < rings.length(); i += 2) {
+            char first = rings.charAt(i);
+            int second = rings.charAt(i + 1) - '0';
+            map.computeIfAbsent(second, k -> new HashSet<>());
+
+            map.get(second).add(first);
+        }
+
+        for (Map.Entry<Integer, Set<Character>> entry : map.entrySet()) {
+            if (entry.getValue().size() == 3) {
+                res ++;
+            }
+        }
+
+        return res;
+    }
+
     // LCR 077. 排序链表(采用归并排序)
     public ListNode sortListByMerge(ListNode head) {
         return sortList(head, null);
