@@ -891,7 +891,47 @@ public class LeetCodeMain10 {
 
     // 394. 字符串解码
     public String decodeString(String s) {
-        return null;
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c != ']') {
+                stack.push(c);
+            } else {
+                StringBuilder tempStr = new StringBuilder();
+                // 这里是出现右括号后，找到第一个与之匹配的左括号
+                while (!stack.isEmpty()) {
+                    char temp = stack.pop();
+                    if (temp != '[') {
+                        tempStr.insert(0, temp);
+                    } else {
+                        break;
+                    }
+                }
+                int num = 0, count = 0;
+                // 取出所有的数字
+                while (!stack.isEmpty()) {
+                    if (stack.peek() >= '0' && stack.peek() <= '9') {
+                        num += Math.pow(10, count) * (stack.pop() - '0');
+                        count++;
+                    } else {
+                        break;
+                    }
+                }
+
+                // 重新放入
+                for (int j = 0; j < num; j++) {
+                    for (int k = 0; k < tempStr.length(); k++) {
+                        stack.push(tempStr.charAt(k));
+                    }
+                }
+            }
+        }
+
+        StringBuilder res = new StringBuilder();
+        while (!stack.isEmpty()) {
+            res.insert(0, stack.pop());
+        }
+        return res.toString();
     }
 
     // 122. 买卖股票的最佳时机 II,贪心写法
