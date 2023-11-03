@@ -1,8 +1,10 @@
 package generics;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         // 泛型类的测试代码
         SingleGenerics<Integer> testClass = new SingleGenerics<>();
         testClass.setName(1);
@@ -17,6 +19,9 @@ public class Main {
         DoubleGenerics<Integer, Integer> secondTest = new DoubleGenerics<>();
         secondTest.setVal(1);
         secondTest.setKey(2);
+
+        Object result =  secondTest.getObject(Class.forName("com.example.springboot_vue.pojo.Demo"));
+
     }
 
 }

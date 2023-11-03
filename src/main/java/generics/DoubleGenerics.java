@@ -1,5 +1,7 @@
 package generics;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class DoubleGenerics<k, v> {
 
     private k key;
@@ -20,5 +22,11 @@ public class DoubleGenerics<k, v> {
 
     public void setVal(v val) {
         this.val = val;
+    }
+
+    public <T> T getObject(Class<T> c) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+        T t = c.getDeclaredConstructor().newInstance();
+
+        return t;
     }
 }
