@@ -26,6 +26,95 @@ public class LeetCodeMain12 {
 
     }
 
+    // 224. 基本计算器
+//    public int calculate(String s) {
+//        // 双端队列
+//        Deque<Integer> stack = new LinkedList<>();
+//        for (int i = 0; i < s.length(); i++) {
+//            char c = s.charAt(i);
+//            if (c == ' ') {
+//                continue;
+//            }
+//            if (c >= '0' && c <= '9') {
+//                int temp = c - '0', count = 1;
+//                for (int j = i + 1; j < s.length() && legal(s.charAt(j)); j++) {
+//                    char tempChar = s.charAt(j);
+//                    temp = (int) (temp * Math.pow(10, count++) + (tempChar - '0'));
+//                }
+//                stack.offerFirst(temp);
+//            }
+//        }
+//    }
+
+//    public boolean legal(char c) {
+//        return c <= '9' && c >= '0';
+//    }
+
+    // 224. 基本计算器
+    public int calculateWrong(String s) {
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == ' ') {
+                continue;
+            }
+            if (c != ')') {
+                stack.push(c);
+            } else {
+                int temp = 0, count = 0, tempSum = 0;
+                while (!stack.isEmpty()) {
+                    char number = stack.pop();
+                    if (number == '(') {
+                        String str = String.valueOf(tempSum + temp);
+                        for (int j = 0; j < str.length(); j++) {
+                            stack.push(str.charAt(j));
+                        }
+                        break;
+                    }
+
+                    if (number >= '0' && number <= '9') {
+                        temp += temp + (number - '0') * Math.pow(10, count);
+                        count++;
+                    } else if (number == '-') {
+                        tempSum += Math.abs(tempSum - temp);
+                        temp = 0;
+                        count = 0;
+                    } else {
+                        tempSum += temp;
+                        temp = 0;
+                        count = 0;
+                    }
+                }
+            }
+        }
+
+        int res = 0;
+        while (!stack.isEmpty()) {
+            char c = stack.pop();
+            if (c >= '0' && c <= '9') {
+                int tempSum = c - '0', count = 1;
+                while (!stack.isEmpty()) {
+                    char num = stack.pop();
+                    if (num == '+') {
+                        break;
+                    } else if (num == '-') {
+                        tempSum = -tempSum;
+                        break;
+                    } else {
+                        tempSum += (num - '0') * Math.pow(10, count);
+                        count++;
+                    }
+                }
+                // 这里是处理栈中的第一个元素
+                if (stack.isEmpty()) {
+                    res += tempSum;
+                }
+            }
+        }
+
+        return res;
+    }
+
     // 834. 树中距离之和
     public int[] sumOfDistancesInTree(int n, int[][] edges) {
         int[] res = new int[n];
