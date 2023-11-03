@@ -26,6 +26,36 @@ public class LeetCodeMain12 {
 
     }
 
+    // 834. 树中距离之和
+    public int[] sumOfDistancesInTree(int n, int[][] edges) {
+        int[] res = new int[n];
+        Map<Integer, ArrayList<Integer>> map = new HashMap<>();
+        for (int[] edge : edges) {
+            map.computeIfAbsent(edge[0], k -> new ArrayList<>());
+            map.get(edge[0]).add(edge[1]);
+        }
+
+        for (int i = 0; i < n; i++) {
+            res[i] = dfs(map, i);
+        }
+
+        return res;
+    }
+
+    public int dfs(Map<Integer, ArrayList<Integer>> map, int index) {
+        int val = 0;
+        ArrayList<Integer> list = map.get(index);
+        if (list == null) {
+            return 0;
+        }
+        val += list.size();
+        for (Integer integer : list) {
+            val += dfs(map, integer);
+        }
+
+        return val;
+    }
+
     // 2103. 环和杆
     public int countPoints(String rings) {
         int res = 0;
