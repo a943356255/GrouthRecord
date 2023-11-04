@@ -26,6 +26,59 @@ public class LeetCodeMain12 {
 
     }
 
+    // 22. 括号生成
+    public List<String> generateParenthesis(int n) {
+        List<String> ans = new ArrayList<>();
+        backtrack(ans, new StringBuilder(), 0, 0, n);
+        return ans;
+    }
+
+    public void backtrack(List<String> ans, StringBuilder cur, int open, int close, int max) {
+        if (cur.length() == max * 2) {
+            ans.add(cur.toString());
+            return;
+        }
+
+        if (open < max) {
+            cur.append('(');
+            backtrack(ans, cur, open + 1, close, max);
+            cur.deleteCharAt(cur.length() - 1);
+        }
+
+        if (close < open) {
+            cur.append(')');
+            backtrack(ans, cur, open, close + 1, max);
+            cur.deleteCharAt(cur.length() - 1);
+        }
+    }
+//    public List<String> generateParenthesis(int n) {
+//        List<String> list = new ArrayList<>();
+//
+//        for (int i = 1; i < 2 * n; i++) {
+//            StringBuilder stringBuilder = new StringBuilder("(");
+//            dfs(stringBuilder, n, i, n - 1, n, list);
+//        }
+//        return list;
+//    }
+//
+//    public void dfs(StringBuilder str, int n, int index, int countL, int countR, List<String> list) {
+//        for (int i = index; i < 2 * n; i++) {
+//            if (countL > 0) {
+//                str.append("(");
+//                countL--;
+//            } else if (countR > 0) {
+//                str.append(")");
+//                countR--;
+//            }
+//            if (str.length() == 2 * n) {
+//                list.add(str.toString());
+//            }
+//
+//            dfs(str, n, i + 1, countL, countR, list);
+//            str.deleteCharAt(str.length() - 1);
+//        }
+//    }
+
     // 最高位的二进制编号为30
     static final int HIGH_BIT = 30;
 
@@ -40,10 +93,11 @@ public class LeetCodeMain12 {
                 // 只需将其右移 k 位
                 seen.add(num >> k);
             }
-            System.out.println(seen.toString());
+
             // 目前 x 包含从最高位开始到第 k+1 个二进制位为止的部分
             // 我们将 x 的第 k 个二进制位置为 1，即为 x = x*2+1
             int xNext = x * 2 + 1;
+            System.out.println("xNext = " + xNext);
             boolean found = false;
 
             // 枚举 i
