@@ -26,6 +26,32 @@ public class LeetCodeMain12 {
 
     }
 
+    // 187. 重复的DNA序列
+    public List<String> findRepeatedDnaSequences(String s) {
+        List<String> res = new ArrayList<>();
+        if (s.length() < 10) {
+            return res;
+        }
+
+        Set<String> set = new HashSet<>();
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < 10; i++) {
+            str.append(s.charAt(i));
+        }
+        set.add(String.valueOf(str));
+
+        for (int i = 10; i < s.length(); i++) {
+            str.deleteCharAt(0).append(s.charAt(i));
+            if (set.contains(String.valueOf(str)) && !res.contains(String.valueOf(str))) {
+                res.add(String.valueOf(str));
+            } else {
+                set.add(String.valueOf(str));
+            }
+        }
+
+        return res;
+    }
+
     // 22. 括号生成
     public List<String> generateParenthesis(int n) {
         List<String> ans = new ArrayList<>();
