@@ -26,6 +26,55 @@ public class LeetCodeMain12 {
 
     }
 
+    // 43. 字符串相乘
+    public String multiply(String num1, String num2) {
+        if (num1.equals("0") || num2.equals("0")) {
+            return "0";
+        }
+        List<List<Integer>> list = new ArrayList<>();
+        for (int i = num1.length() - 1; i >= 0; i--) {
+            List<Integer> temp = new LinkedList<>();
+            int result = 0;
+            int one = num1.charAt(i) - '0';
+            for (int j = num2.length() - 1; j >= 0; j--) {
+                int two = num2.charAt(j) - '0';
+                temp.add((one * two + result) % 10);
+                result = (one * two + result) / 10;
+            }
+            if (result > 0) {
+                temp.add(result);
+            }
+            list.add(temp);
+        }
+
+        int length = list.get(0).size();
+        for (int i = 0; i < list.size(); i++) {
+            for (int j = 0; j < i; j++) {
+                list.get(i).add(0, 0);
+            }
+            length = Math.max(length, list.get(i).size());
+        }
+
+        StringBuilder res = new StringBuilder();
+        int result = 0;
+        for (int i = 0; i < length; i++) {
+            int tempSum = 0;
+            for (int j = 0; j < list.size(); j++) {
+                if (list.get(j).size() > i) {
+                    tempSum += list.get(j).get(i);
+                }
+            }
+            tempSum += result;
+            res.insert(0, tempSum % 10);
+            result = tempSum / 10;
+        }
+        if (result > 0) {
+            res.insert(0, result);
+        }
+
+        return res.toString();
+    }
+
     // 187. 重复的DNA序列
     public List<String> findRepeatedDnaSequences(String s) {
         List<String> res = new ArrayList<>();
