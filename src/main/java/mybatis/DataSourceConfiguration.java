@@ -4,11 +4,13 @@ import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -17,6 +19,9 @@ import java.nio.charset.Charset;
 public class DataSourceConfiguration implements BeanPostProcessor, EnvironmentAware {
 
     private ConfigurableEnvironment configurableEnvironment;
+
+    @Autowired
+    TransactionTemplate transactionTemplate;
 
     @SneakyThrows
     @Override
