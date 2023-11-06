@@ -26,6 +26,35 @@ public class LeetCodeMain12 {
 
     }
 
+    // 318. 最大单词长度乘积
+    public int maxProduct(String[] words) {
+        Arrays.sort(words, (a, b) -> b.length() - a.length());
+        int max = 0;
+        for (int i = 0; i < words.length; i++) {
+            Set<Character> set = new HashSet<>();
+            for (int j = 0; j < words[i].length(); j++) {
+                set.add(words[i].charAt(j));
+            }
+            for (int j = i + 1; j < words.length; j++) {
+                if (words[i].length() * words[j].length() > max) {
+                    int mark = 0;
+                    for (int k = 0; k < words[j].length(); k++) {
+                        if (set.contains(words[j].charAt(k))) {
+                            mark = 1;
+                            break;
+                        }
+                    }
+                    if (mark == 0) {
+                        max = words[i].length() * words[j].length();
+                        break;
+                    }
+                }
+            }
+        }
+
+        return max;
+    }
+
     // 43. 字符串相乘
     public String multiply(String num1, String num2) {
         if (num1.equals("0") || num2.equals("0")) {
