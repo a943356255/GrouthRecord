@@ -26,6 +26,38 @@ public class LeetCodeMain12 {
 
     }
 
+    Map<Integer, String> map = new HashMap<>();
+    // 38. 外观数列
+    public String countAndSay(int n) {
+        map.put(1, "1");
+        map.put(2, "11");
+        map.put(3, "21");
+        map.put(4, "1211");
+        map.put(5, "111221");
+
+        return getN(n);
+    }
+
+    public String getN(int n) {
+        if (n <= 5) {
+            return map.get(n);
+        }
+
+        String str = getN(n - 1);
+        StringBuilder res = new StringBuilder();
+        int count = 1;
+        for (int i = 1; i < str.length(); i++) {
+            if (str.charAt(i) == str.charAt(i - 1)) {
+                count++;
+            } else {
+                res.append(count).append(str.charAt(i - 1));
+                count = 1;
+            }
+        }
+        res.append(count).append(str.charAt(str.length() - 1));
+        return res.toString();
+    }
+
     // 318. 最大单词长度乘积
     public int maxProduct(String[] words) {
         Arrays.sort(words, (a, b) -> b.length() - a.length());
