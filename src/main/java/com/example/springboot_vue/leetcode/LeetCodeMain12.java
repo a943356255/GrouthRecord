@@ -26,6 +26,61 @@ public class LeetCodeMain12 {
 
     }
 
+    // 2586. 统计范围内的元音字符串数
+    public int vowelStrings(String[] words, int left, int right) {
+        int res = 0;
+        Set<Character> set = new HashSet<>();
+        set.add('a');
+        set.add('e');
+        set.add('i');
+        set.add('o');
+        set.add('u');
+        for (int i = left; i <= right; i++) {
+            if (set.contains(words[i].charAt(0)) && set.contains(words[i].charAt(words[i].length() - 1))) {
+                res++;
+            }
+        }
+
+        return res;
+    }
+
+    // 40. 组合总和 II,有问题
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(candidates);
+
+        for (int i = 0; i < candidates.length; i++) {
+            if (candidates[i] > target) {
+                break;
+            }
+            List<Integer> list = new ArrayList<>();
+            dfs(list, i, candidates, target, res);
+        }
+
+        return res;
+    }
+
+    public void dfs(List<Integer> list, int index, int[] candidates, int target, List<List<Integer>> res) {
+        if (index > candidates.length) {
+            return;
+        }
+
+        if (target < candidates[index]) {
+            return;
+        }
+        for (int i = index; i < candidates.length && candidates[i] < target; i++) {
+            list.add(candidates[i]);
+            System.out.println(target - candidates[i]);
+            if (target - candidates[i] == 0) {
+                res.add(new ArrayList<>(list));
+                return;
+            }
+            dfs(list, index + 1, candidates, target - candidates[i], res);
+            list.remove(list.size() - 1);
+            target += candidates[i];
+        }
+    }
+
     Map<Integer, String> map = new HashMap<>();
     // 38. 外观数列
     public String countAndSay(int n) {
