@@ -26,6 +26,29 @@ public class LeetCodeMain12 {
 
     }
 
+    int index = 0;
+    // 99. 恢复二叉搜索树
+    public void recoverTree(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        midDfs(root, list, 0);
+        list.sort(Comparator.comparing(a -> a));
+        midDfs(root, list, 1);
+    }
+
+    public void midDfs(TreeNode treeNode, List<Integer> list, int mark) {
+        if (treeNode == null) {
+            return;
+        }
+
+        midDfs(treeNode.left, list, mark);
+        if (mark == 0) {
+            list.add(treeNode.val);
+        } else {
+            treeNode.val = list.get(index++);
+        }
+        midDfs(treeNode.right, list, mark);
+    }
+
     // 2609. 最长平衡子字符串
     public int findTheLongestBalancedSubstring(String s) {
         if (s.equals("")) {
