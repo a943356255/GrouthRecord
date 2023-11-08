@@ -26,6 +26,34 @@ public class LeetCodeMain12 {
 
     }
 
+    // 2609. 最长平衡子字符串
+    public int findTheLongestBalancedSubstring(String s) {
+        if (s.equals("")) {
+            return 0;
+        }
+        int res = 0;
+        int indexZero = -1, countZero = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '0') {
+                if (indexZero == -1) {
+                    indexZero = i;
+                }
+                countZero++;
+            } else {
+                if (countZero > 0) {
+                    countZero--;
+                }
+            }
+            if (countZero == 0) {
+                res = Math.max(res, i - indexZero + 1);
+                indexZero = -1;
+            }
+        }
+
+        return res;
+    }
+
     // 2586. 统计范围内的元音字符串数
     public int vowelStrings(String[] words, int left, int right) {
         int res = 0;
