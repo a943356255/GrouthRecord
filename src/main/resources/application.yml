@@ -19,13 +19,13 @@ spring:
         min-idle: 3
   servlet:
     multipart:
-      max-file-size: 20MB
-      max-request-size: 20MB
-  data:
-    mongodb:
-      enabled: false #设置为true才开启mongodb服务
-      host: 127.0.0.1
-      port: 27017
+      max-file-size: 100MB
+      max-request-size: 100MB
+#  data:
+#    mongodb:
+#      enabled: false #设置为true才开启mongodb服务
+#      host: 127.0.0.1
+#      port: 27017
 server:
   port: 9000
 #  servlet:
