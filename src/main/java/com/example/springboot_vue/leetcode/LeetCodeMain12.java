@@ -26,6 +26,101 @@ public class LeetCodeMain12 {
 
     }
 
+    static final int INF = 1000000000;
+    int[][] direction = {{0, 1}, {-1, 0}, {0, -1}, {1, 0}};
+    // 2258. 逃离火灾
+    public int maximumMinutes(int[][] grid) {
+        int[][] fireTime = new int[grid.length][grid[0].length];
+        for (int i = 0; i < fireTime.length; i++) {
+            Arrays.fill(fireTime[i], INF);
+        }
+        bfs(grid, fireTime);
+        int arriveTime = arriveTime(grid, fireTime, 0);
+
+        // 无法到达
+        if (arriveTime < 0) {
+            return -1;
+        }
+
+        // 无限时间
+        if (fireTime[grid.length - 1][grid[0].length - 1] == INF) {
+            return INF;
+        }
+
+        int res = fireTime[grid.length - 1][grid[0].length - 1] - arriveTime;
+        return arriveTime(grid, fireTime, res) >= 0 ? res : (res - 1);
+    }
+
+    public void bfs(int[][] grid, int[][] fireTime) {
+        Queue<int[]> queue = new LinkedList<>();
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 1) {
+                    queue.offer(new int[]{i, j});
+                    fireTime[i][j] = 0;
+                }
+            }
+        }
+
+        int time = 1;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int[] arr = queue.poll();
+                for (int j = 0; j < direction.length; j++) {
+                    int x = arr[0] + direction[j][0];
+                    int y = arr[1] + direction[j][1];
+                    if (legal(x, y, grid)) {
+                        // 这里是什么意思
+                        if (fireTime[x][y] != INF) {
+                            continue;
+                        }
+                        fireTime[x][y] = time;
+                        queue.offer(new int[]{x, y});
+                    }
+                }
+            }
+
+            time++;
+        }
+    }
+
+    public int arriveTime(int[][] grid, int[][] fireTime, int stayTime) {
+        boolean[][] visit = new boolean[grid.length][grid[0].length];
+        Queue<int[]> queue = new ArrayDeque<>();
+        queue.offer(new int[]{0, 0, stayTime});
+        visit[0][0] = true;
+
+        while (!queue.isEmpty()) {
+            int[] arr = queue.poll();
+            for (int i = 0; i < direction.length; i++) {
+                int x = arr[0] + direction[i][0];
+                int y = arr[1] + direction[i][1];
+                if (legal(x, y, grid)) {
+                    if (!visit[x][y]) {
+                        // 到达安全门
+                        if (x == grid.length - 1 && y == grid[0].length - 1) {
+                            // arr[2]记录的是时间
+                            return arr[2] + 1;
+                        }
+
+                        // 这里是火到达x,y的时间大于人到达该位置的时间,可以入队
+                        if (fireTime[x][y] > arr[2] + 1) {
+                            visit[x][y] = true;
+                            queue.offer(new int[]{x, y, arr[2] + 1});
+                        }
+                    }
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    public boolean legal(int x, int y, int[][] board) {
+        return x >= 0 && y >= 0 && x < board.length && y < board[0].length && board[x][y] != 2;
+    }
+
     int index = 0;
     // 99. 恢复二叉搜索树
     public void recoverTree(TreeNode root) {
