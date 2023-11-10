@@ -23,7 +23,44 @@ public class LeetCodeMain12 {
 
         String str = "last    test";
         String[] result = str.split(" ");
+    }
 
+    // 2300. 咒语和药水的成功对数
+    public int[] successfulPairs(int[] spells, int[] potions, long success) {
+        int[] res = new int[spells.length];
+        Arrays.sort(potions);
+
+        for (int i = 0; i < spells.length; i++) {
+            res[i] = potions.length - check(potions, success, spells[i]);
+        }
+
+        return res;
+    }
+
+    public int check(int[] potions, long success, int first) {
+        int left = 0, right = potions.length - 1;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if ((long) first * potions[mid] >= success) {
+                if (mid == 0 || (long) potions[mid - 1] * first < success) {
+                    return mid;
+                } else {
+                    right = mid - 1;
+                }
+            } else {
+                if (mid == potions.length - 1 || (long) potions[mid + 1] * first >= success) {
+                    return mid + 1;
+                } else {
+                    left = mid + 1;
+                }
+            }
+        }
+
+        if (left == potions.length - 1) {
+            return potions.length;
+        } else {
+            return 0;
+        }
     }
 
     static final int INF = 1000000000;
