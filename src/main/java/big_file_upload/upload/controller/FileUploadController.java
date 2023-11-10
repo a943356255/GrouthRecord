@@ -1,5 +1,6 @@
 package big_file_upload.upload.controller;
 
+import big_file_upload.upload.Chunk;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.io.FileUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,19 +25,20 @@ public class FileUploadController {
     String outPath = "D:\\bilibili_video\\test";
 
     @RequestMapping("/upload")
-    public String upload(MultipartFile[] file, String md5) throws IOException {
+    public String upload(MultipartFile file, Chunk chunk) throws IOException {
         if (file == null) {
             System.out.println("文件为空");
             return "error";
         }
         System.out.println("开始上传文件");
-        for (int i = 0; i < file.length; i++) {
+        File outFile = new File(path + File.separator, String.valueOf((chunk.getChunk() + 1)));
+        InputStream inputStream = file.getInputStream();
+        FileUtils.copyInputStreamToFile(inputStream, outFile);
+        inputStream.close();
+//        for (int i = 0; i < file.length; i++) {
 //            File outFile = new File(path, fileName + "-" + (i + 1) + "-" + file.length);
-            File outFile = new File(path + File.separator, String.valueOf((i + 1)));
-            InputStream inputStream = file[i].getInputStream();
-            FileUtils.copyInputStreamToFile(inputStream, outFile);
-            inputStream.close();
-        }
+//
+//        }
 
         return "";
     }
@@ -85,11 +87,13 @@ public class FileUploadController {
         String type = (String) map.get("type");
         int chunks = (int) map.get("chunks");
         String md5 = (String) map.get("md5");
-
+        System.out.println("开始执行文件合并");
         File makeDir = new File(outPath + File.separator + md5);
         if (makeDir.mkdir()) {
             // 最终汇总的文件
-            File outFile = new File(outPath + File.separator + md5 + File.separator + filename + "." + type);
+            String finalPath = outPath + File.separator + md5 + File.separator + filename + "." + type;
+            System.out.println("最终的文件为 " + finalPath);
+            File outFile = new File(finalPath);
             for (int i = 1; i <= chunks; i++) {
                 String findName = String.valueOf(i);
                 File partFile = new File(path + File.separator + findName);
@@ -97,10 +101,11 @@ public class FileUploadController {
                 FileUtils.copyFile(partFile, fileOutputStream);
                 fileOutputStream.close();
             }
+            System.out.println("待删除的文件路径为" + path);
             File file = new File(path);
             FileUtils.deleteDirectory(file);
         }
-
+        System.out.println("文件合并完成");
         return "";
     }
 
@@ -122,7 +127,7 @@ public class FileUploadController {
                 }
             }
         }
-
+        System.out.println("验证文件完整性完成");
         if (list.size() == chunks) {
             jsonObject.put("code", 0);
         } else {
