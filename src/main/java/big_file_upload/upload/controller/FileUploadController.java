@@ -105,7 +105,30 @@ public class FileUploadController {
     }
 
     @RequestMapping("/uploadSuccess")
-    public String uploadSuccess() {
-        return "";
+    public JSONObject uploadSuccess(@RequestBody Map<String, Object> map) {
+        // 路径名
+        String md5 = (String) map.get("md5");
+        String filename = (String) map.get("name");
+        int chunks = (int) map.get("chunks");
+
+        JSONObject jsonObject = new JSONObject();
+        File file = new File(path);
+        File[] array = file.listFiles();
+        List<String> list = new ArrayList<>();
+        if (array != null) {
+            for (File value : array) {
+                if (value.isFile()) {
+                    list.add(value.getName());
+                }
+            }
+        }
+
+        if (list.size() == chunks) {
+            jsonObject.put("code", 0);
+        } else {
+            jsonObject.put("code", 1);
+        }
+        jsonObject.put("data", list);
+        return jsonObject;
     }
 }
