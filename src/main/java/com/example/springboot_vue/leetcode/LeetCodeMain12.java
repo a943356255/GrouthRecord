@@ -25,6 +25,62 @@ public class LeetCodeMain12 {
         String[] result = str.split(" ");
     }
 
+    // 765. 情侣牵手
+    public int minSwapsCouples(int[] row) {
+        int n = row.length;
+        int tot = n / 2;
+
+        List<Integer>[] graph = new List[tot];
+        for (int i = 0; i < tot; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        // 想坐在一起，那么一对情侣的座位一定是一个奇数，一个偶数，两人座位都 / 2，一定是一样的
+        for (int i = 0; i < n; i += 2) {
+            // 这里就是先统计了目前各个情侣的座位是怎么坐的
+            // 根据调换座位之前来构造一个图
+            int l = row[i] / 2;
+            int r = row[i + 1] / 2;
+            // 如果两个数不相等，说明并不是一对情侣，就需要将他们加入图当中
+            // 这其中也意味着这两个人的情侣也坐错了
+            if (l != r) {
+                graph[l].add(r);
+                graph[r].add(l);
+            }
+        }
+
+        // 这里是根据每个位置来进行遍历，而不是根据人
+        boolean[] visited = new boolean[tot];
+        int ret = 0;
+        for (int i = 0; i < tot; i++) {
+            if (!visited[i]) {
+                Queue<Integer> queue = new LinkedList<>();
+                visited[i] = true;
+                queue.offer(i);
+                int cnt = 0;
+
+                // 这里是统计不同情侣之间环的度是多少，然后需要调换的次数就是环的度 - 1
+                // 这里放入的，就是从第i个位置开始，先看当前坐在i位置的人，以及和他们相关的，所有的坐错位置的人
+                // 队列每有一个元素，就意味着多一个位置的人坐错了
+                while (!queue.isEmpty()) {
+                    int x = queue.poll();
+                    cnt += 1;
+
+                    // 这个graph[x]的大小，并不一定是2，有多少个人交叉坐错了，这里就是多少
+                    for (int y : graph[x]) {
+                        if (!visited[y]) {
+                            visited[y] = true;
+                            queue.offer(y);
+                        }
+                    }
+                }
+                ret += cnt - 1;
+            }
+        }
+
+        return ret;
+    }
+
     // 2300. 咒语和药水的成功对数
     public int[] successfulPairs(int[] spells, int[] potions, long success) {
         int[] res = new int[spells.length];

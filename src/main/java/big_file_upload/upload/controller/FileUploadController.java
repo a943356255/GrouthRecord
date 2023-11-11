@@ -63,7 +63,7 @@ public class FileUploadController {
         MessageDigest md = MessageDigest.getInstance("MD5");
         try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file))) {
             byte[] buffer = new byte[1024];
-            int read = 0;
+            int read;
             while ((read = bis.read(buffer)) != -1) {
                 md.update(buffer, 0, read);
             }
