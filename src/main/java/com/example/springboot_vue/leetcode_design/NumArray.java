@@ -52,16 +52,20 @@ public class NumArray {
             return sum;
         }
 
+        // 下面这种情况,left和right不在同一个区间,那么就分别计算
+        // 这里是计算left 到 left所在块的最后一个元素的和
         int sum1 = 0;
         for (int j = i1; j < size; j++) {
             sum1 += nums[b1 * size + j];
         }
 
+        // 这里是从0到right,计算right所在块的和
         int sum2 = 0;
         for (int j = 0; j <= i2; j++) {
             sum2 += nums[b2 * size + j];
         }
 
+        // 这里,是考虑left和right中间跨了多个块,计算这些块的和
         int sum3 = 0;
         for (int j = b1 + 1; j < b2; j++) {
             sum3 += sum[j];
