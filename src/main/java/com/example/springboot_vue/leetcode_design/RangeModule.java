@@ -3,6 +3,9 @@ package com.example.springboot_vue.leetcode_design;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * 这个题思路简单，但是具体实现起来比较复杂，需要考虑很多种情况，考虑区间
+ */
 // 715. Range 模块
 public class RangeModule {
 
