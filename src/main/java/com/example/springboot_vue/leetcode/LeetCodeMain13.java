@@ -6,18 +6,24 @@ public class LeetCodeMain13 {
 
     // 2656. K 个元素的最大和
     public int maximizeSum(int[] nums, int k) {
-        PriorityQueue<Integer> queue = new PriorityQueue<>((a, b) -> b - a);
+
+//        PriorityQueue<Integer> queue = new PriorityQueue<>((a, b) -> b - a);
+//        for (int num : nums) {
+//            queue.add(num);
+//        }
+//
+//        for (int i = 0; i < k; i++) {
+//            int temp = queue.poll();
+//            sum += temp;
+//            queue.add(temp + 1);
+//        }
+        int sum = 0, max = 0;
         for (int num : nums) {
-            queue.add(num);
+            if (max < num) {
+                max = num;
+            }
         }
-
-        int sum = 0;
-        for (int i = 0; i < k; i++) {
-            int temp = queue.poll();
-            sum += temp;
-            queue.add(temp + 1);
-        }
-
+        sum += max * k + (k * (k - 1)) / 2;
         return sum;
     }
 
