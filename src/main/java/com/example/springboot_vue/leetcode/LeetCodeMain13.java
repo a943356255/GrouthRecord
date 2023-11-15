@@ -4,6 +4,23 @@ import java.util.*;
 
 public class LeetCodeMain13 {
 
+    // 2656. K 个元素的最大和
+    public int maximizeSum(int[] nums, int k) {
+        PriorityQueue<Integer> queue = new PriorityQueue<>((a, b) -> b - a);
+        for (int num : nums) {
+            queue.add(num);
+        }
+
+        int sum = 0;
+        for (int i = 0; i < k; i++) {
+            int temp = queue.poll();
+            sum += temp;
+            queue.add(temp + 1);
+        }
+
+        return sum;
+    }
+
     // 1334. 阈值距离内邻居最少的城市
     public int findTheCity(int n, int[][] edges, int distanceThreshold) {
         int[] ans = {Integer.MAX_VALUE / 2, -1};
