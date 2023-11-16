@@ -20,9 +20,13 @@ import java.util.Map;
 @RequestMapping("/filepath")
 public class FileUploadController {
 
-    String path = "D:\\bilibili_video\\test\\test";
+//    String path = "D:\\bilibili_video\\test\\test";
+//
+//    String outPath = "D:\\bilibili_video\\test";
 
-    String outPath = "D:\\bilibili_video\\test";
+    String path = "/usr/app/server/test/test";
+
+    String outPath = "/usr/app/server/test";
 
     @RequestMapping("/upload")
     public String upload(MultipartFile file, Chunk chunk) throws IOException {
