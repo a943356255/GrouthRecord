@@ -27,6 +27,25 @@ public class LeetCodeMain13 {
         return sum;
     }
 
+    // 2760. 最长奇偶子数组
+    public int longestAlternatingSubarray(int[] nums, int threshold) {
+        int left = 0, max = 0;
+        while (left != nums.length) {
+            if (nums[left] % 2 == 0 && nums[left] <= threshold) {
+                int right = left + 1;
+                int temp = 0;
+                while (right != nums.length && nums[right] % 2 != temp && nums[right] <= threshold) {
+                    temp = nums[right] % 2;
+                    right++;
+                }
+                max = Math.max(max, right - left);
+            }
+            left ++;
+        }
+
+        return max;
+    }
+
     // 1334. 阈值距离内邻居最少的城市
     public int findTheCity(int n, int[][] edges, int distanceThreshold) {
         int[] ans = {Integer.MAX_VALUE / 2, -1};
