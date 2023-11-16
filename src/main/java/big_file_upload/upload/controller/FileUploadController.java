@@ -12,9 +12,12 @@ import java.io.*;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 @RequestMapping("/filepath")
@@ -24,21 +27,33 @@ public class FileUploadController {
 //
 //    String outPath = "D:\\bilibili_video\\test";
 
+    ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
+
+    SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+
     String path = "/usr/app/server/test/test";
 
     String outPath = "/usr/app/server/test";
 
     @RequestMapping("/upload")
-    public String upload(MultipartFile file, Chunk chunk) throws IOException {
+    public String upload(MultipartFile file, Chunk chunk, String time) throws IOException {
         if (file == null) {
             System.out.println("文件为空");
             return "error";
         }
-        System.out.println("开始上传文件");
+
+        Date arriveDate = new Date(System.currentTimeMillis());
+        System.out.println("请求" + chunk.getChunk() + "到达时间为：" + arriveDate  + ", 开始上传文件, 请求发送时间为time = " + time);
+
         File outFile = new File(path + File.separator, String.valueOf((chunk.getChunk() + 1)));
         InputStream inputStream = file.getInputStream();
         FileUtils.copyInputStreamToFile(inputStream, outFile);
         inputStream.close();
+
+        // 打印上传完成时间
+        Date date = new Date(System.currentTimeMillis());
+        System.out.println("文件上传完成时间" + formatter.format(date));
+
 //        for (int i = 0; i < file.length; i++) {
 //            File outFile = new File(path, fileName + "-" + (i + 1) + "-" + file.length);
 //
@@ -91,12 +106,12 @@ public class FileUploadController {
         String type = (String) map.get("type");
         int chunks = (int) map.get("chunks");
         String md5 = (String) map.get("md5");
-        System.out.println("开始执行文件合并");
+        Date date = new Date(System.currentTimeMillis());
+        System.out.println("开始执行文件合并,当前时间为 ：" + date);
         File makeDir = new File(outPath + File.separator + md5);
         if (makeDir.mkdir()) {
             // 最终汇总的文件
             String finalPath = outPath + File.separator + md5 + File.separator + filename + "." + type;
-            System.out.println("最终的文件为 " + finalPath);
             File outFile = new File(finalPath);
             for (int i = 1; i <= chunks; i++) {
                 String findName = String.valueOf(i);
@@ -105,11 +120,11 @@ public class FileUploadController {
                 FileUtils.copyFile(partFile, fileOutputStream);
                 fileOutputStream.close();
             }
-            System.out.println("待删除的文件路径为" + path);
             File file = new File(path);
             FileUtils.deleteDirectory(file);
         }
-        System.out.println("文件合并完成");
+        date = new Date(System.currentTimeMillis());
+        System.out.println("文件合并完成, 当前时间为：" + date);
         return "";
     }
 
