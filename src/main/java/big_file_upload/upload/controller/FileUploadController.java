@@ -23,23 +23,24 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestMapping("/filepath")
 public class FileUploadController {
 
-//    String path = "D:\\bilibili_video\\test\\test";
-//
-//    String outPath = "D:\\bilibili_video\\test";
+    String path = "D:\\bilibili_video\\test\\test";
+
+    String outPath = "D:\\bilibili_video\\test";
 
     ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
 
     SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
 
-    String path = "/usr/app/server/test/test";
-
-    String outPath = "/usr/app/server/test";
+//    String path = "/usr/app/server/test/test";
+//
+//    String outPath = "/usr/app/server/test";
 
     @RequestMapping("/upload")
-    public String upload(MultipartFile file, Chunk chunk, String time) throws IOException {
+    public JSONObject upload(MultipartFile file, Chunk chunk, String time) throws IOException {
+        JSONObject jsonObject = new JSONObject();
         if (file == null) {
             System.out.println("文件为空");
-            return "error";
+            return jsonObject;
         }
 
         Date arriveDate = new Date(System.currentTimeMillis());
@@ -58,8 +59,8 @@ public class FileUploadController {
 //            File outFile = new File(path, fileName + "-" + (i + 1) + "-" + file.length);
 //
 //        }
-
-        return "";
+        jsonObject.put("part", chunk.getChunk());
+        return jsonObject;
     }
 
     @RequestMapping("/verifyFileExist")
