@@ -4,6 +4,43 @@ import java.util.*;
 
 public class LeetCodeMain13 {
 
+
+    // 2342.数位和相等数对的最大和
+    public int maximumSum(int[] nums) {
+        Map<Integer, PriorityQueue<Integer>> map = new HashMap<>();
+        int max = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int sum = 0, temp = nums[i];
+            while (temp > 0) {
+                sum += temp % 10;
+                temp /= 10;
+            }
+
+            if (map.get(sum) == null) {
+                PriorityQueue<Integer> queue = new PriorityQueue<>((a, b) -> b - a);
+                queue.offer(nums[i]);
+                map.put(sum, queue);
+            } else {
+                map.get(sum).offer(nums[i]);
+            }
+        }
+
+        for (Map.Entry<Integer, PriorityQueue<Integer>> entry : map.entrySet()) {
+            PriorityQueue<Integer> queue = entry.getValue();
+            System.out.println(queue.toString());
+            if (queue.size() < 2) {
+                continue;
+            }
+
+            int first = queue.poll();
+            int second = queue.poll();
+            max = Math.max(max, first + second);
+        }
+        return max;
+    }
+
+
+
     // 2656. K 个元素的最大和
     public int maximizeSum(int[] nums, int k) {
 
