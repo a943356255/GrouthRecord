@@ -4,6 +4,19 @@ import java.util.*;
 
 public class LeetCodeMain13 {
 
+    // 53. 最大子数组和
+    public int maxSubArray(int[] nums) {
+        int max = nums[0];
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            dp[i] = Math.max(nums[i], dp[i - 1] + nums[i]);
+            max = Math.max(dp[i], max);
+        }
+
+        return max;
+    }
+
     /**
      * 我自己的写法用了一个滑动窗口，但实际上三个窗口不交叉的滑动，一次遍历就过了
      */
