@@ -25,12 +25,32 @@ public class Test {
 class Father {
     int test;
     int name;
+
+    public Father(int test, int name) {
+        this.test = test;
+        this.name = name;
+    }
+
+    public Father() {
+
+    }
+
     public void fatherMethod() {
         System.out.println("456");
     }
 }
 
 class Child extends Father {
+
+    public Child() {
+
+    }
+
+    // 由于父类只有有参的构造器，所以子类必须有构造器，且必须显示的调用父类的构造器
+    public Child(int test, int name) {
+        // 当父类添加了无参的构造器后，这句话可以注释调，但是它会隐式的调用父类的无参构造
+        super(test, name);
+    }
 
     public void childMethod() {
 
