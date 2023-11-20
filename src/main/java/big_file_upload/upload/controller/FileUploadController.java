@@ -27,7 +27,7 @@ public class FileUploadController {
 
     String outPath = "D:\\bilibili_video\\test";
 
-    ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
+    ConcurrentHashMap<String, List<Integer>> map = new ConcurrentHashMap<>();
 
     SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
 
@@ -50,7 +50,7 @@ public class FileUploadController {
         InputStream inputStream = file.getInputStream();
         FileUtils.copyInputStreamToFile(inputStream, outFile);
         inputStream.close();
-
+        map.get("").add(chunk.getChunk());
         // 打印上传完成时间
         Date date = new Date(System.currentTimeMillis());
         System.out.println("文件上传完成时间" + formatter.format(date));
@@ -59,6 +59,7 @@ public class FileUploadController {
 //            File outFile = new File(path, fileName + "-" + (i + 1) + "-" + file.length);
 //
 //        }
+
         jsonObject.put("part", chunk.getChunk());
         return jsonObject;
     }
