@@ -4,6 +4,26 @@ import java.util.*;
 
 public class LeetCodeMain13 {
 
+    // 2216. 美化数组的最少删除数
+    public int minDeletion(int[] nums) {
+        int res = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if ((i - res) % 2 == 0) {
+                if (i + 1 < nums.length) {
+                    if (nums[i] == nums[i + 1]) {
+                        res++;
+                    }
+                }
+            }
+        }
+
+        if ((nums.length - res) % 2 != 0) {
+            res++;
+        }
+
+        return res;
+    }
+
     // 53. 最大子数组和
     public int maxSubArray(int[] nums) {
         int max = nums[0];
