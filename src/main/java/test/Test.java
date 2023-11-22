@@ -1,6 +1,7 @@
 package test;
 
-import annotation.DefaultValue;
+
+import annotation.MyDefaultValue;
 import cn.dev33.satoken.stp.StpUtil;
 
 public class Test {
@@ -12,7 +13,7 @@ public class Test {
 //        test.testExe();
     }
 
-    public void testExe(@DefaultValue(value = "册数数据") String str) {
+    public void testExe(@MyDefaultValue(value = "册数数据") String str) {
         System.out.println(str);
 //        Father father = new Child();
 //        father.fatherMethod();
