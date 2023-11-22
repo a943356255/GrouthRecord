@@ -8,12 +8,13 @@ public class Test {
 //        StpUtil.login("testId");
 //        StpUtil.createLoginSession("testId");
         Test test = new Test();
-        test.testExe();
+//        test.testExe();
     }
 
-    public void testExe() {
-        Father father = new Child();
-        father.fatherMethod();
+    public void testExe(@DefaultValue(value = "册数数据") String str) {
+        System.out.println(str);
+//        Father father = new Child();
+//        father.fatherMethod();
     }
 
     private static <T extends Number> double add(T a, T b) {
