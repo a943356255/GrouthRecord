@@ -10,21 +10,14 @@ public class MethodsInvoke {
         Method method = clazz.getMethod(methodName, args);
 
         Parameter[] parameters = method.getParameters();
-        int count = 0;
-        for (Parameter parameter : parameters) {
-            if (parameter.isAnnotationPresent(MyDefaultValue.class)) {
-                count++;
-            }
-        }
-
-        Object[] res = new String[count];
+        Object[] res = new String[parameterType.length];
         for (int i = 0; i < parameters.length; i++) {
             if (parameters[i].isAnnotationPresent(MyDefaultValue.class)) {
                 if (parameterType[i] == null) {
                     res[i] = parameters[i].getAnnotation(MyDefaultValue.class).value();
-                } else {
-                    res[i] = parameterType[i];
                 }
+            } else {
+                res[i] = parameterType[i];
             }
         }
 
