@@ -16,7 +16,7 @@ public class CountDownLunchNewDemo {
                     () -> {
                         try {
                             Thread.sleep(1000);
-                            System.out.println(String.format("threadID:[%s] finished!!", threadID));
+                            System.out.println(String.format("threadID:[%s] finished!!", Thread.currentThread().getId()) + " i = " + threadID);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         } finally {

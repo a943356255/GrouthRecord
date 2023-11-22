@@ -1,10 +1,15 @@
 package juc.count_down_lunch;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.concurrent.CountDownLatch;
 
 public class WaitThreadFirstDemo {
 
     public static void main(String[] args) throws InterruptedException {
+        JSONObject jsonObject = new JSONObject();
+        System.out.println(jsonObject.get("test"));
+
         int numThreads = 5;
         CountDownLatch latch = new CountDownLatch(numThreads);
 
@@ -50,9 +55,9 @@ class MyThread implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-//        finally {
-//            // 线程执行完毕后调用 countDown() 方法
-//            latch.countDown();
-//        }
+        finally {
+            // 线程执行完毕后调用 countDown() 方法
+            latch.countDown();
+        }
     }
 }
