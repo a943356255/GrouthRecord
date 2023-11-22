@@ -5,9 +5,10 @@ import java.lang.reflect.Parameter;
 
 public class MethodsInvoke {
 
-    public void invokeMethods(Object o, String methodName, Class<?>[] args) throws Exception {
+    public void invokeMethods(Object o, String methodName, Class<?>[] args, Object[] parameterType) throws Exception {
         Class<?> clazz = o.getClass();
         Method method = clazz.getMethod(methodName, args);
+
         Parameter[] parameters = method.getParameters();
         int count = 0;
         for (Parameter parameter : parameters) {
@@ -17,10 +18,13 @@ public class MethodsInvoke {
         }
 
         Object[] res = new String[count];
-        int index = 0;
-        for (Parameter parameter : parameters) {
-            if (parameter.isAnnotationPresent(MyDefaultValue.class)) {
-                res[index++] = parameter.getAnnotation(MyDefaultValue.class).value();
+        for (int i = 0; i < parameters.length; i++) {
+            if (parameters[i].isAnnotationPresent(MyDefaultValue.class)) {
+                if (parameterType[i] == null) {
+                    res[i] = parameters[i].getAnnotation(MyDefaultValue.class).value();
+                } else {
+                    res[i] = parameterType[i];
+                }
             }
         }
 
