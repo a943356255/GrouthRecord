@@ -4,6 +4,61 @@ import java.util.*;
 
 public class LeetCodeMain13 {
 
+    // 330. 按要求补齐数组
+    public int minPatches(int[] nums, int n) {
+        int res = 0;
+        return res;
+    }
+
+    // 1410. HTML 实体解析器
+    public String entityParser(String text) {
+        StringBuilder res = new StringBuilder();
+        Map<String, Character> map = new HashMap<>();
+        map.put("&quot;", '"');
+        map.put("&apos;", '\'');
+        map.put("&amp;", '&');
+        map.put("&gt;", '>');
+        map.put("&lt;", '<');
+        map.put("&frasl;", '/');
+
+        int mark = 0;
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (c == '&' && i + 1 < text.length() && text.charAt(i + 1) != '&') {
+                int count = 0;
+                StringBuilder temp = new StringBuilder();
+                temp.append('&');
+                for (int j = i + 1; j < text.length(); j++) {
+                    count++;
+                    char str = text.charAt(j);
+                    temp.append(str);
+                    if (str == ';') {
+                        break;
+                    }
+                    if (j + 1 < text.length()) {
+                        if (text.charAt(j + 1) == '&') {
+                            break;
+                        }
+                    }
+                }
+                System.out.println(temp.toString());
+                if (map.get(temp.toString()) != null) {
+                    res.append(map.get(temp.toString()));
+                } else {
+                    res.append(temp.toString());
+                }
+                i += count;
+                mark = 1;
+            }
+            if (mark == 0) {
+                res.append(c);
+            }
+            mark = 0;
+        }
+
+        return res.toString();
+    }
+
     // 2216. 美化数组的最少删除数
     public int minDeletion(int[] nums) {
         int res = 0;
