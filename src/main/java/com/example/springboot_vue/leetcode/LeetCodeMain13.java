@@ -10,6 +10,20 @@ public class LeetCodeMain13 {
         return res;
     }
 
+    // 2824. 统计和小于目标的下标对数目
+    public int countPairs(List<Integer> nums, int target) {
+        int res = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            for (int j = i + 1; j < nums.size(); j++) {
+                if (nums.get(i) + nums.get(j) < target) {
+                    res++;
+                }
+            }
+        }
+
+        return res;
+    }
+
     // 1410. HTML 实体解析器
     public String entityParser(String text) {
         StringBuilder res = new StringBuilder();
