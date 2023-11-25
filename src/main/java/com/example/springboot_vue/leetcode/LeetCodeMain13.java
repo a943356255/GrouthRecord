@@ -10,6 +10,41 @@ public class LeetCodeMain13 {
         return res;
     }
 
+    // 1457. 二叉树中的伪回文路径
+    int res = 0;
+    public int pseudoPalindromicPaths (TreeNode root) {
+        Map<Integer, Integer> map = new HashMap<>();
+        dfs(root, map);
+        return res;
+    }
+
+    public void dfs(TreeNode root, Map<Integer, Integer> map) {
+        if (root == null) {
+            return;
+        }
+        map.merge(root.val, 1, Integer::sum);
+        if (root.left == null && root.right == null) {
+            int temp = 0;
+            for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+                if (entry.getValue() % 2 != 0) {
+                    temp++;
+                }
+            }
+            if (temp == 1 || temp == 0) {
+                res++;
+            }
+        }
+
+        dfs(root.left, map);
+        dfs(root.right, map);
+
+        if (map.get(root.val) > 1) {
+            map.put(root.val, map.get(root.val) - 1);
+        } else {
+            map.remove(root.val);
+        }
+    }
+
     // 2824. 统计和小于目标的下标对数目
     public int countPairs(List<Integer> nums, int target) {
         int res = 0;
