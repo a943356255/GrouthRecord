@@ -10,6 +10,31 @@ public class LeetCodeMain13 {
         return res;
     }
 
+    // 828. 统计子串中的唯一字符
+    public int uniqueLetterString(String s) {
+        Map<Character, List<Integer>> index = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            // 注意，这里在list中添加的是下标
+            if (!index.containsKey(c)) {
+                index.put(c, new ArrayList<>());
+                index.get(c).add(-1);
+            }
+            index.get(c).add(i);
+        }
+
+        int res = 0;
+        for (Map.Entry<Character, List<Integer>> entry : index.entrySet()) {
+            List<Integer> arr = entry.getValue();
+            arr.add(s.length());
+            for (int i = 1; i < arr.size() - 1; i++) {
+                res += (arr.get(i) - arr.get(i - 1)) * (arr.get(i + 1) - arr.get(i));
+            }
+        }
+
+        return res;
+    }
+
     // 1457. 二叉树中的伪回文路径
     int res = 0;
     public int pseudoPalindromicPaths (TreeNode root) {
