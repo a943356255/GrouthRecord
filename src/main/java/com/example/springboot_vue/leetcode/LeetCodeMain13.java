@@ -7,7 +7,53 @@ public class LeetCodeMain13 {
     // 330. 按要求补齐数组
     public int minPatches(int[] nums, int n) {
         int res = 0;
+
+        synchronized (this) {
+
+        }
+
         return res;
+    }
+
+    // 907. 子数组的最小值之和
+    public int sumSubarrayMins(int[] arr) {
+        int n = arr.length;
+        Deque<Integer> monoStack = new ArrayDeque<>();
+        int[] left = new int[n];
+        int[] right = new int[n];
+
+        // 以数组[3, 1, 2, 4]为例子
+        // left[i] = [1, 2, 1, 1] 代表了以arr[i]为最右边，且arr[i]最小的子序列数目。
+        // 3只有他自己时是最小，1的话有它自己，外加3，1这个组合
+        // 2，4因为左边有比它小的1，所以他们也只包含了他们自己，所以是1
+        for (int i = 0; i < n; i++) {
+            // 这里的单调栈，是小元素在下，大元素在上，如果一直没有比该元素小的，那么该元素就一直处于最低端
+            while (!monoStack.isEmpty() && arr[i] <= arr[monoStack.peek()]) {
+                monoStack.pop();
+            }
+            left[i] = i - (monoStack.isEmpty() ? -1 : monoStack.peek());
+            monoStack.push(i);
+        }
+        monoStack.clear();
+
+        // right = [1, 3, 2, 1],代表了以该元素为最左且该元素为最小的子序列数目
+        // 3的话，只有它本身，而1，不仅包括他本身，而且还有1，2和1，2，4这两个组合
+        // 2包括了2，4和2本身，4只有他本身
+        for (int i = n - 1; i >= 0; i--) {
+            while (!monoStack.isEmpty() && arr[i] < arr[monoStack.peek()]) {
+                monoStack.pop();
+            }
+            right[i] = (monoStack.isEmpty() ? n : monoStack.peek()) - i;
+            monoStack.push(i);
+        }
+
+        long ans = 0;
+        final int MOD = 1000000007;
+        for (int i = 0; i < n; i++) {
+            ans = (ans + (long) left[i] * right[i] * arr[i]) % MOD;
+        }
+
+        return (int) ans;
     }
 
     // 828. 统计子串中的唯一字符
