@@ -50,14 +50,13 @@ public class FileUploadController {
         InputStream inputStream = file.getInputStream();
         FileUtils.copyInputStreamToFile(inputStream, outFile);
         inputStream.close();
-        map.get("").add(chunk.getChunk());
+        map.get("user").add(chunk.getChunk());
         // 打印上传完成时间
         Date date = new Date(System.currentTimeMillis());
         System.out.println("文件上传完成时间" + formatter.format(date));
 
 //        for (int i = 0; i < file.length; i++) {
 //            File outFile = new File(path, fileName + "-" + (i + 1) + "-" + file.length);
-//
 //        }
 
         jsonObject.put("part", chunk.getChunk());
