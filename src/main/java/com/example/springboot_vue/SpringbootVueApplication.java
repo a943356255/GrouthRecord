@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScans;
 @MapperScan("com.example.springboot_vue.mapper")
 @MapperScan("com.baomidou.mybatisplus.samples.quickstart.mapper")
 @MapperScan("com.example.springboot_vue.file_operate.mapper")
-@ComponentScans(value = {@ComponentScan(value = "big_file_upload")})
+@ComponentScans(value = {@ComponentScan(value = "big_file_upload"), @ComponentScan(value = "spring")})
 @SpringBootApplication
 public class SpringbootVueApplication {
 

@@ -23,8 +23,8 @@ public class CRUDServiceImpl implements CRUDService {
     @Autowired
     CRUDMapper crudMapper;
 
-    @Resource
-    MongoTemplate mongoTemplate;
+//    @Resource
+//    MongoTemplate mongoTemplate;
 
     @Override
     public JSONObject getCrudValue(Map<String, Object> map) {
