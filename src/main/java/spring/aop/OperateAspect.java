@@ -3,6 +3,7 @@ package spring.aop;
 import com.alibaba.fastjson.JSON;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 @Component
+@Aspect
 public class OperateAspect {
 
     /**
@@ -38,7 +40,7 @@ public class OperateAspect {
                 RecordOperate annotation = methodSignature.getMethod().getAnnotation(RecordOperate.class);
 
                 Class<? extends Convert> convert = annotation.convert();
-                Convert logConvert = convert.newInstance();
+                Convert logConvert = convert.getDeclaredConstructor().newInstance();
                 // 这里拿到的operateLogDO，就是携带了对应id的
                 OperateLogDO operateLogDO = logConvert.convert(proceedingJoinPoint.getArgs()[0]);
 

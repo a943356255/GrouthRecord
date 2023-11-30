@@ -8,12 +8,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Application implements CommandLineRunner {
 
+    @Autowired
+    private OrderService orderService;
+
     public static void main(String[] args) {
         new SpringApplication(Application.class).run();
     }
-
-    @Autowired
-    private OrderService orderService;
 
     @Override
     public void run(String... args) throws Exception {
