@@ -15,6 +15,30 @@ public class LeetCodeMain13 {
         return res;
     }
 
+    // 1657. 确定两个字符串是否接近
+    public boolean closeStrings(String word1, String word2) {
+        if (word1.length() != word2.length()) {
+            return false;
+        }
+
+        int[] char1 = new int[26];
+        int[] char2 = new int[26];
+
+        for (int i = 0; i < word1.length(); i++) {
+            char1[word1.charAt(i) - 'a']++;
+            char2[word2.charAt(i) - 'a']++;
+        }
+        for (int i = 0; i < 26; i++) {
+            if (char1[i] > 0 && char2[i] == 0 || char1[i] == 0 && char2[i] > 0) {
+                return false;
+            }
+        }
+
+        Arrays.sort(char1);
+        Arrays.sort(char2);
+        return Arrays.equals(char1, char2);
+    }
+
     // 907. 子数组的最小值之和
     public int sumSubarrayMins(int[] arr) {
         int n = arr.length;
