@@ -15,6 +15,54 @@ public class LeetCodeMain13 {
         return res;
     }
 
+    // 2661. 找出叠涂元素
+    public int firstCompleteIndex(int[] arr, int[][] mat) {
+        Map<Integer, int[]> map = new HashMap<>();
+        for (int i = 0; i < mat.length; i++) {
+            for (int j = 0; j < mat[0].length; j++) {
+                map.put(mat[i][j], new int[]{i, j});
+            }
+        }
+
+        Map<Integer, Map<Integer, List<Integer>>> resultMap = new HashMap<>();
+        int res = Integer.MAX_VALUE;
+        for (int i = 0; i < arr.length; i++) {
+            int[] tempArr = map.get(arr[i]);
+            // 0只记录行，1记录列
+            setData(resultMap, tempArr, i, 0);
+            setData(resultMap, tempArr, i, 1);
+
+            if (resultMap.get(0).get(tempArr[0]).size() == mat[0].length) {
+                return i;
+            }
+
+            if (resultMap.get(1).get(tempArr[1]).size() == mat.length) {
+                return i;
+            }
+        }
+
+        return res;
+    }
+
+    public void setData(Map<Integer, Map<Integer, List<Integer>>> resultMap, int[] tempArr, int index, int mark) {
+        if (resultMap.get(mark) == null) {
+            // 这个temp，它的key是每一行的下标，value是对应填充的元素
+            Map<Integer, List<Integer>> temp = new HashMap<>();
+            List<Integer> hang = new ArrayList<>();
+            hang.add(index);
+            temp.put(tempArr[mark], hang);
+            resultMap.put(mark, temp);
+        } else {
+            if (resultMap.get(mark).get(tempArr[mark]) == null) {
+                List<Integer> hang = new ArrayList<>();
+                hang.add(index);
+                resultMap.get(mark).put(tempArr[mark], hang);
+            } else {
+                resultMap.get(mark).get(tempArr[mark]).add(index);
+            }
+        }
+    }
+
     // 1657. 确定两个字符串是否接近
     public boolean closeStrings(String word1, String word2) {
         if (word1.length() != word2.length()) {
