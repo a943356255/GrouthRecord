@@ -15,6 +15,27 @@ public class LeetCodeMain13 {
         return res;
     }
 
+    // 1094. 拼车
+    public boolean carPooling(int[][] trips, int capacity) {
+        PriorityQueue<int[]> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
+        Arrays.sort(trips, Comparator.comparingInt(a -> a[1]));
+
+        for (int[] trip : trips) {
+            while (!priorityQueue.isEmpty() && priorityQueue.peek()[2] <= trip[1]) {
+                int[] temp = priorityQueue.poll();
+                capacity += temp[0];
+            }
+            if (capacity >= trip[0]) {
+                capacity -= trip[0];
+                priorityQueue.add(trip);
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     // 2661. 找出叠涂元素
     public int firstCompleteIndex(int[] arr, int[][] mat) {
         Map<Integer, int[]> map = new HashMap<>();
