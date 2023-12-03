@@ -15,6 +15,25 @@ public class LeetCodeMain13 {
         return res;
     }
 
+    // 1423. 可获得的最大点数
+    public int maxScore(int[] cardPoints, int k) {
+        int sum = 0, windowsSum = 0, windowLength = 0, min = Integer.MAX_VALUE;
+        for (int i = 0; i < cardPoints.length; i++) {
+            sum += cardPoints[i];
+            if (windowLength < cardPoints.length - k) {
+                windowLength ++;
+            } else {
+                windowsSum -= cardPoints[i - (cardPoints.length - k)];
+            }
+            windowsSum += cardPoints[i];
+            if (windowLength == cardPoints.length - k) {
+                min = Math.min(windowsSum, min);
+            }
+        }
+
+        return sum - min;
+    }
+
     // 1094. 拼车
     public boolean carPooling(int[][] trips, int capacity) {
         PriorityQueue<int[]> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
