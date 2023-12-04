@@ -28,14 +28,19 @@ public class LeetCodeMain13 {
         return root;
     }
 
+    /**
+     * 我的写法问题在于，这个sum每次是传递的，而题解的sum是一个总的
+     * 如果采用先遍历右子树，那么只需要将所有右子树的值加在sum即可
+     * 因为右子树一定比左子树大，没想到用一个全局sum
+     */
 //    public int dfs(TreeNode root, int sum) {
 //        if (root == null) {
 //            return 0;
 //        }
 //
 //        int right = dfs(root.right, sum);
+//        root.val = root.val + right;
 //        int left = dfs(root.left, right);
-//        root.val = root.val + right + sum;
 //        System.out.println("sum = " + sum);
 //        return root.val;
 //    }
