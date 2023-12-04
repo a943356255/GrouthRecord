@@ -15,6 +15,31 @@ public class LeetCodeMain13 {
         return res;
     }
 
+    // 1038. 从二叉搜索树到更大和树
+    int sum = 0;
+    public TreeNode bstToGst(TreeNode root) {
+        if (root != null) {
+            bstToGst(root.right);
+            sum += root.val;
+            root.val = sum;
+            bstToGst(root.left);
+        }
+
+        return root;
+    }
+
+//    public int dfs(TreeNode root, int sum) {
+//        if (root == null) {
+//            return 0;
+//        }
+//
+//        int right = dfs(root.right, sum);
+//        int left = dfs(root.left, right);
+//        root.val = root.val + right + sum;
+//        System.out.println("sum = " + sum);
+//        return root.val;
+//    }
+
     // 1423. 可获得的最大点数
     public int maxScore(int[] cardPoints, int k) {
         int sum = 0, windowsSum = 0, windowLength = 0, min = Integer.MAX_VALUE;
