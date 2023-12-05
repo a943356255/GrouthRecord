@@ -15,6 +15,85 @@ public class LeetCodeMain13 {
         return res;
     }
 
+    // 2477. 到达首都的最少油耗
+    long minimumFuelCostRes = 0;
+    public long minimumFuelCost(int[][] roads, int seats) {
+        int n = roads.length;
+        List<Integer>[] g = new List[n + 1];
+        for (int i = 0; i <= n; i++) {
+            g[i] = new ArrayList<>();
+        }
+        for (int[] e : roads) {
+            g[e[0]].add(e[1]);
+            g[e[1]].add(e[0]);
+        }
+        dfs(0, -1, seats, g);
+        return minimumFuelCostRes;
+    }
+
+    public int dfs(int cur, int fa, int seats, List<Integer>[] g) {
+        int peopleSum = 1;
+        for (int ne : g[cur]) {
+            if (ne != fa) {
+                int peopleCnt = dfs(ne, cur, seats, g);
+                peopleSum += peopleCnt;
+                minimumFuelCostRes += (peopleCnt + seats - 1) / seats;
+            }
+        }
+        return peopleSum;
+    }
+
+    /**
+     * 该方法是我写的，在需要考虑节点的相关时，没有考虑，这种写法，在最终求每一层的时候，并不知道连接了多少个节点
+     */
+    public long minimumFuelCost(int[][] roads, int seats, int b) {
+        if (roads.length == 0) {
+            return 0;
+        }
+        long res = 0;
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int i = 0; i < roads.length; i++) {
+            setData(map, roads, i, 0);
+            setData(map, roads, i, 1);
+        }
+
+        boolean[] isAdd = new boolean[roads.length + 1];
+        isAdd[0] = true;
+        Queue<Integer> queue = new ArrayDeque<>();
+        queue.add(0);
+        List<Integer> list = new ArrayList<>();
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            int sum = 0;
+            for (int i = 0; i < size; i++) {
+                List<Integer> temp = map.get(queue.poll());
+                int countSun = 0;
+                for (int j = 0; j < temp.size(); j++) {
+                    if (!isAdd[temp.get(j)]) {
+                        isAdd[temp.get(j)] = true;
+                        queue.add(temp.get(j));
+                        countSun++;
+                    }
+                }
+                sum += countSun;
+            }
+            // 这里记录了每一层的个数
+            list.add(sum);
+        }
+
+        return res;
+    }
+
+    public void setData(Map<Integer, List<Integer>> map, int[][] roads, int i, int index) {
+        if (map.get(roads[i][index]) == null) {
+            List<Integer> list = new ArrayList<>();
+            list.add(roads[i][1 - index]);
+            map.put(roads[i][index], list);
+        } else {
+            map.get(roads[i][index]).add(roads[i][1 - index]);
+        }
+    }
+
     // 1038. 从二叉搜索树到更大和树
     int sum = 0;
     public TreeNode bstToGst(TreeNode root) {
