@@ -1,7 +1,6 @@
 package test;
 
-
-import annotation.MyDefaultValue;
+import org.demo.dependent.MyDefaultValue;
 
 public class Test {
 
