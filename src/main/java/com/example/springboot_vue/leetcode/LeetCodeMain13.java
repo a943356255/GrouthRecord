@@ -32,7 +32,8 @@ public class LeetCodeMain13 {
             next[edge[1]].add(edge[0]);
         }
 
-        // 遍历每一次旅行，然后记录他们的开销
+        // 遍历每一次旅行
+        // 这里的count，记录了每一条边被使用了多少次
         int[] count = new int[n];
         for (int[] trip : trips) {
             dfs(trip[0], -1, trip[1], next, count);
