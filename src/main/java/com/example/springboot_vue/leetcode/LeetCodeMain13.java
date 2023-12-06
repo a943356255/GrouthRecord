@@ -15,6 +15,64 @@ public class LeetCodeMain13 {
         return res;
     }
 
+    /**
+     * 整体的思路，可以理解为将原问题拆分为两个问题，第一个就是深度优先遍历所有的节点，求出所有旅行的开销
+     * 第二个问题就是考虑了对应的价格减半，然后进行dp求解。
+     * 具体细节没看懂
+     */
+    // 2646. 最小化旅行的价格总和
+    public int minimumTotalPrice(int n, int[][] edges, int[] price, int[][] trips) {
+        List<Integer>[] next = new List[n];
+        for (int i = 0; i < n; i++) {
+            next[i] = new ArrayList<Integer>();
+        }
+        // 这里是将整个图进行转换
+        for (int[] edge : edges) {
+            next[edge[0]].add(edge[1]);
+            next[edge[1]].add(edge[0]);
+        }
+
+        // 遍历每一次旅行，然后记录他们的开销
+        int[] count = new int[n];
+        for (int[] trip : trips) {
+            dfs(trip[0], -1, trip[1], next, count);
+        }
+
+        // 这里是考虑减半的情况
+        int[] pair = dp(0, -1, price, next, count);
+        return Math.min(pair[0], pair[1]);
+    }
+
+    public boolean dfs(int node, int parent, int end, List<Integer>[] next, int[] count) {
+        if (node == end) {
+            count[node]++;
+            return true;
+        }
+        for (int child : next[node]) {
+            if (child == parent) {
+                continue;
+            }
+            if (dfs(child, node, end, next, count)) {
+                count[node]++;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int[] dp(int node, int parent, int[] price, List<Integer>[] next, int[] count) {
+        int[] res = {price[node] * count[node], price[node] * count[node] / 2};
+        for (int child : next[node]) {
+            if (child == parent) {
+                continue;
+            }
+            int[] pair = dp(child, node, price, next, count);
+            res[0] += Math.min(pair[0], pair[1]); // node 没有减半，因此可以取子树的两种情况的最小值
+            res[1] += pair[0]; // node 减半，只能取子树没有减半的情况
+        }
+        return res;
+    }
+
     // 2477. 到达首都的最少油耗
     long minimumFuelCostRes = 0;
     public long minimumFuelCost(int[][] roads, int seats) {
