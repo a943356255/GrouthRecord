@@ -15,6 +15,73 @@ public class LeetCodeMain13 {
         return res;
     }
 
+    // 1466. 重新规划路线
+    public int minReorder(int n, int[][] connections) {
+        List<int[]>[] e = new List[n];
+        for (int i = 0; i < n; i++) {
+            e[i] = new ArrayList<>();
+        }
+        for (int[] edge : connections) {
+            // 这里是我忽略的，即原边的方向，我想到了要加两条边，但是没想到要怎么记录方向
+            // 题解的方案，1代表从原来的边，0代表反方向的边，即不存在的
+            e[edge[0]].add(new int[]{edge[1], 1});
+            e[edge[1]].add(new int[]{edge[0], 0});
+        }
+        return dfs(0, -1, e);
+    }
+
+    public int dfs(int x, int parent, List<int[]>[] e) {
+        int res = 0;
+        // 这里是如果发现现存的一条边指向了递归的父节点，就跳过
+        // e[x]，是获取到当前x指向的所有节点,换句话说，获取到所有和x相关的节点
+        // e[x]是一个List<int[]>
+        // 然后这个edge，是一个list中的一个元素
+        for (int[] edge : e[x]) {
+            // edge[0]是节点的值，edge[1]是用于标记是否是原先存在的边
+            // edge[0] == parent，说明该条边是重复的
+            // 考虑一种情况，1 —> 3，虽然只有这一条边，但是和1相关的，会存在3，1 和1，3两个
+            // 开始遍历1 -> 3时是正常的，但是会递归的遍历3，多了一条3 —> 1,即parent = edge[0]
+            if (edge[0] == parent) {
+                continue;
+            }
+            res += edge[1] + dfs(edge[0], x, e);
+        }
+        return res;
+    }
+
+//    int minReorderRes;
+//    public int minReorder(int n, int[][] connections) {
+//        List<Integer>[] lists = new ArrayList[n];
+//        for (int i = 0; i < lists.length; i++) {
+//            lists[i] = new ArrayList<>();
+//        }
+//
+//        for (int[] connection : connections) {
+//            lists[connection[0]].add(connection[1]);
+//            lists[connection[1]].add(connection[0]);
+//        }
+//        dfs(lists, 0);
+//
+//        return minReorderRes;
+//    }
+//
+//    public void dfs(List<Integer>[] lists, int parent) {
+//        if (parent == -1) {
+//            return;
+//        }
+//        System.out.println(parent);
+//        // 父元素指向的所有元素都要改
+//        minReorderRes += lists[parent].size();
+//        for (int i = 0; i < lists[parent].size(); i++) {
+//            if (lists[parent].get(i) == -1) {
+//                continue;
+//            }
+//            lists[lists[parent].get(i)].add(parent);
+//            lists[parent].set(i, -1);
+//            dfs(lists, lists[parent].get(i));
+//        }
+//    }
+
     /**
      * 整体的思路，可以理解为将原问题拆分为两个问题，第一个就是深度优先遍历所有的节点，求出所有旅行的开销
      * 第二个问题就是考虑了对应的价格减半，然后进行dp求解。

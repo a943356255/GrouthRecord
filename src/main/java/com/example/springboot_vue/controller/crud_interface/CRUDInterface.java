@@ -10,6 +10,7 @@ import org.springframework.data.redis.connection.stream.*;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -51,5 +52,11 @@ public class CRUDInterface {
         );
         // 这是创建一个线程池
 //        ExecutorService executorService = Executors.newFixedThreadPool();
+    }
+
+    @RequestMapping("/testParam")
+    public String testRequestParam(@RequestParam("name") String name) {
+
+        return name;
     }
 }
