@@ -15,6 +15,36 @@ public class LeetCodeMain13 {
         return res;
     }
 
+    // 2008. 出租车的最大盈利
+    public long maxTaxiEarnings(int n, int[][] rides) {
+        Arrays.sort(rides, Comparator.comparingInt(a -> a[1]));
+        int m = rides.length;
+        long[] dp = new long[m + 1];
+        for (int i = 0; i < m; i++) {
+            // 这里其实就是背包问题的寻找不放入当前物品，那么可以放入的上一个物品的下标
+            // 这里，当前乘客拉或者不拉，取决于拉了当前乘客，那么如何寻找上一个与该乘客区间不冲突的最大值
+            // 这里可以利用二分的一点是，按照上一个乘客的区间是有序的，获取到当前乘客的区间，找到上一个不冲突的就是最大值，或者不拉当前乘客，取上一个最大值
+            int j = binarySearch(rides, i, rides[i][0]);
+            dp[i + 1] = Math.max(dp[i], dp[j] + rides[i][1] - rides[i][0] + rides[i][2]);
+        }
+
+        return dp[m];
+    }
+
+    public int binarySearch(int[][] rides, int high, int target) {
+        int low = 0;
+        while (low < high) {
+            int mid = low + (high - low) / 2;
+            if (rides[mid][1] > target) {
+                high = mid;
+            } else {
+                low = mid + 1;
+            }
+        }
+
+        return low;
+    }
+
     // 1466. 重新规划路线
     public int minReorder(int n, int[][] connections) {
         List<int[]>[] e = new List[n];
