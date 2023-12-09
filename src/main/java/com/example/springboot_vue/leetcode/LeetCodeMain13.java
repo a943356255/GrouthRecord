@@ -15,6 +15,30 @@ public class LeetCodeMain13 {
         return res;
     }
 
+    // 2048. 下一个更大的数值平衡数
+    public int nextBeautifulNumber(int n) {
+        for (int i = n + 1; i <= 1224444; ++i) {
+            if (isBalance(i)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private boolean isBalance(int x) {
+        int[] count = new int[10];
+        while (x > 0) {
+            count[x % 10]++;
+            x /= 10;
+        }
+        for (int d = 0; d < 10; ++d) {
+            if (count[d] > 0 && count[d] != d) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     // 2008. 出租车的最大盈利
     public long maxTaxiEarnings(int n, int[][] rides) {
         Arrays.sort(rides, Comparator.comparingInt(a -> a[1]));
