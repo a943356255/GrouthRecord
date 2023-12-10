@@ -1,5 +1,7 @@
 package com.example.springboot_vue.leetcode;
 
+import com.example.springboot_vue.pojo.city.City;
+
 import java.util.*;
 
 public class LeetCodeMain13 {
@@ -7,12 +9,29 @@ public class LeetCodeMain13 {
     // 330. 按要求补齐数组
     public int minPatches(int[] nums, int n) {
         int res = 0;
-
         synchronized (this) {
 
         }
 
         return res;
+    }
+
+    // 70. 爬楼梯
+    public int climbStairs(int n) {
+        if (n == 1) {
+            return 1;
+        }
+
+        if (n == 2) {
+            return 2;
+        }
+
+        int[] dp = new int[n + 1];
+        dp[0] = 0; dp[1] = 1; dp[2] = 2;
+        for (int i = 3; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
     }
 
     // 2048. 下一个更大的数值平衡数
