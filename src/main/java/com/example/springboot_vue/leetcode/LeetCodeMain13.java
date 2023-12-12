@@ -16,6 +16,34 @@ public class LeetCodeMain13 {
         return res;
     }
 
+    // 2454. 下一个更大元素 IV
+    public int[] secondGreaterElement(int[] nums) {
+        int[] res = new int[nums.length];
+        Arrays.fill(res, -1);
+        // stack单调递减,这样在出栈时，就可以做到比当前出栈元素大一个的值就在栈顶
+        // 比如栈内元素为ABCDE，E出栈时，比E大的元素就是D
+        Deque<Integer> stack = new ArrayDeque<>();
+        // 堆是最小堆，即小的元素在上,里面存储元素的下标和元素的值
+        PriorityQueue<int[]> pq = new PriorityQueue<>();
+        for (int i = 0; i < nums.length; ++i) {
+
+            // 这里，堆顶元素是刚刚出栈的一个元素，它出栈就说明了栈里面出现了一个比他大的元素
+            // 这里就可以直接比较当前num[i]和堆顶元素的大小，如果大于堆顶，则就是第二大
+            // 由于这里是循环进行的，只要当前num[i]大于堆顶元素，那么num[i]就都是他们第二大的元素
+            while (!pq.isEmpty() && pq.peek()[0] < nums[i]) {
+                res[pq.poll()[1]] = nums[i];
+            }
+
+            while (!stack.isEmpty() && nums[stack.peek()] < nums[i]) {
+                pq.offer(new int[]{nums[stack.peek()], stack.peek()});
+                stack.pop();
+            }
+            stack.push(i);
+        }
+
+        return res;
+    }
+
     // 1631. 最小体力消耗路径
     // 是否存在一条从左上角到右下角的路径，其经过的所有边权的最大值不超过 x?
     int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
