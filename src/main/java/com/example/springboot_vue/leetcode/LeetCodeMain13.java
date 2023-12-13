@@ -16,6 +16,33 @@ public class LeetCodeMain13 {
         return res;
     }
 
+    // 2697. 字典序最小回文串
+    public String makeSmallestPalindrome(String s) {
+        StringBuilder res = new StringBuilder();
+        int left = 0, right = s.length() - 1, count = 0;
+        while (left <= right) {
+            char leftC = s.charAt(left);
+            char rightC = s.charAt(right);
+            if (leftC == rightC && left != right) {
+                res.insert(left, leftC);
+                res.insert(res.length() - count, rightC);
+            } else {
+                if (left != right) {
+                    char temp = (char) Math.min(leftC, rightC);
+                    res.insert(left, temp);
+                    res.insert(res.length() - count, temp);
+                } else {
+                    res.insert(left, leftC);
+                }
+            }
+            count++;
+            left++;
+            right--;
+        }
+
+        return res.toString();
+    }
+
     // 2454. 下一个更大元素 IV
     public int[] secondGreaterElement(int[] nums) {
         int[] res = new int[nums.length];
@@ -24,7 +51,7 @@ public class LeetCodeMain13 {
         // 比如栈内元素为ABCDE，E出栈时，比E大的元素就是D
         Deque<Integer> stack = new ArrayDeque<>();
         // 堆是最小堆，即小的元素在上,里面存储元素的下标和元素的值
-        PriorityQueue<int[]> pq = new PriorityQueue<>();
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
         for (int i = 0; i < nums.length; ++i) {
 
             // 这里，堆顶元素是刚刚出栈的一个元素，它出栈就说明了栈里面出现了一个比他大的元素
