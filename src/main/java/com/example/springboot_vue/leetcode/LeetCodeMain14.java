@@ -1,8 +1,76 @@
 package com.example.springboot_vue.leetcode;
 
-import java.util.Arrays;
+import java.util.*;
 
 public class LeetCodeMain14 {
+
+    // 2415. 反转二叉树的奇数层
+    public TreeNode reverseOddLevels(TreeNode root) {
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        boolean isOdd = false;
+        while (!queue.isEmpty()) {
+            int sz = queue.size();
+            List<TreeNode> arr = new ArrayList<>();
+            for (int i = 0; i < sz; i++) {
+                TreeNode node = queue.poll();
+                if (isOdd) {
+                    arr.add(node);
+                }
+                if (node.left != null) {
+                    queue.offer(node.left);
+                    queue.offer(node.right);
+                }
+            }
+            if (isOdd) {
+                for (int l = 0, r = sz - 1; l < r; l++, r--) {
+                    int temp = arr.get(l).val;
+                    arr.get(l).val = arr.get(r).val;
+                    arr.get(r).val = temp;
+                }
+            }
+            isOdd ^= true;
+        }
+        return root;
+
+//        if (root == null) {
+//            return null;
+//        }
+//        Queue<TreeNode> queue = new ArrayDeque<>();
+//        queue.add(root);
+//        int height = 0;
+//        while (!queue.isEmpty()) {
+//            int size = queue.size();
+//            List<TreeNode> list = new ArrayList<>();
+//            for (int i = 0; i < size; i++) {
+//                TreeNode node = queue.poll();
+//                if (height % 2 != 0) {
+//                    list.add(node);
+//                }
+//                list.add(node);
+//                if (node.left != null) {
+//                    queue.add(node.left);
+//                }
+//                if (node.right != null) {
+//                    queue.add(node.right);
+//                }
+//            }
+//            if (height % 2 != 0) {
+//                int temp = size - 1;
+//                int tempSize = (int) Math.ceil(size / 2);
+//                for (int i = 0; i < tempSize; i++) {
+//                    int tempVal = list.get(i).val;
+//                    list.get(i).val = list.get(temp).val;
+//                    list.get(temp).val = tempVal;
+//                    temp--;
+//                }
+//            }
+//
+//            height++;
+//        }
+//
+//        return root;
+    }
 
     // 2132. 用邮票贴满网格图
     public boolean possibleToStamp(int[][] grid, int stampHeight, int stampWidth) {
