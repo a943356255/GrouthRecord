@@ -72,6 +72,21 @@ public class LeetCodeMain14 {
 //        return root;
     }
 
+    // 2415. 反转二叉树的奇数层,深度优先遍历的解
+    public void dfs(TreeNode left, TreeNode right, boolean isOdd) {
+        // 完美二叉树，左子树可能为空，left为空，right一定为空
+        if (left == null) {
+            return;
+        }
+        if (isOdd) {
+            int tmp = left.val;
+            left.val = right.val;
+            right.val = tmp;
+        }
+        dfs(left.left, right.right, !isOdd);
+        dfs(left.right, right.left, !isOdd);
+    }
+
     // 2132. 用邮票贴满网格图
     public boolean possibleToStamp(int[][] grid, int stampHeight, int stampWidth) {
         int m = grid.length, n = grid[0].length;
