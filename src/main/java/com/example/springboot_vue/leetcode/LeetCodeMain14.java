@@ -4,6 +4,32 @@ import java.util.*;
 
 public class LeetCodeMain14 {
 
+    // 162. 寻找峰值
+    public int findPeakElement(int[] nums) {
+        int left = 0, right = nums.length - 1;
+        while (left < right) {
+            int mid = (left + right) / 2;
+            int midLeft = Math.max(0, mid - 1), midRight = Math.min(nums.length - 1, mid + 1);
+            if (nums[mid] > nums[midLeft] && nums[mid] > nums[midRight]) {
+                return mid;
+            } else if (nums[mid] > nums[midLeft] && nums[mid] < nums[midRight]) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        if (nums.length == 2) {
+            if (nums[0] > nums[1]) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+
+        return left;
+    }
+
     // 746. 使用最小花费爬楼梯
     public int minCostClimbingStairs(int[] cost) {
         int[] dp = new int[cost.length + 1];
