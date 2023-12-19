@@ -4,6 +4,81 @@ import java.util.*;
 
 public class LeetCodeMain14 {
 
+    // 1901. 寻找峰值 II
+    public int[] findPeakGrid(int[][] mat) {
+        int m = mat.length, n = mat[0].length;
+        int low = 0, high = m - 1;
+        // 题解也是竖着二分，然后横着找这一排的最大值
+        while (low <= high) {
+            int i = (low + high) / 2;
+            int j = -1, maxElement = -1;
+            for (int k = 0; k < n; k++) {
+                if (mat[i][k] > maxElement) {
+                    j = k;
+                    maxElement = mat[i][k];
+                }
+            }
+            if (i - 1 >= 0 && mat[i][j] < mat[i - 1][j]) {
+                high = i - 1;
+                continue;
+            }
+            if (i + 1 < m && mat[i][j] < mat[i + 1][j]) {
+                low = i + 1;
+                continue;
+            }
+            return new int[]{i, j};
+        }
+        return new int[0]; // impossible
+//        int[] res = new int[2];
+//        for (int i = 0; i < mat[0].length; i++) {
+//            int left = 0, right = mat.length - 1;
+//            int resMid = 0;
+//            while (left < right) {
+//                int mid = (left + right) / 2;
+//                int leftVal, rightVal, midVal = mat[mid][i];
+//                if (mid - 1 >= 0) {
+//                    leftVal = mat[mid - 1][i];
+//                } else {
+//                    leftVal = -1;
+//                }
+//
+//                if (mid + 1 <= mat[0].length - 1) {
+//                    rightVal = mat[mid + 1][i];
+//                } else {
+//                    rightVal = -1;
+//                }
+//
+//                if (midVal > leftVal && midVal > rightVal) {
+//                    resMid = mid;
+//                    break;
+//                } else if (midVal < leftVal) {
+//                    right = mid - 1;
+//                } else {
+//                    left = mid + 1;
+//                }
+//            }
+//
+//            int upVal, downVal;
+//            if (i - 1 >= 0) {
+//                upVal = mat[resMid][i - 1];
+//            } else {
+//                upVal = -1;
+//            }
+//
+//            if (i + 1 <= mat[0].length - 1) {
+//                downVal = mat[resMid][i + 1];
+//            } else {
+//                downVal = -1;
+//            }
+//
+//            if (mat[resMid][i] > downVal && mat[resMid][i] > upVal) {
+//                return new int[]{resMid, i};
+//            }
+//        }
+//
+//        return new int[]{1, 1};
+    }
+
     // 162. 寻找峰值
     public int findPeakElement(int[] nums) {
         int left = 0, right = nums.length - 1;
