@@ -4,6 +4,27 @@ import java.util.*;
 
 public class LeetCodeMain14 {
 
+    // 2522. 将字符串分割成值不超过 K 的子字符串
+    public int minimumPartition(String s, int k) {
+        int res = 0;
+
+    }
+
+    // 2828. 判别首字母缩略词
+    public boolean isAcronym(List<String> words, String s) {
+        if (s.length() != words.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c != words.get(i).charAt(0)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     // 1901. 寻找峰值 II
     public int[] findPeakGrid(int[][] mat) {
         int m = mat.length, n = mat[0].length;
