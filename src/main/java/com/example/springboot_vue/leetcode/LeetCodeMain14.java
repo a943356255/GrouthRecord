@@ -4,10 +4,50 @@ import java.util.*;
 
 public class LeetCodeMain14 {
 
+    public static void main(String[] args) {
+        String str = "123";
+        String temp = "123";
+        StringBuilder stringBuilder = new StringBuilder(str);
+        int k = 12345;
+        StringBuilder strK = new StringBuilder();
+        while (k > 0) {
+            strK.insert(0, k % 10);
+            k /= 10;
+        }
+        System.out.println(strK.compareTo(stringBuilder));
+    }
+
     // 2522. 将字符串分割成值不超过 K 的子字符串
     public int minimumPartition(String s, int k) {
+        StringBuilder strK = new StringBuilder();
+        while (k > 0) {
+            strK.insert(0, k % 10);
+            k /= 10;
+        }
+        System.out.println(strK.toString());
         int res = 0;
+        StringBuilder str = new StringBuilder();
+        str.append(s.charAt(0));
+        for (int i = 1; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (str.compareTo(strK) < 0) {
+                if (str.append(c).compareTo(strK) > 0) {
+                    res++;
+                    str = new StringBuilder();
+                    str.append(c);
+                }
+            } else {
+                System.out.println(str.toString());
+                return -1;
+            }
+        }
 
+        if (str.compareTo(strK) < 0) {
+            res++;
+            return res;
+        } else {
+            return -1;
+        }
     }
 
     // 2828. 判别首字母缩略词
