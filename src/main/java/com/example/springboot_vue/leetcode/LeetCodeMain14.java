@@ -7,16 +7,43 @@ import java.util.*;
 public class LeetCodeMain14 {
 
     public static void main(String[] args) {
-        String str = "123";
-        String temp = "123";
-        StringBuilder stringBuilder = new StringBuilder(str);
-        int k = 12345;
-        StringBuilder strK = new StringBuilder();
-        while (k > 0) {
-            strK.insert(0, k % 10);
-            k /= 10;
+//        String str = "123";
+//        String temp = "123";
+//        StringBuilder stringBuilder = new StringBuilder(str);
+//        int k = 12345;
+//        StringBuilder strK = new StringBuilder();
+//        while (k > 0) {
+//            strK.insert(0, k % 10);
+//            k /= 10;
+//        }
+//        System.out.println(strK.compareTo(stringBuilder));
+
+        int sum = 10000;
+        for (int i = 0; i < 10000; i++) {
+            sum = (int) Math.floor(sum / 2);
+            System.out.println(sum);
         }
-        System.out.println(strK.compareTo(stringBuilder));
+        System.out.println(sum);
+    }
+
+    // 1962. 移除石子使总数最小
+    public int minStoneSum(int[] piles, int k) {
+        PriorityQueue<Integer> queue = new PriorityQueue<>((a, b) -> b - a);
+        int sum = 0;
+        for (int a : piles) {
+            queue.offer(a);
+            sum += a;
+        }
+        while (!queue.isEmpty() && k > 0) {
+            int val = queue.poll();
+            int temp = (int) Math.floor(val / 2);
+            sum -= temp;
+            queue.offer(val - temp);
+            k--;
+        }
+        System.out.println(queue.toString());
+
+        return sum;
     }
 
     // 300. 最长递增子序列
