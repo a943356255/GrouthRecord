@@ -26,6 +26,15 @@ public class LeetCodeMain14 {
         System.out.println(sum);
     }
 
+    // 1954. 收集足够苹果的最小花园周长
+    public long minimumPerimeter(long neededApples) {
+        long n = 1;
+        while (2 * n * (n + 1) * (2 * n + 1) < neededApples) {
+            n++;
+        }
+        return n * 8;
+    }
+
     // 1962. 移除石子使总数最小
     public int minStoneSum(int[] piles, int k) {
         PriorityQueue<Integer> queue = new PriorityQueue<>((a, b) -> b - a);
