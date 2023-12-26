@@ -24,6 +24,38 @@ public class LeetCodeMain14 {
         System.out.println(sum);
     }
 
+    // 1276. 不浪费原料的汉堡制作方案
+    public List<Integer> numOfBurgers(int tomatoSlices, int cheeseSlices) {
+        List<Integer> res = new ArrayList<>();
+        if (tomatoSlices % 2 != 0 || cheeseSlices > tomatoSlices) {
+            return res;
+        }
+
+        int count = cheeseSlices * 2;
+        int mix = tomatoSlices - count;
+        if (mix < 0) {
+            return res;
+        }
+        count = cheeseSlices;
+        int another = 0;
+        while (mix > 0) {
+            another += 1;
+            count -= 1;
+            mix -= 2;
+            if (count < 0) {
+                break;
+            }
+        }
+
+        if (mix != 0 || count < 0) {
+            return res;
+        }
+        res.add(another);
+        res.add(count);
+
+        return res;
+    }
+
     // 1954. 收集足够苹果的最小花园周长
     public long minimumPerimeter(long neededApples) {
         long n = 1;
