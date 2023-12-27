@@ -24,6 +24,43 @@ public class LeetCodeMain14 {
         System.out.println(sum);
     }
 
+    // 2660. 保龄球游戏的获胜者
+    public int isWinner(int[] player1, int[] player2) {
+        int score1 = 0, score2 = 0, mark1 = 0, mark2 = 0;
+        for (int i = 0; i < player1.length; i++) {
+            if (mark1 != 0) {
+                score1 += player1[i] * 2;
+                mark1--;
+            } else {
+                score1 += player1[i];
+            }
+
+            if (mark2 != 0) {
+                score2 += player2[i] * 2;
+                mark2--;
+            } else {
+                score2 += player2[i];
+            }
+
+            if (player1[i] == 10) {
+                mark1 = 2;
+            }
+
+            if (player2[i] == 10) {
+                mark2 = 2;
+            }
+        }
+
+        System.out.println("score1 = " + score1 + " score2 = " + score2);
+        if (score1 > score2) {
+            return 1;
+        } else if (score1 < score2) {
+            return 2;
+        } else {
+            return 0;
+        }
+    }
+
     // 1276. 不浪费原料的汉堡制作方案
     public List<Integer> numOfBurgers(int tomatoSlices, int cheeseSlices) {
         List<Integer> res = new ArrayList<>();
