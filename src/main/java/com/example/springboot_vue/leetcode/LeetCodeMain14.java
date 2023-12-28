@@ -24,6 +24,35 @@ public class LeetCodeMain14 {
         System.out.println(sum);
     }
 
+    // 1839. 所有元音按顺序排布的最长子字符串
+    public int longestBeautifulSubstring(String word) {
+        int max = 0, temp = 0;
+        for (int i = 0; i < word.length(); i++) {
+            if (word.charAt(i) == 'a') {
+                StringBuilder res = new StringBuilder("a");
+                int index = i + 1, count = 1;
+                while (index < word.length() && word.charAt(index) >= word.charAt(index - 1)) {
+                    char tempChar = word.charAt(index);
+                    res.append(tempChar);
+                    if (tempChar != word.charAt(index - 1)) {
+                        count++;
+                    }
+                    index++;
+                }
+
+                if (count == 5) {
+                    max = Math.max(max, index - i);
+                }
+                System.out.println(res.toString());
+                System.out.println("count = " + count);
+                i += index;
+                i--;
+            }
+        }
+
+        return max;
+    }
+
     // 2660. 保龄球游戏的获胜者
     public int isWinner(int[] player1, int[] player2) {
         int score1 = 0, score2 = 0, mark1 = 0, mark2 = 0;
