@@ -29,11 +29,9 @@ public class LeetCodeMain14 {
         int max = 0, temp = 0;
         for (int i = 0; i < word.length(); i++) {
             if (word.charAt(i) == 'a') {
-                StringBuilder res = new StringBuilder("a");
                 int index = i + 1, count = 1;
                 while (index < word.length() && word.charAt(index) >= word.charAt(index - 1)) {
                     char tempChar = word.charAt(index);
-                    res.append(tempChar);
                     if (tempChar != word.charAt(index - 1)) {
                         count++;
                     }
@@ -43,9 +41,7 @@ public class LeetCodeMain14 {
                 if (count == 5) {
                     max = Math.max(max, index - i);
                 }
-                System.out.println(res.toString());
-                System.out.println("count = " + count);
-                i += index;
+                i = index;
                 i--;
             }
         }
