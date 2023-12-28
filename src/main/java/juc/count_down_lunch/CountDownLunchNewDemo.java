@@ -3,6 +3,7 @@ package juc.count_down_lunch;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class CountDownLunchNewDemo {
 
@@ -26,6 +27,12 @@ public class CountDownLunchNewDemo {
             );
         }
 
+        executor.execute(() -> {
+            System.out.println("123");
+        });
+//        executor.shutdown();
+//        while (!executor.isTerminated()) { // 如果没有执行完就一直循环
+//        }
         // 保证之前的所有的线程都执行完成，才会走下面的
         countDownLatch.await();
 
