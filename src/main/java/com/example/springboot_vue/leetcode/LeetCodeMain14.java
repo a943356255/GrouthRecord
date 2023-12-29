@@ -24,6 +24,16 @@ public class LeetCodeMain14 {
         System.out.println(sum);
     }
 
+    // 2706. 购买两块巧克力
+    public int buyChoco(int[] prices, int money) {
+        Arrays.sort(prices);
+        if (prices[0] + prices[1] > money) {
+            return money;
+        } else {
+            return money - (prices[0] + prices[1]);
+        }
+    }
+
     // 1839. 所有元音按顺序排布的最长子字符串
     public int longestBeautifulSubstring(String word) {
         int max = 0, temp = 0;
