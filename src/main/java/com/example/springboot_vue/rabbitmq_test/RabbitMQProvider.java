@@ -19,6 +19,7 @@ public class RabbitMQProvider {
     // 这里只是发送消息，消息发布后就会关闭
     public void testConnection() throws IOException, TimeoutException {
         Connection connection = RabbitMQUtils.createConnection();
+        System.out.println("连接成功");
         // 创建管道
         Channel channel = connection.createChannel();
 
@@ -35,7 +36,7 @@ public class RabbitMQProvider {
         // channel.queueBind(queue, "exchangeNameDirect", "error");
         // channel.queueBind(queue, "exchangeNameDirect", "waring");
 
-        String queenName = "testRabbitMQ";
+        String queenName = "queueName";
         // 通道绑定对应消息队列
         // 参数1：队列名称，不存在自动创建 参数2：是否要持久化，true持久化队列
         // 参数3：是否独占队列，true独占 参数4：是否在消费化后自动删除队列，true自动删

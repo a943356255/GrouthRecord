@@ -20,7 +20,8 @@ public class RabbitMQCustomer {
         // 设置每个队列每次只能处理一条消息 配合下边的false，不按照自动分配。可以实现处理快的多处理
         // channel.basicQos(1);
 
-        channel.basicConsume("testRabbitMQ", true, new DefaultConsumer(channel) {
+        // 这里绑定的是队列的名字
+        channel.basicConsume("queueName", true, new DefaultConsumer(channel) {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                 super.handleDelivery(consumerTag, envelope, properties, body);

@@ -11,7 +11,7 @@ public class RabbitMQUtils {
     private static final String password = "guest";
     private static final String ip = "127.0.0.1";
     private static final int port = 5672;
-    private static final String virtualHost = "";
+    private static final String virtualHost = "/";
 
     public static Connection createConnection() throws IOException, TimeoutException {
         // 创建连接工厂
