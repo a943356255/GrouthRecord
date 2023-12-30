@@ -33,7 +33,7 @@ public class WriteExcel {
         new WriteExcel().write(outputStream, headArr, "测试名称", list, fieldArr);
     }
 
-    //不创建对象的导出
+    // 不创建对象的导出
     public void write(OutputStream out, String[] headArr, String sheetName, List<Map<String, String>> dataList, String[] fieldArr) throws IOException {
         EasyExcel.write(out).head(head(headArr)).sheet(sheetName).doWrite(dataList(dataList, fieldArr));
     }
