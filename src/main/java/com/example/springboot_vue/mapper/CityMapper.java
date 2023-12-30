@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public interface CityMapper {
@@ -15,4 +16,5 @@ public interface CityMapper {
 
     ArrayList<City> selCity();
 
+    int insertCityAll(@Param("list") List<City> list);
 }

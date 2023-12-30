@@ -2,8 +2,11 @@ package com.example.springboot_vue.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.springboot_vue.mapper.CityMapper;
 import com.example.springboot_vue.mapper.crud.CRUDMapper;
+import com.example.springboot_vue.pojo.city.City;
 import com.example.springboot_vue.service.CRUDService;
+import com.example.springboot_vue.utils.excel_util.EasyExcelDemo;
 import com.example.springboot_vue.utils.excel_util.ReadExcel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -22,6 +25,9 @@ public class CRUDServiceImpl implements CRUDService {
 
     @Autowired
     CRUDMapper crudMapper;
+
+    @Autowired
+    CityMapper cityMapper;
 
 //    @Resource
 //    MongoTemplate mongoTemplate;
@@ -125,4 +131,11 @@ public class CRUDServiceImpl implements CRUDService {
         List<Map<String, String>> res = ReadExcel.readExcelAndInsertIntoDB("D:\\git\\test.xlsx", list);
         crudMapper.insertExcelData(table, res, list);
     }
+
+    @Override
+    public void insertCity(List<City> list) {
+        EasyExcelDemo easyExcelDemo = new EasyExcelDemo();
+        easyExcelDemo.readExcel(cityMapper);
+    }
+
 }
