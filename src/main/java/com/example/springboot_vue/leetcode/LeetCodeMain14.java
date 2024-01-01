@@ -24,6 +24,60 @@ public class LeetCodeMain14 {
         System.out.println(sum);
     }
 
+    // 1599. 经营摩天轮的最大利润
+    public int minOperationsMaxProfit(int[] customers, int boardingCost, int runningCost) {
+        List<Integer> list = new ArrayList<>();
+        int totalPeople = 0, index = 0, money = 0, leftPeople = 0, res = -1;
+        for (int i = 0; i < customers.length; i++) {
+            // 摩天轮上的所有人数
+            if (customers[i] > 4) {
+                leftPeople += customers[i] - 4;
+                totalPeople += 4;
+                list.add(4);
+            } else {
+                if (customers[i] + leftPeople > 4) {
+                    totalPeople += 4;
+                    leftPeople -= (4 - customers[i]);
+                    list.add(4);
+                } else {
+                    totalPeople += customers[i] + leftPeople;
+                    list.add(customers[i] + leftPeople);
+                    leftPeople = 0;
+                }
+            }
+
+            // 开始转动
+            index++;
+
+            // 计算收益
+            int temp = totalPeople * boardingCost - index * runningCost;
+            if (temp > money) {
+                money = temp;
+                res = index;
+            }
+        }
+
+        while (leftPeople != 0) {
+            if (leftPeople > 4) {
+                leftPeople -= 4;
+                totalPeople += 4;
+                list.add(4);
+            } else {
+                totalPeople += leftPeople;
+                leftPeople = 0;
+                list.add(leftPeople);
+            }
+            index++;
+            int temp = totalPeople * boardingCost - index * runningCost;
+            if (temp > money) {
+                money = temp;
+                res = index;
+            }
+        }
+
+        return res;
+    }
+
     // 1154. 一年中的第几天
     public int dayOfYear(String date) {
         int year = Integer.parseInt(date.substring(0, 4));
