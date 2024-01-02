@@ -136,6 +136,11 @@ public class CRUDServiceImpl implements CRUDService {
     public void insertCity(List<City> list) {
         EasyExcelDemo easyExcelDemo = new EasyExcelDemo();
         easyExcelDemo.readExcel(cityMapper);
+        try {
+            Thread.sleep(1000 * 60);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

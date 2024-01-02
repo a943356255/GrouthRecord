@@ -37,7 +37,7 @@ public class CityDataListener implements ReadListener<City> {
      */
     ExecutorService executor = Executors.newFixedThreadPool(10);
 
-    ExecutorService executorService = new ThreadPoolExecutor(10, 20, 10, TimeUnit.MINUTES, new ArrayBlockingQueue<>(10));
+    ExecutorService executorService = new ThreadPoolExecutor(20, 40, 10, TimeUnit.MINUTES, new LinkedBlockingDeque<>());
 
     List<List<City>> wrongList = new ArrayList<>();
 
@@ -54,19 +54,12 @@ public class CityDataListener implements ReadListener<City> {
             // 线程池执行
 //            executor.submit(() -> saveData(tempList));
 
-            CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> saveData(tempList), executor);
-            future.thenAccept(System.out::println).exceptionally(ex -> {
+            CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> saveData(tempList), executorService);
+            future.exceptionally(ex -> {
                 wrongList.add(tempList);
+                System.out.println(wrongList.size());
                 return null;
             });
-
-            // 如果直接获取get，就变成了串行处理
-//            try {
-//                int res = executor.submit(() -> saveData(tempList)).get();
-//                System.out.println(res + "" + wrongList.size());
-//            } catch (Exception e) {
-//                wrongList.add(tempList);
-//            }
         }
     }
 
