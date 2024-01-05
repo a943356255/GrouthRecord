@@ -24,6 +24,28 @@ public class LeetCodeMain14 {
         System.out.println(sum);
     }
 
+    // 1944. 队列中可以看到的人数
+    public int[] canSeePersonsCount(int[] heights) {
+        int n = heights.length;
+        Deque<Integer> stack = new ArrayDeque<>();
+        int[] res = new int[n];
+
+        for (int i = n - 1; i >= 0; i--) {
+            int h = heights[i];
+            // 这里，栈元素从栈底到栈顶是由大到小的
+            // 而且这里的元素是从右往左加入的，只要是单调的，都可以看到
+            while (!stack.isEmpty() && stack.peek() < h) {
+                stack.pop();
+                res[i]++;
+            }
+            if (!stack.isEmpty()) {
+                res[i]++;
+            }
+            stack.push(h);
+        }
+        return res;
+    }
+
     // 1599. 经营摩天轮的最大利润
     public int minOperationsMaxProfit(int[] customers, int boardingCost, int runningCost) {
         List<Integer> list = new ArrayList<>();
