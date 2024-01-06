@@ -23,7 +23,7 @@ public class CityDataListener implements ReadListener<City> {
     }
 
     /**
-     * 每隔5条存储数据库，实际使用中可以100条，然后清理list ，方便内存回收
+     * 这里是设置批量插入数据的大小
      */
     private static final int BATCH_COUNT = 1000;
 
@@ -35,8 +35,6 @@ public class CityDataListener implements ReadListener<City> {
     /**
      * 创建一个线程池
      */
-    ExecutorService executor = Executors.newFixedThreadPool(10);
-
     ExecutorService executorService = new ThreadPoolExecutor(20, 40, 10, TimeUnit.MINUTES, new LinkedBlockingDeque<>());
 
     List<List<City>> wrongList = new ArrayList<>();
