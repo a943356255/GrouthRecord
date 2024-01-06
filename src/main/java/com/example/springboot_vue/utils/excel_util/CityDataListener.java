@@ -62,6 +62,7 @@ public class CityDataListener implements ReadListener<City> {
 
     /**
      * 这里是处理遗留的数据
+     * 注意：这里是每一个sheet读取完成后都会触发一次
      */
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
