@@ -24,6 +24,35 @@ public class LeetCodeMain14 {
         System.out.println(sum);
     }
 
+    // 2807. 在链表中插入最大公约数
+    public ListNode insertGreatestCommonDivisors(ListNode head) {
+        ListNode temp = head;
+        while (temp != null) {
+            ListNode tempNode = temp;
+            temp = temp.next;
+
+            int first = tempNode.val;
+            if (temp != null) {
+                int second = temp.val;
+                int val = getVal(first, second);
+                ListNode node = new ListNode(val);
+                node.next = temp;
+                tempNode.next = node;
+            }
+        }
+
+        return head;
+    }
+
+    public int getVal(int a, int b) {
+        while (b != 0) {
+            int tmp = a % b;
+            a = b;
+            b = tmp;
+        }
+        return a;
+    }
+
     // 1944. 队列中可以看到的人数
     public int[] canSeePersonsCount(int[] heights) {
         int n = heights.length;
