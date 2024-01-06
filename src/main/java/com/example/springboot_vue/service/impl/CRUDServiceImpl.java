@@ -1,5 +1,8 @@
 package com.example.springboot_vue.service.impl;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelReader;
+import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.springboot_vue.mapper.CityMapper;
@@ -14,11 +17,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.*;
 
 @Service
 @Transactional
@@ -133,13 +140,35 @@ public class CRUDServiceImpl implements CRUDService {
         crudMapper.insertExcelData(table, res, list);
     }
 
+    ExecutorService executorService = new ThreadPoolExecutor(20, 20, 10, TimeUnit.MINUTES, new LinkedBlockingDeque<>());
+    List<CompletableFuture<Integer>> allFutures = new ArrayList<>();
+
     @Override
     public void insertCity(List<City> list) {
         EasyExcelDemo easyExcelDemo = new EasyExcelDemo();
         CountDownLatch latch = new CountDownLatch(1);
-        easyExcelDemo.readExcel(cityMapper, latch);
-        // 主线程等待lunch完成
 
+//        easyExcelDemo.readExcel(cityMapper, latch);
+        InputStream inputStream = null;
+        try {
+             inputStream = new BufferedInputStream(new FileInputStream("D:\\bilibili_video\\test.xlsx"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        ExcelReader build = EasyExcel.read(inputStream).build();
+        List<ReadSheet> readSheets = build.excelExecutor().sheetList();
+        System.out.println("一共有" + readSheets.size());
+        for (int i = 0; i < readSheets.size(); i++) {
+            int finalI = i;
+            CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
+                easyExcelDemo.threadReadExcel(cityMapper, readSheets.get(finalI).getSheetName());
+                return null;
+            }, executorService);
+            allFutures.add(future);
+        }
+
+        CompletableFuture<Void> allCompleted = CompletableFuture.allOf(allFutures.toArray(new CompletableFuture[0]));
+        allCompleted.join();
     }
 
 }

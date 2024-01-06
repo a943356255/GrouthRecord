@@ -9,7 +9,7 @@ import com.example.springboot_vue.pojo.city.City;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.*;
 
 public class EasyExcelDemo {
 
@@ -22,6 +22,11 @@ public class EasyExcelDemo {
     public void readExcel(CityMapper cityMapper, CountDownLatch latch) {
         String fileName = "D:\\bilibili_video\\test.xlsx";
         EasyExcel.read(fileName, City.class, new CityDataListener(cityMapper, latch)).doReadAll();
+    }
+
+    public void threadReadExcel(CityMapper cityMapper, String sheetName) {
+        String fileName = "D:\\bilibili_video\\test.xlsx";
+        EasyExcel.read(fileName, City.class, new OtherCityListener(cityMapper)).sheet(sheetName).doRead();
     }
 
     public void write() {
