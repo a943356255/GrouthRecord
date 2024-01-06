@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 @Service
 @Transactional
@@ -135,12 +136,10 @@ public class CRUDServiceImpl implements CRUDService {
     @Override
     public void insertCity(List<City> list) {
         EasyExcelDemo easyExcelDemo = new EasyExcelDemo();
-        easyExcelDemo.readExcel(cityMapper);
-        try {
-            Thread.sleep(1000 * 60);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        CountDownLatch latch = new CountDownLatch(1);
+        easyExcelDemo.readExcel(cityMapper, latch);
+        // 主线程等待lunch完成
+
     }
 
 }

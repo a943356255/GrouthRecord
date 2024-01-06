@@ -18,7 +18,7 @@ public class CityDataListener implements ReadListener<City> {
 
     CityMapper cityMapper;
 
-    public CityDataListener(CityMapper cityMapper) {
+    public CityDataListener(CityMapper cityMapper, CountDownLatch lunch) {
         this.cityMapper = cityMapper;
     }
 
@@ -41,25 +41,24 @@ public class CityDataListener implements ReadListener<City> {
 
     List<List<City>> wrongList = new ArrayList<>();
 
+    List<CompletableFuture<Integer>> allFutures = new ArrayList<>();
+
     @SneakyThrows
     @Override
     public void invoke(City city, AnalysisContext analysisContext) {
         cachedDataList.add(city);
         // 一次1000条，如果超过1000条，就清除之前的内容
         if (cachedDataList.size() >= BATCH_COUNT) {
-//            saveData(cachedDataList);
             List<City> tempList = new ArrayList<>(cachedDataList);
             // 存储完成清理 list
             cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
-            // 线程池执行
-//            executor.submit(() -> saveData(tempList));
 
-            CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> saveData(tempList), executorService);
-            future.exceptionally(ex -> {
-                wrongList.add(tempList);
-                System.out.println(wrongList.size());
-                return null;
-            });
+            CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> saveData(tempList), executorService)
+                    .exceptionally(ex -> {
+                        wrongList.add(tempList);
+                        return null;
+                    });
+            allFutures.add(future);
         }
     }
 
@@ -68,10 +67,11 @@ public class CityDataListener implements ReadListener<City> {
      */
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
-//        saveData();
         if (CollectionUtils.isNotEmpty(cachedDataList)) {
             saveData(cachedDataList);
         }
+        CompletableFuture<Void> allCompleted = CompletableFuture.allOf(allFutures.toArray(new CompletableFuture[0]));
+        allCompleted.join();
     }
 
     public int saveData(List<City> cachedDataList) {
