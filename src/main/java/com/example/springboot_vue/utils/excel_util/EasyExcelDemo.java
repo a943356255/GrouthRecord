@@ -30,16 +30,11 @@ public class EasyExcelDemo {
         EasyExcel.read(fileName, City.class, new OtherCityListener(cityMapper)).sheet(sheetName).doRead();
     }
 
-    public void write() {
+    public void write(List<City> cities, int i, String filename) {
         String fileName = "D:\\bilibili_video\\test1.xlsx";
-        ExcelWriter excelWriter = EasyExcel.write(fileName).build();
-
-        for (int i = 0; i < 2; i++) {
-            WriteSheet writeSheet = EasyExcel.writerSheet(i, "sheet_" + i).head(City.class).build();
-            List<City> cities = getCity(i);
-            excelWriter.write(cities, writeSheet);
-        }
-
+        ExcelWriter excelWriter = EasyExcel.write(filename).build();
+        WriteSheet writeSheet = EasyExcel.writerSheet(i, "sheet_" + i).head(City.class).build();
+        excelWriter.write(cities, writeSheet);
         excelWriter.finish();
     }
 

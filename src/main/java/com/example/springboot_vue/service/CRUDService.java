@@ -14,5 +14,5 @@ public interface CRUDService {
 
     void insertCity(List<City> list);
 
-    void exportCity();
+    void exportCity(String name, String pageRange, int pageSize);
 }

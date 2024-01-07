@@ -1,5 +1,8 @@
 package com.example.springboot_vue.service.impl;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.fastjson.JSONObject;
 import com.example.springboot_vue.mapper.CityMapper;
 import com.example.springboot_vue.mapper.crud.CRUDMapper;
@@ -11,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.*;
 
 @Service
@@ -162,11 +162,48 @@ public class CRUDServiceImpl implements CRUDService {
     }
 
     @Override
-    public void exportCity() {
-        EasyExcelDemo easyExcelDemo = new EasyExcelDemo();
-        List<City> list = cityMapper.getPageCity(2000, 3000);
-        System.out.println(list.size());
-        System.out.println(list.get(0).getMarkId());
+    public void exportCity(String name, String pageRange, int pageSize) {
+        String[] range = pageRange.split("-");
+        // 错误的输入范围
+        if (range.length > 2) {
+            return;
+        }
+
+        // 数据大小定义，超过该大小会分页查询
+        int dataSize = 30000;
+        // 如果数据范围超过dataSize条，则分段读取
+        List<int[]> dataRageList = new ArrayList<>();
+        // 写入excel的数据总数
+        int dataRange = (Integer.parseInt(range[1]) - Integer.parseInt(range[0]));
+        // 一共要写入多少个sheet页
+        int sheetPage = (int) Math.ceil(dataRange / pageSize);
+        // 分多少次读取
+        int size = dataRange / dataSize;
+        // 是否能够正好读完
+        int result = dataRange % dataSize;
+        if (size > 0) {
+            dataRageList.add(new int[]{Integer.parseInt(range[0]), dataSize});
+            for (int i = 1; i < size; i++) {
+                int last = dataRageList.get(i - 1)[0];
+                dataRageList.add(new int[]{last + dataSize, dataSize});
+            }
+            if (result != 0) {
+                // 最后一次查询的数据范围
+                dataRageList.add(new int[]{dataRageList.get(dataRageList.size() - 1)[0] + dataSize, Integer.parseInt(range[1]) - dataRageList.get(dataRageList.size() - 1)[0] - dataSize});
+            }
+        }
+        String filename = "D:\\bilibili_video\\export.xlsx";
+        // 每次写入一页
+        ExcelWriter excelWriter = EasyExcel.write(filename).build();
+        for (int i = 0; i < dataRageList.size(); i++) {
+            List<City> list = cityMapper.getPageCity(dataRageList.get(i)[0] - 1, dataRageList.get(i)[1]);
+            WriteSheet writeSheet = EasyExcel.writerSheet(i, "sheet_" + i).head(City.class).build();
+            excelWriter.write(list, writeSheet);
+        }
+        excelWriter.finish();
+//        for (int i = 0; i < dataRageList.size(); i++) {
+//            System.out.println(Arrays.toString(dataRageList.get(i)));
+//        }
     }
 
 }
