@@ -21,4 +21,6 @@ public interface CityMapper {
 
     @Select("select count(*) from city")
     int getTotalData();
+
+    List<City> getPageCity(@Param("currentPage") int currentPage, @Param("pageCount") int pageCount);
 }

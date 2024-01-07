@@ -41,4 +41,9 @@
     <select id="selCity" resultMap="city">
         select `name`, `number`, parent_name  from city
     </select>
+
+    <select id="getPageCity" resultMap="city">
+        select * from city where mark_id >= (select mark_id from city limit #{currentPage}, 1) order by mark_id limit #{pageCount}
+    </select>
+
 </mapper>

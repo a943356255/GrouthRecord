@@ -1,9 +1,5 @@
 package com.example.springboot_vue.service.impl;
 
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelReader;
-import com.alibaba.excel.read.metadata.ReadSheet;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.springboot_vue.mapper.CityMapper;
 import com.example.springboot_vue.mapper.crud.CRUDMapper;
@@ -12,15 +8,9 @@ import com.example.springboot_vue.service.CRUDService;
 import com.example.springboot_vue.utils.excel_util.EasyExcelDemo;
 import com.example.springboot_vue.utils.excel_util.ReadExcel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -149,7 +139,6 @@ public class CRUDServiceImpl implements CRUDService {
         CountDownLatch latch = new CountDownLatch(1);
 
         easyExcelDemo.readExcel(cityMapper, latch);
-
 //        InputStream inputStream = null;
 //        try {
 //             inputStream = new BufferedInputStream(new FileInputStream("D:\\bilibili_video\\test.xlsx"));
@@ -170,6 +159,14 @@ public class CRUDServiceImpl implements CRUDService {
 //
 //        CompletableFuture<Void> allCompleted = CompletableFuture.allOf(allFutures.toArray(new CompletableFuture[0]));
 //        allCompleted.join();
+    }
+
+    @Override
+    public void exportCity() {
+        EasyExcelDemo easyExcelDemo = new EasyExcelDemo();
+        List<City> list = cityMapper.getPageCity(2000, 3000);
+        System.out.println(list.size());
+        System.out.println(list.get(0).getMarkId());
     }
 
 }

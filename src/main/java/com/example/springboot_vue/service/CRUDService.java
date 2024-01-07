@@ -13,4 +13,6 @@ public interface CRUDService {
     void test(Map<String, Object> map);
 
     void insertCity(List<City> list);
+
+    void exportCity();
 }
