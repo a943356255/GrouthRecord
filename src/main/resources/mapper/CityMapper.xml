@@ -9,6 +9,7 @@
         <result column="number" property="number"/>
         <result column="column_1" property="test"/>
         <result column="column_2" property="test2"/>
+        <result column="mark_id" property="markId"/>
     </resultMap>
 
     <insert id="insertCity" parameterType="java.util.ArrayList">
@@ -31,9 +32,9 @@
     </insert>
 
     <insert id="insertCityAll" parameterType="java.util.List">
-        insert into city(`name`, parent_name, `number`, column_1, column_2) values
+        insert into city(`name`, parent_name, `number`, column_1, column_2, mark_id) values
         <foreach collection="list" separator="," item="item">
-            (#{item.name}, #{item.parentName}, #{item.number}, #{item.test}, #{item.test2})
+            (#{item.name}, #{item.parentName}, #{item.number}, #{item.test}, #{item.test2}, #{item.markId})
         </foreach>
     </insert>
 

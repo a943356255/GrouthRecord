@@ -148,27 +148,28 @@ public class CRUDServiceImpl implements CRUDService {
         EasyExcelDemo easyExcelDemo = new EasyExcelDemo();
         CountDownLatch latch = new CountDownLatch(1);
 
-//        easyExcelDemo.readExcel(cityMapper, latch);
-        InputStream inputStream = null;
-        try {
-             inputStream = new BufferedInputStream(new FileInputStream("D:\\bilibili_video\\test.xlsx"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        ExcelReader build = EasyExcel.read(inputStream).build();
-        List<ReadSheet> readSheets = build.excelExecutor().sheetList();
-        System.out.println("一共有" + readSheets.size());
-        for (int i = 0; i < readSheets.size(); i++) {
-            int finalI = i;
-            CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
-                easyExcelDemo.threadReadExcel(cityMapper, readSheets.get(finalI).getSheetName());
-                return null;
-            }, executorService);
-            allFutures.add(future);
-        }
+        easyExcelDemo.readExcel(cityMapper, latch);
 
-        CompletableFuture<Void> allCompleted = CompletableFuture.allOf(allFutures.toArray(new CompletableFuture[0]));
-        allCompleted.join();
+//        InputStream inputStream = null;
+//        try {
+//             inputStream = new BufferedInputStream(new FileInputStream("D:\\bilibili_video\\test.xlsx"));
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        ExcelReader build = EasyExcel.read(inputStream).build();
+//        List<ReadSheet> readSheets = build.excelExecutor().sheetList();
+//        System.out.println("一共有" + readSheets.size());
+//        for (int i = 0; i < readSheets.size(); i++) {
+//            int finalI = i;
+//            CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
+//                easyExcelDemo.threadReadExcel(cityMapper, readSheets.get(finalI).getSheetName());
+//                return null;
+//            }, executorService);
+//            allFutures.add(future);
+//        }
+//
+//        CompletableFuture<Void> allCompleted = CompletableFuture.allOf(allFutures.toArray(new CompletableFuture[0]));
+//        allCompleted.join();
     }
 
 }

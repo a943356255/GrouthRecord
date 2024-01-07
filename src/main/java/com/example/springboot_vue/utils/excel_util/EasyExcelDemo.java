@@ -20,8 +20,9 @@ public class EasyExcelDemo {
     }
 
     public void readExcel(CityMapper cityMapper, CountDownLatch latch) {
+        int total = cityMapper.getTotalData();
         String fileName = "D:\\bilibili_video\\test.xlsx";
-        EasyExcel.read(fileName, City.class, new CityDataListener(cityMapper, latch)).doReadAll();
+        EasyExcel.read(fileName, City.class, new CityDataListener(cityMapper, total)).doReadAll();
     }
 
     public void threadReadExcel(CityMapper cityMapper, String sheetName) {

@@ -18,9 +18,7 @@ public class CityDataListener implements ReadListener<City> {
 
     CityMapper cityMapper;
 
-    public CityDataListener(CityMapper cityMapper, CountDownLatch lunch) {
-        this.cityMapper = cityMapper;
-    }
+    private int totalData;
 
     /**
      * 这里是设置批量插入数据的大小
@@ -41,9 +39,16 @@ public class CityDataListener implements ReadListener<City> {
 
     List<CompletableFuture<Integer>> allFutures = new ArrayList<>();
 
+    public CityDataListener(CityMapper cityMapper, int total) {
+        this.cityMapper = cityMapper;
+        totalData = total;
+    }
+
     @SneakyThrows
     @Override
     public void invoke(City city, AnalysisContext analysisContext) {
+        // 添加字段
+        city.setMarkId(++totalData);
         cachedDataList.add(city);
         // 一次1000条，如果超过1000条，就清除之前的内容
         if (cachedDataList.size() >= BATCH_COUNT) {
@@ -68,6 +73,8 @@ public class CityDataListener implements ReadListener<City> {
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
         if (CollectionUtils.isNotEmpty(cachedDataList)) {
             saveData(cachedDataList);
+            // 这里如果不进行重置，如果每个sheet不是1000条数据，会存在多插入的情况
+            cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
         }
         CompletableFuture<Void> allCompleted = CompletableFuture.allOf(allFutures.toArray(new CompletableFuture[0]));
         allCompleted.join();

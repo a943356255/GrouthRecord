@@ -2,6 +2,7 @@ package com.example.springboot_vue.mapper;
 
 import com.example.springboot_vue.pojo.city.City;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -17,4 +18,7 @@ public interface CityMapper {
     ArrayList<City> selCity();
 
     int insertCityAll(@Param("list") List<City> list);
+
+    @Select("select count(*) from city")
+    int getTotalData();
 }
