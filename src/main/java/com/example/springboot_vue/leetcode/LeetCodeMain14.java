@@ -24,6 +24,25 @@ public class LeetCodeMain14 {
         System.out.println(sum);
     }
 
+    // 383. 赎金信
+    public boolean canConstruct(String ransomNote, String magazine) {
+        int[] arr = new int[26];
+        Arrays.fill(arr, 0);
+        for (int i = 0; i < magazine.length(); i++) {
+            arr[magazine.charAt(i) - 'a']++;
+        }
+
+        for (int i = 0; i < ransomNote.length(); i++) {
+            int index = ransomNote.charAt(i) - 'a';
+            arr[index]--;
+            if (arr[index] < 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     // 2807. 在链表中插入最大公约数
     public ListNode insertGreatestCommonDivisors(ListNode head) {
         ListNode temp = head;
