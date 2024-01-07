@@ -6,6 +6,7 @@ public class City {
     private String parentName;
     private String test;
     private String test2;
+    private int markId;
 
     public City() {
 
@@ -23,6 +24,14 @@ public class City {
         this.parentName = parentName;
         this.test = test;
         this.test2 = test2;
+    }
+
+    public int getMarkId() {
+        return markId;
+    }
+
+    public void setMarkId(int markId) {
+        this.markId = markId;
     }
 
     public String getTest() {
