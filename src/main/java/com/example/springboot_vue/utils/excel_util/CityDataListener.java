@@ -6,6 +6,8 @@ import com.alibaba.excel.util.ListUtils;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.example.springboot_vue.mapper.CityMapper;
 import com.example.springboot_vue.pojo.city.City;
+import com.example.springboot_vue.rabbitmq_test.RabbitMQProvider;
+import com.example.springboot_vue.rabbitmq_test.RabbitMQUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,6 +22,7 @@ public class CityDataListener implements ReadListener<City> {
 
     private int totalData;
 
+    RabbitMQProvider provider = new RabbitMQProvider();
     /**
      * 这里是设置批量插入数据的大小
      */
@@ -49,6 +52,10 @@ public class CityDataListener implements ReadListener<City> {
     public void invoke(City city, AnalysisContext analysisContext) {
         // 添加字段
         city.setMarkId(++totalData);
+        // 这里会报错，唯一键冲突
+//        if (totalData == 1000) {
+//            city.setMarkId(999);
+//        }
         cachedDataList.add(city);
         // 一次1000条，如果超过1000条，就清除之前的内容
         if (cachedDataList.size() >= BATCH_COUNT) {
@@ -58,7 +65,11 @@ public class CityDataListener implements ReadListener<City> {
 
             CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> saveData(tempList), executorService)
                     .exceptionally(ex -> {
-                        wrongList.add(tempList);
+                        try {
+                            provider.sendMessage(tempList.toString());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         return null;
                     });
             allFutures.add(future);

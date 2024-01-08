@@ -87,4 +87,27 @@ public class RabbitMQProvider {
         channel.close();
         connection.close();
     }
+
+    public void sendMessage(String message) throws Exception {
+        Connection connection = RabbitMQUtils.createConnection();
+        System.out.println("连接成功");
+        // 创建管道
+        Channel channel = connection.createChannel();
+
+        String exchangeName = "testRabbitMQ";
+        String routingKey = "test";
+        // 通过通道建立交换机 参数2：路由模式
+        channel.exchangeDeclare(exchangeName, "direct", true);
+        String queenName = "queueName";
+
+        channel.queueDeclare(queenName, true, false, false, null);
+
+        // 将队列和交换级绑定
+        channel.queueBind(queenName, exchangeName, routingKey);
+
+        byte[] messageByte = message.getBytes();
+
+        // 发布消息，最简单的形式
+        channel.basicPublish(exchangeName, routingKey, null, messageByte);
+    }
 }
