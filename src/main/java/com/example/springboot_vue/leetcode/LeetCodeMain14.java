@@ -24,6 +24,67 @@ public class LeetCodeMain14 {
         System.out.println(sum);
     }
 
+    // 447. 回旋镖的数量
+    public int numberOfBoomerangs(int[][] points) {
+        int ans = 0;
+        for (int[] p : points) {
+            Map<Integer, Integer> cnt = new HashMap<>();
+            for (int[] q : points) {
+                int dis = (p[0] - q[0]) * (p[0] - q[0]) + (p[1] - q[1]) * (p[1] - q[1]);
+                // 这里的key是距离
+                cnt.put(dis, cnt.getOrDefault(dis, 0) + 1);
+            }
+            // 这里找数量时，就只算key相等的
+            for (Map.Entry<Integer, Integer> entry : cnt.entrySet()) {
+                int m = entry.getValue();
+                ans += m * (m - 1);
+            }
+        }
+        return ans;
+
+//        Map<String, String> map = new HashMap<>();
+//        for (int[] point : points) {
+//            String key = point[0] + "-" + point[1];
+//            map.put(key, "1");
+//        }
+//
+//        int res = 0;
+//        for (int i = 0; i < points.length; i++) {
+//            int x = points[i][0];
+//            int y = points[i][1];
+//            for (int j = 0; j < points.length; j++) {
+//                if (i == j) {
+//                    continue;
+//                }
+//                int tempX = points[j][0];
+//                int tempY = points[j][1];
+//
+//                int absX = Math.abs(x - tempX);
+//                int absY = Math.abs(y - tempY);
+//
+//                String first = (x + absX) + "-" + (y + absY);
+//                String second = (x - absX) + "-" + (y - absY);
+//                String third = (x + absX) + "-" + (y - absY);
+//                String fourth = (x - absX) + "-" + (y + absY);
+//                String unless = tempX + "-" + tempY;
+//                if (!fourth.equals(unless) && map.get(fourth) != null) {
+//                    res++;
+//                }
+//                if (!first.equals(unless) && map.get(first) != null) {
+//                    res++;
+//                }
+//                if (!second.equals(unless) && map.get(second) != null) {
+//                    res++;
+//                }
+//                if (!third.equals(unless) && map.get(third) != null) {
+//                    res++;
+//                }
+//            }
+//        }
+//
+//        return res;
+    }
+
     // 383. 赎金信
     public boolean canConstruct(String ransomNote, String magazine) {
         int[] arr = new int[26];
