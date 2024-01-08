@@ -43,7 +43,7 @@
     </select>
 
     <select id="getPageCity" resultMap="city">
-        select * from city where mark_id >= (select mark_id from city limit #{currentPage}, 1) order by mark_id limit #{pageCount}
+        select * from city where mark_id >= (select mark_id from city where mark_id > #{currentPage} limit 1) order by mark_id limit #{pageCount}
     </select>
 
 </mapper>
