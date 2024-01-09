@@ -8,6 +8,7 @@ import com.example.springboot_vue.pojo.city.City;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.*;
 
@@ -20,9 +21,10 @@ public class EasyExcelDemo {
     }
 
     public void readExcel(CityMapper cityMapper, CountDownLatch latch) {
-        int total = cityMapper.getTotalData();
+        Map<String, Object> map = cityMapper.getTotalData();
         String fileName = "D:\\bilibili_video\\test.xlsx";
-        EasyExcel.read(fileName, City.class, new CityDataListener(cityMapper, total)).doReadAll();
+//        EasyExcel.read(fileName, City.class, new CityDataListener(cityMapper, (Integer) map.get("column_count"))).doReadAll();
+        EasyExcel.read(fileName, City.class, new LockCityDataListener(cityMapper)).doReadAll();
     }
 
     public void threadReadExcel(CityMapper cityMapper, String sheetName) {

@@ -1,12 +1,14 @@
 package com.example.springboot_vue.mapper;
 
 import com.example.springboot_vue.pojo.city.City;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface CityMapper {
@@ -19,8 +21,11 @@ public interface CityMapper {
 
     int insertCityAll(@Param("list") List<City> list);
 
-    @Select("select count(*) from city")
-    int getTotalData();
+    @Select("select column_count, version from version_lock")
+    Map<String, Object> getTotalData();
+
+    @Insert("update version_lock set column_count = #{data}, version = version + 1 where version = #{version}")
+    int setData(@Param("version") int version, @Param("data") int data);
 
     List<City> getPageCity(@Param("currentPage") int currentPage, @Param("pageCount") int pageCount);
 }

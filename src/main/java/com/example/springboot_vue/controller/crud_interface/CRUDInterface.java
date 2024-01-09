@@ -56,6 +56,7 @@ public class CRUDInterface {
 
     @RequestMapping("/testParam")
     public String testRequestParam(@RequestParam("name") String name) {
+        crudServiceImpl.insertCity(null);
 
         return name;
     }
