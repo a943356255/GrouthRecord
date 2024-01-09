@@ -7,13 +7,14 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.example.springboot_vue.mapper.CityMapper;
 import com.example.springboot_vue.pojo.city.City;
 import com.example.springboot_vue.rabbitmq_test.RabbitMQProvider;
-import com.example.springboot_vue.rabbitmq_test.RabbitMQUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Slf4j
 public class CityDataListener implements ReadListener<City> {
@@ -22,7 +23,12 @@ public class CityDataListener implements ReadListener<City> {
 
     private int totalData;
 
+    private volatile int index = -1;
+
+    Lock lock = new ReentrantLock(true);
+
     RabbitMQProvider provider = new RabbitMQProvider();
+
     /**
      * 这里是设置批量插入数据的大小
      */
@@ -50,6 +56,12 @@ public class CityDataListener implements ReadListener<City> {
     @SneakyThrows
     @Override
     public void invoke(City city, AnalysisContext analysisContext) {
+        if (index == -1) {
+            lock.lock();
+            // 获取总行数
+            Integer rowNumber = analysisContext.readSheetHolder().getApproximateTotalRowNumber();
+        }
+
         // 添加字段
         city.setMarkId(++totalData);
         // 这里会报错，唯一键冲突
@@ -65,11 +77,12 @@ public class CityDataListener implements ReadListener<City> {
 
             CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> saveData(tempList), executorService)
                     .exceptionally(ex -> {
-                        try {
-                            provider.sendMessage(tempList.toString());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        wrongList.add(tempList);
+//                        try {
+//                            provider.sendMessage(tempList.toString());
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
                         return null;
                     });
             allFutures.add(future);
