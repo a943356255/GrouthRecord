@@ -5,6 +5,7 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.example.springboot_vue.mapper.CityMapper;
 import com.example.springboot_vue.pojo.city.City;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +21,11 @@ public class EasyExcelDemo {
 //        easyExcelDemo.readExcel();
     }
 
-    public void readExcel(CityMapper cityMapper, CountDownLatch latch) {
+    public void readExcel(CityMapper cityMapper, CountDownLatch latch, DataSourceTransactionManager dataSourceTransactionManager) {
         Map<String, Object> map = cityMapper.getTotalData();
         String fileName = "D:\\bilibili_video\\test.xlsx";
 //        EasyExcel.read(fileName, City.class, new CityDataListener(cityMapper, (Integer) map.get("column_count"))).doReadAll();
-        EasyExcel.read(fileName, City.class, new LockCityDataListener(cityMapper)).doReadAll();
+        EasyExcel.read(fileName, City.class, new LockCityDataListener(cityMapper, dataSourceTransactionManager)).doReadAll();
     }
 
     public void threadReadExcel(CityMapper cityMapper, String sheetName) {

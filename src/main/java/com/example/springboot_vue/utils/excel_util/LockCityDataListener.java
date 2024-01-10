@@ -8,6 +8,13 @@ import com.example.springboot_vue.mapper.CityMapper;
 import com.example.springboot_vue.pojo.city.City;
 import com.example.springboot_vue.rabbitmq_test.RabbitMQProvider;
 import lombok.SneakyThrows;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +32,8 @@ public class LockCityDataListener implements ReadListener<City> {
     Lock lock = new ReentrantLock(true);
 
     RabbitMQProvider rabbitMQProvider = new RabbitMQProvider();
+
+    DataSourceTransactionManager dataSourceTransactionManager;
 
     int currentStartNumber = 0;
     /**
@@ -46,30 +55,39 @@ public class LockCityDataListener implements ReadListener<City> {
 
     List<CompletableFuture<Integer>> allFutures = new ArrayList<>();
 
-    public LockCityDataListener(CityMapper cityMapper) {
+    public LockCityDataListener(CityMapper cityMapper, DataSourceTransactionManager dataSourceTransactionManager) {
         this.cityMapper = cityMapper;
+        this.dataSourceTransactionManager = dataSourceTransactionManager;
     }
 
     @SneakyThrows
     @Override
     public void invoke(City city, AnalysisContext analysisContext) {
         if (index <= 0) {
+            // 这里是手动开启事务
+            DefaultTransactionDefinition df = new DefaultTransactionDefinition();
+            df.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+            TransactionStatus transaction = dataSourceTransactionManager.getTransaction(df);
             Map<String, Object> map = cityMapper.getTotalData();
             int currentData = (int) map.get("column_count");
             // 获取总行数
             int rowNumber = analysisContext.readSheetHolder().getApproximateTotalRowNumber() - 1;
             int resultNumber = currentData + rowNumber;
+
+            // 这里的update语句是在主线程中执行的，也就是说这里的事务直到结束是不会提交的。如果在该线程结束之前有其他线程修改，则可能导致死锁
             int res = cityMapper.setData((Integer) map.get("version"), resultNumber);
-//            rabbitMQProvider.sendMessage("当前res的大小为:" + res);
+            // 这里，虽然是进行了判断，但是它永远无法获取到最新的version
             while (res == 0) {
+                rabbitMQProvider.sendMessage("还未进行查询的map为：" + map.toString());
                 map = cityMapper.getTotalData();
                 resultNumber = rowNumber + (int) map.get("column_count");
                 res = cityMapper.setData((Integer) map.get("version"), resultNumber);
-                rabbitMQProvider.sendMessage("出错了:(");
+                rabbitMQProvider.sendMessage(map.toString() + " res = " + res + " resultNumber = " + resultNumber);
             }
             index = rowNumber;
             currentStartNumber = (int) map.get("column_count");
-//            rabbitMQProvider.sendMessage("当前sheet的大小为:" + index);
+            // 手动提交事务
+            dataSourceTransactionManager.commit(transaction);
         }
         city.setMarkId(++currentStartNumber);
         cachedDataList.add(city);

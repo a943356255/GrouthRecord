@@ -13,6 +13,7 @@ import com.example.springboot_vue.service.CRUDService;
 import com.example.springboot_vue.utils.excel_util.EasyExcelDemo;
 import com.example.springboot_vue.utils.excel_util.ReadExcel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +34,8 @@ public class CRUDServiceImpl implements CRUDService {
     @Autowired
     CityMapper cityMapper;
 
+    @Autowired
+    DataSourceTransactionManager dataSourceTransactionManager;
 //    @Resource
 //    MongoTemplate mongoTemplate;
 
@@ -144,7 +147,7 @@ public class CRUDServiceImpl implements CRUDService {
         EasyExcelDemo easyExcelDemo = new EasyExcelDemo();
         CountDownLatch latch = new CountDownLatch(1);
 
-        easyExcelDemo.readExcel(cityMapper, latch);
+        easyExcelDemo.readExcel(cityMapper, latch, dataSourceTransactionManager);
 //        InputStream inputStream = null;
 //        try {
 //             inputStream = new BufferedInputStream(new FileInputStream("D:\\bilibili_video\\test.xlsx"));
