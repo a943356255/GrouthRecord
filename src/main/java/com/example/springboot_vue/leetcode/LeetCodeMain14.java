@@ -24,6 +24,33 @@ public class LeetCodeMain14 {
         System.out.println(sum);
     }
 
+    // 2696. 删除子串后的字符串最小长度
+    public int minLength(String s) {
+        Stack<Character> stack = new Stack<>();
+        int mark;
+        for (int i = 0; i < s.length(); i++) {
+            mark = 1;
+            char c = s.charAt(i);
+            if (c == 'B') {
+                if (!stack.isEmpty() && stack.peek() == 'A') {
+                    stack.pop();
+                    mark = 0;
+                }
+            }
+            if (c == 'D') {
+                if (!stack.isEmpty() && stack.peek() == 'C') {
+                    stack.pop();
+                    mark = 0;
+                }
+            }
+
+            if (mark == 1) {
+                stack.push(c);
+            }
+        }
+        return stack.size();
+    }
+
     // 2707. 字符串中的额外字符
     public int minExtraChar(String s, String[] dictionary) {
         int n = s.length();
