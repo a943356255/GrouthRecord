@@ -24,6 +24,21 @@ public class LeetCodeMain14 {
         System.out.println(sum);
     }
 
+    // 2645. 构造有效字符串的最少插入数
+    public int addMinimum(String word) {
+        int[] dp = new int[word.length() + 1];
+        dp[0] = 0;
+        for (int i = 1; i <= word.length(); i++) {
+            // 这里，可以当作首次判断，也可以认为先不管怎样，1个字符都需要填充3个
+            dp[i] = dp[i - 1] + 2;
+            if (i > 1 && word.charAt(i - 1) > word.charAt(i - 2)) {
+                dp[i] = dp[i - 1] - 1;
+            }
+        }
+
+        return dp[word.length()];
+    }
+
     // 2696. 删除子串后的字符串最小长度
     public int minLength(String s) {
         Stack<Character> stack = new Stack<>();
