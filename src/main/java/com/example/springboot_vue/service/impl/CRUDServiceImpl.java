@@ -12,6 +12,9 @@ import com.example.springboot_vue.pojo.city.City;
 import com.example.springboot_vue.service.CRUDService;
 import com.example.springboot_vue.utils.excel_util.EasyExcelDemo;
 import com.example.springboot_vue.utils.excel_util.ReadExcel;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
@@ -25,7 +28,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 @Service
-@Transactional
+//@Transactional
 public class CRUDServiceImpl implements CRUDService {
 
     @Autowired
@@ -139,14 +142,10 @@ public class CRUDServiceImpl implements CRUDService {
         crudMapper.insertExcelData(table, res, list);
     }
 
-    ExecutorService executorService = new ThreadPoolExecutor(20, 20, 10, TimeUnit.MINUTES, new LinkedBlockingDeque<>());
-    List<CompletableFuture<Integer>> allFutures = new ArrayList<>();
-
     @Override
     public void insertCity(List<City> list) {
         EasyExcelDemo easyExcelDemo = new EasyExcelDemo();
         CountDownLatch latch = new CountDownLatch(1);
-
         easyExcelDemo.readExcel(cityMapper, latch, dataSourceTransactionManager);
 //        InputStream inputStream = null;
 //        try {

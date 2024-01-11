@@ -20,16 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class LockCityDataListener implements ReadListener<City> {
 
     CityMapper cityMapper;
 
     private int index = 0;
-
-    Lock lock = new ReentrantLock(true);
 
     RabbitMQProvider rabbitMQProvider = new RabbitMQProvider();
 
@@ -126,6 +122,7 @@ public class LockCityDataListener implements ReadListener<City> {
     }
 
     public int saveData(List<City> cachedDataList) {
+
         return cityMapper.insertCityAll(cachedDataList);
     }
 

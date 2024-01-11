@@ -24,7 +24,6 @@ public class EasyExcelDemo {
     public void readExcel(CityMapper cityMapper, CountDownLatch latch, DataSourceTransactionManager dataSourceTransactionManager) {
         Map<String, Object> map = cityMapper.getTotalData();
         String fileName = "D:\\bilibili_video\\test.xlsx";
-//        EasyExcel.read(fileName, City.class, new CityDataListener(cityMapper, (Integer) map.get("column_count"))).doReadAll();
         EasyExcel.read(fileName, City.class, new LockCityDataListener(cityMapper, dataSourceTransactionManager)).doReadAll();
     }
 
