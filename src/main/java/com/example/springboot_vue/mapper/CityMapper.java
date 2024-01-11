@@ -24,6 +24,9 @@ public interface CityMapper {
     @Select("select column_count, version from version_lock")
     Map<String, Object> getTotalData();
 
+    @Select("select column_count, version from version_lock for update")
+    Map<String, Object> getTotalDataForUpdate();
+
     @Insert("update version_lock set column_count = #{data}, version = version + 1 where version = #{version}")
     int setData(@Param("version") int version, @Param("data") int data);
 
