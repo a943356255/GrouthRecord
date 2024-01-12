@@ -12,7 +12,7 @@ public interface CRUDService {
 
     void test(Map<String, Object> map);
 
-    void insertCity(List<City> list);
+    void insertCity(String filepath);
 
-    void exportCity(String name, String pageRange, int pageSize);
+    void exportCity(String name, String pageRange, int pageSize, String path);
 }

@@ -61,9 +61,9 @@ public class LockCityDataListener implements ReadListener<City> {
     public void invoke(City city, AnalysisContext analysisContext) {
         if (index <= 0) {
             // 这里是手动开启事务
-            DefaultTransactionDefinition df = new DefaultTransactionDefinition();
-            df.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-            TransactionStatus transaction = dataSourceTransactionManager.getTransaction(df);
+//            DefaultTransactionDefinition df = new DefaultTransactionDefinition();
+//            df.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+//            TransactionStatus transaction = dataSourceTransactionManager.getTransaction(df);
             // 这里需要注意,我觉得使用了forUpdate之后，应该不会进入while循环了
             Map<String, Object> map = cityMapper.getTotalData();
             int currentData = (int) map.get("column_count");
@@ -76,7 +76,7 @@ public class LockCityDataListener implements ReadListener<City> {
             // 这里，虽然是进行了判断，但是它永远无法获取到最新的version
             while (res == 0) {
                 rabbitMQProvider.sendMessage("还未进行查询的map为：" + map.toString());
-                map = cityMapper.getTotalDataForUpdate();
+                map = cityMapper.getTotalData();
                 resultNumber = rowNumber + (int) map.get("column_count");
                 res = cityMapper.setData((Integer) map.get("version"), resultNumber);
                 rabbitMQProvider.sendMessage(map.toString() + " res = " + res + " resultNumber = " + resultNumber);
@@ -84,7 +84,7 @@ public class LockCityDataListener implements ReadListener<City> {
             index = rowNumber;
             currentStartNumber = (int) map.get("column_count");
             // 手动提交事务
-            dataSourceTransactionManager.commit(transaction);
+//            dataSourceTransactionManager.commit(transaction);
         }
         city.setMarkId(++currentStartNumber);
         cachedDataList.add(city);

@@ -21,10 +21,8 @@ public class EasyExcelDemo {
 //        easyExcelDemo.readExcel();
     }
 
-    public void readExcel(CityMapper cityMapper, CountDownLatch latch, DataSourceTransactionManager dataSourceTransactionManager) {
-        Map<String, Object> map = cityMapper.getTotalData();
-        String fileName = "D:\\bilibili_video\\test.xlsx";
-        EasyExcel.read(fileName, City.class, new LockCityDataListener(cityMapper, dataSourceTransactionManager)).doReadAll();
+    public void readExcel(CityMapper cityMapper, DataSourceTransactionManager dataSourceTransactionManager, String filepath) {
+        EasyExcel.read(filepath, City.class, new LockCityDataListener(cityMapper, dataSourceTransactionManager)).doReadAll();
     }
 
     public void threadReadExcel(CityMapper cityMapper, String sheetName) {

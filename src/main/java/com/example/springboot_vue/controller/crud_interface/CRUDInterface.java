@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,9 +57,57 @@ public class CRUDInterface {
     }
 
     @RequestMapping("/testParam")
-    public String testRequestParam(@RequestParam("name") String name) {
-        crudServiceImpl.insertCity(null);
+    public String testRequestParam(@RequestParam("filepath") String filepath) {
+        crudServiceImpl.insertCity(filepath);
+        return "上传成功";
+    }
 
-        return name;
+    @RequestMapping("/exportData")
+    public String export(@RequestBody Map<String, Object> map, HttpServletResponse response) {
+//        String pageRange = "1-2100001";
+//        int pageSize = 1000;
+//        String filepath = "D:\\bilibili_video\\export.xlsx";
+
+        String name = (String) map.get("name");
+        String pageRange = (String) map.get("pageRange");
+        // 批量查询的条数，目前每个sheet固定3w条数据
+        int pageSize = (int) map.get("pageSize");
+        String filepath = (String) map.get("filepath");
+        crudServiceImpl.exportCity(name, pageRange, pageSize, filepath);
+        // 写回请求
+        writeBackFile(response, filepath, name);
+        return "导出成功";
+    }
+
+    public void writeBackFile(HttpServletResponse response, String filepath, String filename) {
+        File file = new File(filepath);
+        ServletOutputStream out = null;
+        BufferedInputStream inputStream = null;
+        try {
+            inputStream = new BufferedInputStream(new FileInputStream(file));
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-disposition", "attachment;filename=" + filename + ";"+"filename*=utf-8''" + filename);
+            out = response.getOutputStream();
+            byte[] buffer = new byte[1024];
+            int n;
+            // while循环一直读取缓冲流中的内容到输出的对象中
+            while ((n = inputStream.read(buffer)) != -1) {
+                out.write(buffer, 0, n);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.flush();
+                    out.close();
+                }
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

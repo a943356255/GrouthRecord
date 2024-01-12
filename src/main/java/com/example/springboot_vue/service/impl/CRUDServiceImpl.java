@@ -143,10 +143,9 @@ public class CRUDServiceImpl implements CRUDService {
     }
 
     @Override
-    public void insertCity(List<City> list) {
+    public void insertCity(String filepath) {
         EasyExcelDemo easyExcelDemo = new EasyExcelDemo();
-        CountDownLatch latch = new CountDownLatch(1);
-        easyExcelDemo.readExcel(cityMapper, latch, dataSourceTransactionManager);
+        easyExcelDemo.readExcel(cityMapper, dataSourceTransactionManager, filepath);
 //        InputStream inputStream = null;
 //        try {
 //             inputStream = new BufferedInputStream(new FileInputStream("D:\\bilibili_video\\test.xlsx"));
@@ -170,7 +169,7 @@ public class CRUDServiceImpl implements CRUDService {
     }
 
     @Override
-    public void exportCity(String name, String pageRange, int pageSize) {
+    public void exportCity(String name, String pageRange, int pageSize, String path) {
         String[] range = pageRange.split("-");
         // 错误的输入范围
         if (range.length > 2) {
@@ -200,18 +199,14 @@ public class CRUDServiceImpl implements CRUDService {
                 dataRageList.add(new int[]{dataRageList.get(dataRageList.size() - 1)[0] + dataSize, Integer.parseInt(range[1]) - dataRageList.get(dataRageList.size() - 1)[0] - dataSize});
             }
         }
-        String filename = "D:\\bilibili_video\\export.xlsx";
         // 每次写入一页
-        ExcelWriter excelWriter = EasyExcel.write(filename).build();
+        ExcelWriter excelWriter = EasyExcel.write(path).build();
         for (int i = 0; i < dataRageList.size(); i++) {
             List<City> list = cityMapper.getPageCity(dataRageList.get(i)[0] - 1, dataRageList.get(i)[1]);
             WriteSheet writeSheet = EasyExcel.writerSheet(i, "sheet_" + i).head(City.class).build();
             excelWriter.write(list, writeSheet);
         }
         excelWriter.finish();
-//        for (int i = 0; i < dataRageList.size(); i++) {
-//            System.out.println(Arrays.toString(dataRageList.get(i)));
-//        }
     }
 
 }
