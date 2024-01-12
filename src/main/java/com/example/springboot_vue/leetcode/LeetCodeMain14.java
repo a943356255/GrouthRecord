@@ -24,6 +24,30 @@ public class LeetCodeMain14 {
         System.out.println(sum);
     }
 
+    // 2085. 统计出现过一次的公共字符串
+    public int countWords(String[] words1, String[] words2) {
+        Map<String, Integer> map1 = new HashMap<>();
+        for (String s : words1) {
+            map1.merge(s, 1, Integer::sum);
+        }
+
+        Map<String, Integer> map2 = new HashMap<>();
+        for (String s : words2) {
+            map2.merge(s, 1, Integer::sum);
+        }
+
+        int res= 0;
+        for (Map.Entry<String, Integer> entry : map1.entrySet()) {
+            if (entry.getValue() == 1) {
+                if (map2.get(entry.getKey()) != null) {
+                    if (map2.get(entry.getKey()) == 1)
+                        res++;
+                }
+            }
+        }
+        return res;
+    }
+
     // 2645. 构造有效字符串的最少插入数
     public int addMinimum(String word) {
         int[] dp = new int[word.length() + 1];
