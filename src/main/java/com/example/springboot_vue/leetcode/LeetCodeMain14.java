@@ -24,6 +24,22 @@ public class LeetCodeMain14 {
         System.out.println(sum);
     }
 
+    // 2491. 划分技能点相等的团队
+    public long dividePlayers(int[] skill) {
+        Arrays.sort(skill);
+        int left = 0, right = skill.length - 1, last = skill[left] + skill[right];
+        long res = 0;
+        while (left <= right) {
+            if (skill[left] + skill[right] != last) {
+                return -1;
+            }
+            res += (long) skill[left] * skill[right];
+            left++;
+            right--;
+        }
+        return res;
+    }
+
     // 2085. 统计出现过一次的公共字符串
     public int countWords(String[] words1, String[] words2) {
         Map<String, Integer> map1 = new HashMap<>();
