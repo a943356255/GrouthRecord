@@ -26,6 +26,28 @@ public class LeetCodeMain14 {
         System.out.println(sum);
     }
 
+    // 83. 删除排序链表中的重复元素
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        int currentMax = head.val;
+        ListNode fast = head.next;
+        ListNode slow = head;
+        while (fast != null) {
+            // 重复
+            if (fast.val == currentMax) {
+                fast = fast.next;
+                slow.next = fast;
+            } else {
+                currentMax = fast.val;
+                fast = fast.next;
+                slow = slow.next;
+            }
+        }
+        return head;
+    }
+
     // 2182. 构造限制重复的字符串
     public String repeatLimitedString(String s, int repeatLimit) {
         int N = 26;
