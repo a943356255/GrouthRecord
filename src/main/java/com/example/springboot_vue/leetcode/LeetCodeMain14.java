@@ -26,6 +26,40 @@ public class LeetCodeMain14 {
         System.out.println(sum);
     }
 
+    // 82. 删除排序链表中的重复元素 II
+    public ListNode deleteDuplicates2(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+
+        ListNode pre = new ListNode();
+        pre.next = head;
+        ListNode cur = head;
+        ListNode next = head.next;
+        ListNode temp = pre;
+
+        while (next != null) {
+            // 两个节点不相等，都后移
+            if (cur.val != next.val) {
+                cur = cur.next;
+                next = next.next;
+                pre = pre.next;
+            } else {
+                // 一直循环，找到下一个不等的节点
+                while (next != null && next.val == cur.val) {
+                    next = next.next;
+                }
+                pre.next = next;
+                cur = next;
+                if (next != null) {
+                    next = next.next;
+                }
+            }
+        }
+
+        return temp.next;
+    }
+
     // 83. 删除排序链表中的重复元素
     public ListNode deleteDuplicates(ListNode head) {
         if (head == null) {
