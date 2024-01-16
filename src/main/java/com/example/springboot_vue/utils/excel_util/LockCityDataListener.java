@@ -45,7 +45,9 @@ public class LockCityDataListener implements ReadListener<City> {
     /**
      * 创建一个线程池
      */
-    ExecutorService executorService = new ThreadPoolExecutor(20, 40, 10, TimeUnit.MINUTES, new LinkedBlockingDeque<>());
+    ThreadPoolExecutor executorService = new ThreadPoolExecutor(10, 10, 10, TimeUnit.MINUTES, new LinkedBlockingDeque<>());
+
+//    ExecutorService
 
     List<List<City>> wrongList = new ArrayList<>();
 
@@ -54,6 +56,10 @@ public class LockCityDataListener implements ReadListener<City> {
     public LockCityDataListener(CityMapper cityMapper, DataSourceTransactionManager dataSourceTransactionManager) {
         this.cityMapper = cityMapper;
         this.dataSourceTransactionManager = dataSourceTransactionManager;
+    }
+
+    public LockCityDataListener(CityMapper cityMapper, ExecutorService executorService) {
+        this.cityMapper = cityMapper;
     }
 
     @SneakyThrows
@@ -75,29 +81,34 @@ public class LockCityDataListener implements ReadListener<City> {
             int res = cityMapper.setData((Integer) map.get("version"), resultNumber);
             // 这里，虽然是进行了判断，但是它永远无法获取到最新的version
             while (res == 0) {
-                rabbitMQProvider.sendMessage("还未进行查询的map为：" + map.toString());
                 map = cityMapper.getTotalData();
                 resultNumber = rowNumber + (int) map.get("column_count");
                 res = cityMapper.setData((Integer) map.get("version"), resultNumber);
-                rabbitMQProvider.sendMessage(map.toString() + " res = " + res + " resultNumber = " + resultNumber);
             }
             index = rowNumber;
             currentStartNumber = (int) map.get("column_count");
+//            rabbitMQProvider.sendMessage("当前活跃线程数：" + executorService.getActiveCount());
+//            rabbitMQProvider.sendMessage("当前任务数量为：" + executorService.getTaskCount());
+//            rabbitMQProvider.sendMessage("当前队列中元素为：" + executorService.getQueue().toString());
             // 手动提交事务
 //            dataSourceTransactionManager.commit(transaction);
         }
         city.setMarkId(++currentStartNumber);
         cachedDataList.add(city);
         index--;
+//        System.out.println("当前活跃线程数：" + executorService.getActiveCount());
+//        System.out.println("当前任务数量为：" + executorService.getTaskCount());
+//        System.out.println("当前队列中元素为：" + executorService.getQueue().toString());
         // 一次1000条，如果超过1000条，就清除之前的内容
         if (cachedDataList.size() >= BATCH_COUNT) {
             List<City> tempList = new ArrayList<>(cachedDataList);
-            // 存储完成清理 list
+            // 清理 list
             cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
 
             CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> saveData(tempList), executorService)
                     .exceptionally(ex -> {
-                        wrongList.add(tempList);
+                        System.out.println(ex.toString());
+//                        wrongList.add(tempList);
                         return null;
                     });
             allFutures.add(future);
@@ -122,7 +133,6 @@ public class LockCityDataListener implements ReadListener<City> {
     }
 
     public int saveData(List<City> cachedDataList) {
-
         return cityMapper.insertCityAll(cachedDataList);
     }
 
