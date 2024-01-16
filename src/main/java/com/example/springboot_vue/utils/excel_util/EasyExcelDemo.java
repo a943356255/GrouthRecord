@@ -5,6 +5,7 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.example.springboot_vue.mapper.CityMapper;
 import com.example.springboot_vue.pojo.city.City;
+import com.example.springboot_vue.pojo.city.UCity;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import java.util.ArrayList;
@@ -17,8 +18,9 @@ public class EasyExcelDemo {
 
     public static void main(String[] args) {
         EasyExcelDemo easyExcelDemo = new EasyExcelDemo();
-//        easyExcelDemo.write();
+        easyExcelDemo.write();
 //        easyExcelDemo.readExcel();
+
     }
 
     public void readExcel(CityMapper cityMapper, DataSourceTransactionManager dataSourceTransactionManager, String filepath) {
@@ -42,10 +44,32 @@ public class EasyExcelDemo {
         excelWriter.finish();
     }
 
+    public void write() {
+        String fileName = "D:\\bilibili_video\\test4.xlsx";
+        ExcelWriter excelWriter = EasyExcel.write(fileName).build();
+
+        for (int i = 0; i < 1; i++) {
+            WriteSheet writeSheet = EasyExcel.writerSheet(i, "sheet_" + i).head(City.class).build();
+            List<City> cities = getCity(i);
+            excelWriter.write(cities, writeSheet);
+        }
+
+        excelWriter.finish();
+    }
+
     public List<City> getCity(int index) {
         List<City> list = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 30000; i++) {
             City city = new City(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
+            list.add(city);
+        }
+        return list;
+    }
+
+    public List<UCity> getUIDCity() {
+        List<UCity> list = new ArrayList<>();
+        for (int i = 0; i < 30000; i++) {
+            UCity city = new UCity(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
             list.add(city);
         }
         return list;
