@@ -62,6 +62,12 @@ public class CRUDInterface {
         return "上传成功";
     }
 
+    @RequestMapping("/testParamOne")
+    public String testRequestParamByOne(@RequestParam("filepath") String filepath) {
+        crudServiceImpl.insertCityByOneThread(filepath);
+        return "上传成功";
+    }
+
     @RequestMapping("/exportData")
     public String export(@RequestBody Map<String, Object> map, HttpServletResponse response) {
 //        String pageRange = "1-2100001";
