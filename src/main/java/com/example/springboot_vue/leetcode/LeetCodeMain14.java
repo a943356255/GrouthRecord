@@ -26,6 +26,49 @@ public class LeetCodeMain14 {
         System.out.println(sum);
     }
 
+    // LCR 002. 二进制求和
+    public String addBinary(String a, String b) {
+        StringBuilder res = new StringBuilder();
+        int left = a.length() - 1;
+        int right = b.length() - 1;
+        int more = 0;
+        while (left >= 0 && right >= 0) {
+            char l = a.charAt(left);
+            char r = b.charAt(right);
+            res.insert(0, ((l - '0') + (r - '0') + more) % 2);
+            if ((l - '0') + (r - '0') + more >= 2) {
+                more = 1;
+            } else {
+                more = 0;
+            }
+            left--;
+            right--;
+        }
+
+        more = result(left, a, res, more);
+        more = result(right, b, res, more);
+
+        if (more != 0) {
+            res.insert(0, more);
+        }
+
+        return res.toString();
+    }
+
+    public int result(int index, String word, StringBuilder res, int more) {
+        while (index >= 0) {
+            char c = word.charAt(index);
+            res.insert(0, ((c - '0') + more) % 2);
+            if ((c - '0') + more >= 2) {
+                more = 1;
+            } else {
+                more = 0;
+            }
+            index--;
+        }
+        return more;
+    }
+
     // 82. 删除排序链表中的重复元素 II
     public ListNode deleteDuplicates2(ListNode head) {
         if (head == null) {
