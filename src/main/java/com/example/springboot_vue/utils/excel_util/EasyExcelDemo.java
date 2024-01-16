@@ -31,6 +31,10 @@ public class EasyExcelDemo {
         EasyExcel.read(filepath, City.class, new OtherCityListener(cityMapper)).doReadAll();
     }
 
+    public void readExcelByOneThreadUID(CityMapper cityMapper, DataSourceTransactionManager dataSourceTransactionManager, String filepath) {
+        EasyExcel.read(filepath, UCity.class, new UCityDataListener(cityMapper)).doReadAll();
+    }
+
     public void threadReadExcel(CityMapper cityMapper, String sheetName) {
         String fileName = "D:\\bilibili_video\\test.xlsx";
         EasyExcel.read(fileName, City.class, new OtherCityListener(cityMapper)).sheet(sheetName).doRead();

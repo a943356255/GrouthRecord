@@ -17,4 +17,6 @@ public interface CRUDService {
     void exportCity(String name, String pageRange, int pageSize, String path);
 
     void insertCityByOneThread(String filepath);
+
+    void insertCityByOneThreadUID(String filepath);
 }

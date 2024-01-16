@@ -215,4 +215,10 @@ public class CRUDServiceImpl implements CRUDService {
         easyExcelDemo.readExcelByOneThread(cityMapper, dataSourceTransactionManager, filepath);
     }
 
+    @Override
+    public void insertCityByOneThreadUID(String filepath) {
+        EasyExcelDemo easyExcelDemo = new EasyExcelDemo();
+        easyExcelDemo.readExcelByOneThreadUID(cityMapper, dataSourceTransactionManager, filepath);
+    }
+
 }

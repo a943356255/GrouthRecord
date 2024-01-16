@@ -9,6 +9,10 @@ public class UCity {
     private String test2;
     private String markId;
 
+    public UCity() {
+
+    }
+
     public UCity(String name, String number, String parentName, String test, String test2, String markId) {
         this.name = name;
         this.number = number;
@@ -16,6 +20,14 @@ public class UCity {
         this.test = test;
         this.test2 = test2;
         this.markId = markId;
+    }
+
+    public UCity(String name, String number, String parentName, String test, String test2) {
+        this.name = name;
+        this.number = number;
+        this.parentName = parentName;
+        this.test = test;
+        this.test2 = test2;
     }
 
     public String getName() {

@@ -8,6 +8,7 @@ import com.example.springboot_vue.mapper.CityMapper;
 import com.example.springboot_vue.pojo.city.UCity;
 
 import java.util.List;
+import java.util.UUID;
 
 public class UCityDataListener implements ReadListener<UCity> {
 
@@ -23,6 +24,8 @@ public class UCityDataListener implements ReadListener<UCity> {
 
     @Override
     public void invoke(UCity city, AnalysisContext analysisContext) {
+        city.setMarkId(UUID.randomUUID().toString());
+        cachedDataList.add(city);
         if (cachedDataList.size() >= BATCH_COUNT) {
             saveData(cachedDataList);
             // 存储完成清理 list
