@@ -38,6 +38,14 @@
         </foreach>
     </insert>
 
+    <insert id="insertUCityAll" parameterType="java.util.List">
+        insert into city(`name`, parent_name, `number`, column_1, column_2, mark_id) values
+        <foreach collection="list" separator="," item="item">
+            (#{item.name}, #{item.parentName}, #{item.number}, #{item.test}, #{item.test2}, #{item.markId})
+        </foreach>
+    </insert>
+
+
     <select id="selCity" resultMap="city">
         select `name`, `number`, parent_name  from city
     </select>

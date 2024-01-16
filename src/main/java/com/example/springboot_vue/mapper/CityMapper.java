@@ -1,6 +1,7 @@
 package com.example.springboot_vue.mapper;
 
 import com.example.springboot_vue.pojo.city.City;
+import com.example.springboot_vue.pojo.city.UCity;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -20,6 +21,8 @@ public interface CityMapper {
     ArrayList<City> selCity();
 
     int insertCityAll(@Param("list") List<City> list);
+
+    int insertUCityAll(@Param("list") List<UCity> list);
 
     @Select("select column_count, version from version_lock")
     Map<String, Object> getTotalData();
