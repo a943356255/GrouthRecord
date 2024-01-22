@@ -5,10 +5,42 @@ import java.util.*;
 public class LeetCodeMain15 {
 
     public static void main(String[] args) {
+        LeetCodeMain15 leetCodeMain15 = new LeetCodeMain15();
+        leetCodeMain15.maximumSwap(4567);
 
     }
 
+    // 670. 最大交换
+    public int maximumSwap(int num) {
+        List<Integer> list = new ArrayList<>();
+        while (num > 0) {
+            list.add(0, num % 10);
+            num /= 10;
+        }
 
+        List<Integer> temp = new ArrayList<>(list);
+        temp.sort((a, b) -> b - a);
+        for (int i = 0; i < list.size(); i++) {
+            if (!list.get(i).equals(temp.get(i))) {
+                int big = temp.get(i);
+                int min = list.get(i);
+                for (int j = list.size() - 1; j >= i + 1; j--) {
+                    if (list.get(j) == big) {
+                        list.set(j, min);
+                        list.set(i, big);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        int res = list.get(0);
+        for (int i = 1; i < list.size(); i++) {
+            res = res * 10 + list.get(i);
+        }
+        return res;
+    }
 
     // 2788. 按分隔符拆分字符串
     public List<String> splitWordsBySeparator(List<String> words, char separator) {
