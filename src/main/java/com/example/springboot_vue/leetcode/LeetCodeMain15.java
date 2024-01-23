@@ -10,6 +10,36 @@ public class LeetCodeMain15 {
 
     }
 
+    // 2765. 最长交替子数组
+    public int alternatingSubarray(int[] nums) {
+        int res = -1;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] - nums[i - 1] == 1) {
+                System.out.println("nums[i] = " + nums[i] + " nums[i - 1] = " + nums[i - 1]);
+                int temp = 2, mark = nums[i], tempIndex = i;
+                for (int j = i + 2; j < nums.length; j += 2) {
+                    if (nums[j] == mark && nums[j] - nums[j - 1] == 1) {
+                        temp += 2;
+                    } else {
+                        break;
+                    }
+                    tempIndex = j;
+                }
+                System.out.println("tempIndex = " + tempIndex + " temp = " + temp);
+                if (tempIndex + 1 < nums.length) {
+                    if (nums[tempIndex + 1] == mark - 1) {
+                        temp++;
+                    }
+                }
+                System.out.println("temp = " + temp);
+                res = Math.max(res, temp);
+                i = tempIndex;
+            }
+        }
+
+        return res;
+    }
+
     // 670. 最大交换
     public int maximumSwap(int num) {
         List<Integer> list = new ArrayList<>();
