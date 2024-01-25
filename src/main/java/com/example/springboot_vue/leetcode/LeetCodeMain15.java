@@ -10,6 +10,31 @@ public class LeetCodeMain15 {
 
     }
 
+    // 2859. 计算 K 置位下标对应元素的和
+    public int sumIndicesWithKSetBits(List<Integer> nums, int k) {
+        int res = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            if (Integer.bitCount(i) == k) {
+                res += nums.get(i);
+            }
+        }
+
+        return res;
+    }
+
+    public int getOne(int num) {
+        int count = 0;
+        while (num > 0) {
+            if ((num & 1) == 1) {
+                count++;
+            }
+
+            num >>= 1;
+        }
+
+        return count;
+    }
+
     // 2865. 美丽塔 I
     public long maximumSumOfHeights(List<Integer> maxHeights) {
         int n = maxHeights.size();
