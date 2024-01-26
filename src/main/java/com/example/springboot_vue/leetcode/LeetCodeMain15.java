@@ -10,6 +10,73 @@ public class LeetCodeMain15 {
 
     }
 
+    // 2831. 找出最长等值子数组
+    public int longestEqualSubarray(List<Integer> nums, int k) {
+        int n = nums.size(), ans = 0;
+        List<Integer>[] pos = new ArrayList[n + 1];
+        Arrays.setAll(pos, e -> new ArrayList<>());
+        for (int i = 0; i < n; i++) {
+            int x = nums.get(i);
+            pos[x].add(i - pos[x].size());
+        }
+        for (var ps : pos) {
+            if (ps.size() <= ans) continue;
+            int left = 0;
+            for (int right = 0; right < ps.size(); right++) {
+                while (ps.get(right) - ps.get(left) > k) // 要删除的数太多了
+                    left++;
+                ans = Math.max(ans, right - left + 1);
+            }
+        }
+        return ans;
+
+//        int[][] sorted = new int[nums.size()][2];
+//        for (int i = 0; i < nums.size(); i++) {
+//            sorted[i][0] = nums.get(i);
+//            sorted[i][1] = i;
+//        }
+//        // 先按元素由小到大排序，如果元素相等，按照下标由小到大
+//        Arrays.sort(sorted, (ints, t1) -> {
+//            if (ints[0] != t1[0]) {
+//                return ints[0] - t1[0];
+//            } else {
+//                return ints[1] - t1[1];
+//            }
+//        });
+//
+//        int max = 1;
+//        int countContinue = 1, countDel = 0;
+//        for (int i = 1; i < sorted.length; i++) {
+//            if (sorted[i][0] == sorted[i - 1][0]) {
+//                if (sorted[i][1] == sorted[i - 1][1] + 1) {
+//                    countContinue++;
+//                } else {
+//                    countDel += (sorted[i][1] - sorted[i - 1][1] - 1);
+//                    if (countDel > k) {
+//                        if ((sorted[i][1] - sorted[i - 1][1] - 1) > k) {
+//                            countDel = 0;
+//                            max = Math.max(max, countContinue);
+//                            countContinue = 1;
+//                        } else {
+//                            max = Math.max(max, countContinue);
+//                            countDel = sorted[i][1] - sorted[i - 1][1] - 1;
+//                            countContinue = 2;
+//                        }
+//                    } else {
+//                        countContinue ++;
+//                    }
+//                }
+//            } else {
+//                max = Math.max(max, countContinue);
+//                countContinue = 1;
+//                countDel = 0;
+//            }
+//        }
+//
+//        max = Math.max(countContinue, max);
+//        return max;
+    }
+
     // 2859. 计算 K 置位下标对应元素的和
     public int sumIndicesWithKSetBits(List<Integer> nums, int k) {
         int res = 0;
