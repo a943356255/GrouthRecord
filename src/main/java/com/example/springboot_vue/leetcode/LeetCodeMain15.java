@@ -1,18 +1,39 @@
 package com.example.springboot_vue.leetcode;
 
+import cn.hutool.json.JSONObject;
+import com.alibaba.fastjson.JSONArray;
+
 import java.util.*;
 
 public class LeetCodeMain15 {
 
     public static void main(String[] args) {
-        LeetCodeMain15 leetCodeMain15 = new LeetCodeMain15();
-        leetCodeMain15.maximumSwap(4567);
+//        LeetCodeMain15 leetCodeMain15 = new LeetCodeMain15();
+//        leetCodeMain15.maximumSwap(4567);
 
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < 10; i++) {
+            jsonArray.add(new JSONObject().set("de", String.valueOf(9 - i)));
+        }
+        for (int i = 0; i < 10; i++) {
+            System.out.println(jsonArray.get(i).toString());
+        }
+
+        jsonArray.sort((o, t1) -> {
+            JSONObject first = (JSONObject) o;
+            JSONObject second = (JSONObject) t1;
+            return first.getStr("de").compareTo(second.getStr("de"));
+        });
+
+        System.out.println("after sorted");
+        for (int i = 0; i < 10; i++) {
+            System.out.println(jsonArray.get(i).toString());
+        }
     }
 
     // 365. 水壶问题
     public boolean canMeasureWater(int x, int y, int z) {
-        Deque<int[]> stack = new LinkedList<int[]>();
+        Deque<int[]> stack = new LinkedList<>();
         stack.push(new int[]{0, 0});
         Set<Long> seen = new HashSet<>();
         while (!stack.isEmpty()) {
