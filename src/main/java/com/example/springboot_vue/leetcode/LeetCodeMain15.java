@@ -31,6 +31,26 @@ public class LeetCodeMain15 {
         }
     }
 
+    // 2808. 使循环数组所有元素相等的最少秒数
+    public int minimumSeconds(List<Integer> nums) {
+        HashMap<Integer, List<Integer>> mp = new HashMap<>();
+        int n = nums.size(), res = n;
+        // 这里，是将num[i]一样的数字放进同一个key，然后val是他们的下标。
+        for (int i = 0; i < n; ++i) {
+            mp.computeIfAbsent(nums.get(i), k -> new ArrayList<>()).add(i);
+        }
+
+        // 这里是遍历集合，找到距离最近的，就是最快的
+        for (List<Integer> positions : mp.values()) {
+            int mx = positions.get(0) + n - positions.get(positions.size() - 1);
+            for (int i = 1; i < positions.size(); ++i) {
+                mx = Math.max(mx, positions.get(i) - positions.get(i - 1));
+            }
+            res = Math.min(res, mx / 2);
+        }
+        return res;
+    }
+
     // 365. 水壶问题
     public boolean canMeasureWater(int x, int y, int z) {
         Deque<int[]> stack = new LinkedList<>();
