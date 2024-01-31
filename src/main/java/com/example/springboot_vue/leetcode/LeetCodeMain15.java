@@ -31,6 +31,25 @@ public class LeetCodeMain15 {
         }
     }
 
+    // 2670. 找出不同元素数目差数组
+    public int[] distinctDifferenceArray(int[] nums) {
+        int n = nums.length;
+        Set<Integer> set = new HashSet<Integer>();
+        int[] sufCnt = new int[n + 1];
+        for (int i = n - 1; i > 0; i--) {
+            set.add(nums[i]);
+            sufCnt[i] = set.size();
+        }
+
+        int[] res = new int[n];
+        set.clear();
+        for (int i = 0; i < n; i++) {
+            set.add(nums[i]);
+            res[i] = set.size() - sufCnt[i + 1];
+        }
+        return res;
+    }
+
     // 2808. 使循环数组所有元素相等的最少秒数
     public int minimumSeconds(List<Integer> nums) {
         HashMap<Integer, List<Integer>> mp = new HashMap<>();
