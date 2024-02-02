@@ -31,6 +31,39 @@ public class LeetCodeMain15 {
         }
     }
 
+    // 1690. 石子游戏 VII
+    public int stoneGameVII(int[] stones) {
+        int sum = Arrays.stream(stones).sum();
+        int alice = 0, bob = 0, left = 0, right = stones.length - 1, people = 0;
+        while (left < right) {
+            if (people % 2 == 0) {
+                if (stones[left] > stones[right]) {
+                    sum -= stones[right];
+                    right--;
+                } else {
+                    sum -= stones[left];
+                    left++;
+                }
+                alice += sum;
+            } else {
+                if (stones[left] < stones[right]) {
+                    sum -= stones[right];
+                    right--;
+                } else {
+                    sum -= stones[left];
+                    left++;
+                }
+                bob += sum;
+            }
+            System.out.println("sum = " + sum);
+            people = 1 - people;
+        }
+
+        System.out.println("alice = " + alice + " bob = " + bob);
+
+        return Math.abs(alice - bob);
+    }
+
     // 1686. 石子游戏 VI
     public int stoneGameVI(int[] aliceValues, int[] bobValues) {
         int n = aliceValues.length;
