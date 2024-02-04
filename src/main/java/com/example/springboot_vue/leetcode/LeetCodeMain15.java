@@ -31,6 +31,11 @@ public class LeetCodeMain15 {
         }
     }
 
+    // 292. Nim 游戏
+    public boolean canWinNim(int n) {
+        return n % 4 != 0;
+    }
+
     // 1690. 石子游戏 VII
     public int stoneGameVII(int[] stones) {
         int sum = Arrays.stream(stones).sum();
