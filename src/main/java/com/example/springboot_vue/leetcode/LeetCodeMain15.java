@@ -31,6 +31,50 @@ public class LeetCodeMain15 {
         }
     }
 
+    // 1696. 跳跃游戏 VI
+    public int maxResult(int[] nums, int k) {
+//        // 下标0存放元素，下标1存放元素下标
+//        PriorityQueue<int[]> queue = new PriorityQueue<>((a, b) -> b[0] - a[0]);
+//        // 存放元素下标
+//        Set<Integer> set = new HashSet<>();
+//        int[] res = new int[nums.length];
+//        Arrays.fill(res, Integer.MIN_VALUE);
+//        res[0] = nums[0];
+//        for (int i = 1; i < nums.length; i++) {
+//            // 元素移出
+//            int[] arr;
+//            if (i > k) {
+//                set.add(i - k);
+//                arr = queue.poll();
+//                while (!queue.isEmpty() && set.contains(arr[1])) {
+//                    arr = queue.poll();
+//                }
+//            } else {
+//                arr = queue.peek();
+//            }
+//            res[i] = arr[0] + nums[i];
+//            queue.add(new int[]{res[i], i});
+//        }
+//        System.out.println(Arrays.toString(res));
+//        return res[nums.length - 1];
+        int n = nums.length;
+        int[] dp = new int[n];
+        dp[0] = nums[0];
+        Deque<Integer> queue = new ArrayDeque<>();
+        queue.offerLast(0);
+        for (int i = 1; i < n; i++) {
+            while (queue.peekFirst() < i - k) {
+                queue.pollFirst();
+            }
+            dp[i] = dp[queue.peekFirst()] + nums[i];
+            while (!queue.isEmpty() && dp[queue.peekLast()] <= dp[i]) {
+                queue.pollLast();
+            }
+            queue.offerLast(i);
+        }
+        return dp[n - 1];
+    }
+
     // 292. Nim 游戏
     public boolean canWinNim(int n) {
         return n % 4 != 0;
