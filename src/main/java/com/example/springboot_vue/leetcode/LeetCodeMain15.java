@@ -31,6 +31,44 @@ public class LeetCodeMain15 {
         }
     }
 
+    // LCP 30. 魔塔游戏
+    public int magicTower(int[] nums) {
+        // 存放无脑移除的元素
+        PriorityQueue<Integer> queue = new PriorityQueue<>();
+        Queue<Integer> queue1 = new ArrayDeque<>();
+        long blood = 1;
+        int count = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] >= 0) {
+                blood += nums[i];
+            } else {
+                queue.offer(nums[i]);
+                // 说明需要移动
+                if (blood + nums[i] <= 0) {
+                    int add = queue.poll();
+                    count++;
+                    queue1.offer(add);
+                    // 如果当前num[i]就是最大的，需要移动到末尾，那么此次就什么也不做
+                    if (add != nums[i]) {
+                        blood -= add;
+                        blood += nums[i];
+                    }
+                } else {
+                    blood += nums[i];
+                }
+            }
+        }
+
+        while (!queue1.isEmpty()) {
+            blood += queue1.poll();
+            if (blood <= 0) {
+                return -1;
+            }
+        }
+
+        return count;
+    }
+
     // 1696. 跳跃游戏 VI
     public int maxResult(int[] nums, int k) {
 //        // 下标0存放元素，下标1存放元素下标
