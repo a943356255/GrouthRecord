@@ -31,6 +31,60 @@ public class LeetCodeMain15 {
         }
     }
 
+    // 993. 二叉树的堂兄弟节点
+    public boolean isCousins(TreeNode root, int x, int y) {
+        if (root.val == x || root.val == y) {
+            return false;
+        }
+
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.add(root);
+        TreeNode xFather = null, yFather = null;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                if (node != null) {
+                    if (node.left != null) {
+                        queue.add(node.left);
+                        if (node.left.val == x) {
+                            xFather = node;
+                        }
+                        if (node.left.val == y) {
+                            yFather = node;
+                        }
+                    }
+                    if (node.right != null) {
+                        queue.add(node.right);
+                        if (node.right.val == x) {
+                            xFather = node;
+                        }
+                        if (node.right.val == y) {
+                            yFather = node;
+                        }
+                    }
+                }
+                System.out.println("x = " + xFather + " y = " + yFather);
+            }
+
+            // 不在同一层
+            if ((xFather != null && yFather == null) || (xFather == null && yFather != null)) {
+                return false;
+            }
+
+            // 相同父节点
+            if (xFather == yFather && xFather != null) {
+                return false;
+            }
+
+            if (xFather != null && yFather != null && xFather != yFather) {
+                return true;
+            }
+        }
+
+        return true;
+    }
+
     // 2641. 二叉树的堂兄弟节点 II
     public TreeNode replaceValueInTree(TreeNode root) {
         Queue<TreeNode> queue = new ArrayDeque<>();
