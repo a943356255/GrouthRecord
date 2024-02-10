@@ -31,6 +31,22 @@ public class LeetCodeMain15 {
         }
     }
 
+    List<Integer> res = new ArrayList<>();
+    // 94. 二叉树的中序遍历
+    public List<Integer> inorderTraversal(TreeNode root) {
+        midDfs(root);
+        return res;
+    }
+
+    public void midDfs(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        midDfs(root.left);
+        res.add(root.val);
+        midDfs(root.right);
+    }
 
     // 993. 二叉树的堂兄弟节点
     public boolean isCousins(TreeNode root, int x, int y) {
