@@ -32,6 +32,21 @@ public class LeetCodeMain15 {
     }
 
     List<Integer> res = new ArrayList<>();
+    // 145. 二叉树的后序遍历
+    public List<Integer> postorderTraversal(TreeNode root) {
+        afterDfs(root);
+        return res;
+    }
+
+    public void afterDfs(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        afterDfs(root.left);
+        afterDfs(root.right);
+        res.add(root.val);
+    }
 
     // 144. 二叉树的前序遍历
     public List<Integer> preorderTraversal(TreeNode root) {
