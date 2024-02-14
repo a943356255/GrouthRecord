@@ -8,8 +8,6 @@ import java.util.*;
 public class LeetCodeMain15 {
 
     public static void main(String[] args) {
-//        LeetCodeMain15 leetCodeMain15 = new LeetCodeMain15();
-//        leetCodeMain15.maximumSwap(4567);
 
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < 10; i++) {
