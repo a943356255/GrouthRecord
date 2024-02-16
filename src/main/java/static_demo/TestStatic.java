@@ -6,7 +6,7 @@ public class TestStatic {
     static String password = "123";
     private String name;
     private String email;
-    public String test;
+    public String test = "321";
 
     public TestStatic() {
 
