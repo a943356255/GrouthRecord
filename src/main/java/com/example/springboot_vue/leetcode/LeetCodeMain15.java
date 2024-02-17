@@ -29,6 +29,34 @@ public class LeetCodeMain15 {
         }
     }
 
+    // 429. N 叉树的层序遍历
+    public List<List<Integer>> levelOrder(NodeN root) {
+        Queue<NodeN> queue = new ArrayDeque<>();
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            List<Integer> temp = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                NodeN node = queue.poll();
+                temp.add(node.val);
+                List<NodeN> children = node.children;
+                for (int j = 0; j < children.size(); j++) {
+                    if (children.get(j) != null) {
+                        queue.offer(children.get(j));
+                    }
+                }
+            }
+            res.add(temp);
+        }
+
+        return res;
+    }
+
     List<Integer> res = new ArrayList<>();
     // 145. 二叉树的后序遍历
     public List<Integer> postorderTraversal(TreeNode root) {
