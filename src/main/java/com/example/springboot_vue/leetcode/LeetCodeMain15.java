@@ -30,6 +30,26 @@ public class LeetCodeMain15 {
     }
 
     List<Integer> res = new ArrayList<>();
+    // 590. N 叉树的后序遍历
+    public List<Integer> postorder(NodeN root) {
+        preorderAfter(root);
+        return res;
+    }
+
+    public void preorderAfter(NodeN root) {
+        if (root == null) {
+            return;
+        }
+
+        List<NodeN> temp = root.children;
+        if (temp != null) {
+            for (int i = 0; i < temp.size(); i++) {
+                preorderAfter(temp.get(i));
+            }
+        }
+        res.add(root.val);
+    }
+
     // 589. N 叉树的前序遍历
     public List<Integer> preorder(NodeN root) {
         preorderN(root);
