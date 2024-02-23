@@ -29,6 +29,45 @@ public class LeetCodeMain15 {
         }
     }
 
+    // 2583. 二叉树中的第 K 大层和
+    public long kthLargestLevelSum(TreeNode root, int k) {
+        PriorityQueue<Long> priorityQueue = new PriorityQueue<>(Comparator.reverseOrder());
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        if (root == null) {
+            return -1;
+        }
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            long sum = 0;
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                sum += node.val;
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+            priorityQueue.offer(sum);
+        }
+
+        if (k > priorityQueue.size()) {
+            return -1;
+        }
+
+        while (k > 0) {
+            k--;
+            System.out.println(priorityQueue.peek());
+            priorityQueue.poll();
+        }
+
+        return priorityQueue.poll();
+    }
+
     // 105. 从前序与中序遍历序列构造二叉树
     private Map<Integer, Integer> indexMap;
 
