@@ -29,6 +29,46 @@ public class LeetCodeMain15 {
         }
     }
 
+    TreeMap<Integer, String> treeMap = new TreeMap<>();
+    // 2476. 二叉搜索树最近节点查询
+    public List<List<Integer>> closestNodes(TreeNode root, List<Integer> queries) {
+        List<List<Integer>> res = new ArrayList<>();
+        closeDfs(root);
+
+        for (int i = 0; i < queries.size(); i++) {
+            List<Integer> temp = new ArrayList<>();
+            int val = queries.get(i);
+            if (treeMap.containsKey(val)) {
+                temp.add(val);
+                temp.add(val);
+            } else {
+                if (treeMap.lowerEntry(val) != null) {
+                    temp.add(treeMap.lowerEntry(val).getKey());
+                } else {
+                    temp.add(-1);
+                }
+
+                if (treeMap.higherEntry(val) != null) {
+                    temp.add(treeMap.higherEntry(val).getKey());
+                } else {
+                    temp.add(-1);
+                }
+            }
+            res.add(temp);
+        }
+
+        return res;
+    }
+
+    public void closeDfs(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        treeMap.put(root.val, "1");
+        closeDfs(root.left);
+        closeDfs(root.right);
+    }
+
     // 2583. 二叉树中的第 K 大层和
     public long kthLargestLevelSum(TreeNode root, int k) {
         PriorityQueue<Long> priorityQueue = new PriorityQueue<>(Comparator.reverseOrder());
