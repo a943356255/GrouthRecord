@@ -29,6 +29,26 @@ public class LeetCodeMain15 {
         }
     }
 
+    public int sum = 0;
+    // 938. 二叉搜索树的范围和
+    public int rangeSumBST(TreeNode root, int low, int high) {
+        sumDfs(root, low, high);
+        return sum;
+    }
+
+    public void sumDfs(TreeNode root, int low, int high) {
+        if (root == null) {
+            return;
+        }
+        sumDfs(root.left, low, high);
+        if (root.val >= low && root.val <= high) {
+            sum += root.val;
+        }
+        if (root.val < high) {
+            sumDfs(root.right, low, high);
+        }
+    }
+
     // 235. 二叉搜索树的最近公共祖先
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         List<TreeNode> path_p = getPath(root, p);
