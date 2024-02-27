@@ -23,6 +23,10 @@ public class EasyExcelDemo {
 
     }
 
+    public void readExcelByAutoId(CityMapper cityMapper, String filepath) {
+        EasyExcel.read(filepath, City.class, new AutoIncrementDataListener(cityMapper)).doReadAll();
+    }
+
     public void readExcel(CityMapper cityMapper, DataSourceTransactionManager dataSourceTransactionManager, String filepath) {
         EasyExcel.read(filepath, City.class, new LockCityDataListener(cityMapper, dataSourceTransactionManager)).doReadAll();
     }

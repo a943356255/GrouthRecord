@@ -19,4 +19,6 @@ public interface CRUDService {
     void insertCityByOneThread(String filepath);
 
     void insertCityByOneThreadUID(String filepath);
+
+    void insertAutoIdCity(String filepath);
 }

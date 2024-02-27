@@ -7,7 +7,12 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.example.springboot_vue.mapper.CityMapper;
 import com.example.springboot_vue.pojo.city.City;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class AutoIncrementDataListener implements ReadListener<City> {
 
@@ -17,6 +22,10 @@ public class AutoIncrementDataListener implements ReadListener<City> {
 
     private List<City> cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
 
+    ThreadPoolExecutor executorService = new ThreadPoolExecutor(10, 10, 10, TimeUnit.MINUTES, new LinkedBlockingDeque<>());
+
+    List<CompletableFuture<Integer>> allFutures = new ArrayList<>();
+
     public AutoIncrementDataListener(CityMapper cityMapper) {
         this.cityMapper = cityMapper;
     }
@@ -25,9 +34,17 @@ public class AutoIncrementDataListener implements ReadListener<City> {
     public void invoke(City city, AnalysisContext analysisContext) {
         cachedDataList.add(city);
         if (cachedDataList.size() > BATCH_COUNT) {
-            saveData(cachedDataList);
-            // 存储完成清理 list
+            List<City> tempList = new ArrayList<>(cachedDataList);
+            // 清理 list
             cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
+
+            CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> saveData(tempList), executorService)
+                    .exceptionally(ex -> {
+                        System.out.println(ex.toString());
+//                        wrongList.add(tempList);
+                        return null;
+                    });
+            allFutures.add(future);
         }
     }
 
@@ -38,6 +55,8 @@ public class AutoIncrementDataListener implements ReadListener<City> {
             // 这里如果不进行重置，如果每个sheet不是1000条数据，会存在多插入的情况
             cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
         }
+        CompletableFuture<Void> allCompleted = CompletableFuture.allOf(allFutures.toArray(new CompletableFuture[0]));
+        allCompleted.join();
     }
 
     public int saveData(List<City> cachedDataList) {
