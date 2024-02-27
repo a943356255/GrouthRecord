@@ -38,6 +38,13 @@
         </foreach>
     </insert>
 
+    <insert id="autoInsertCity" parameterType="java.util.List">
+        insert into test_city(`name`, parent_name, `number`, column_1, column_2) values
+        <foreach collection="list" separator="," item="item">
+            (#{item.name}, #{item.parentName}, #{item.number}, #{item.test}, #{item.test2})
+        </foreach>
+    </insert>
+
     <insert id="insertUCityAll" parameterType="java.util.List">
         insert into city_temp(`name`, parent_name, `number`, column_1, column_2, mark_id) values
         <foreach collection="list" separator="," item="item">

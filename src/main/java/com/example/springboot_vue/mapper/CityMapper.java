@@ -34,4 +34,6 @@ public interface CityMapper {
     int setData(@Param("version") int version, @Param("data") int data);
 
     List<City> getPageCity(@Param("currentPage") int currentPage, @Param("pageCount") int pageCount);
+
+    int autoInsertCity(@Param("list") List<City> list);
 }
