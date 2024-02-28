@@ -21,4 +21,6 @@ public interface CRUDService {
     void insertCityByOneThreadUID(String filepath);
 
     void insertAutoIdCity(String filepath);
+
+    JSONObject submitTest(Map<String, Object> map);
 }

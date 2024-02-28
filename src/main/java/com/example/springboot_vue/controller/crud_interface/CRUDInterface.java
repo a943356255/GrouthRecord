@@ -36,6 +36,11 @@ public class CRUDInterface {
     @Autowired
     UserMapper userMapper;
 
+    @RequestMapping("/testSubmit")
+    public JSONObject submitTest(@RequestBody Map<String, Object> map) {
+        return crudServiceImpl.submitTest(map);
+    }
+
     @RequestMapping("/allCRUD")
     public JSONObject testInterface(@RequestBody Map<String, Object> map, HttpServletRequest request) throws IOException {
         return crudServiceImpl.getCrudValue(map);

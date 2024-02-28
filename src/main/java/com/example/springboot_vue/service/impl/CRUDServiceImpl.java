@@ -43,6 +43,12 @@ public class CRUDServiceImpl implements CRUDService {
 //    MongoTemplate mongoTemplate;
 
     @Override
+    public JSONObject submitTest(Map<String, Object> map) {
+
+        return null;
+    }
+
+    @Override
     public JSONObject getCrudValue(Map<String, Object> map) {
 
         JSONObject jsonObject = new JSONObject();
@@ -226,5 +232,4 @@ public class CRUDServiceImpl implements CRUDService {
         EasyExcelDemo easyExcelDemo = new EasyExcelDemo();
         easyExcelDemo.readExcelByAutoId(cityMapper, filepath);
     }
-
 }
