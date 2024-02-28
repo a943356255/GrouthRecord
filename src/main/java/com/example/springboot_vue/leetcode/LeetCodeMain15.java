@@ -29,6 +29,38 @@ public class LeetCodeMain15 {
         }
     }
 
+    // 496. 下一个更大元素 I
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int[] temp = new int[nums2.length];
+        temp[temp.length - 1] = -1;
+        map.put(nums2[temp.length - 1], temp[temp.length - 1]);
+        Stack<Integer> stack = new Stack<>();
+        stack.push(nums2[temp.length - 1]);
+        for (int i = nums2.length - 2; i >= 0; i--) {
+            if (nums2[i] < stack.peek()) {
+                temp[i] = stack.peek();
+            } else {
+                while (!stack.isEmpty() && nums2[i] > stack.peek()) {
+                    stack.pop();
+                }
+                if (stack.isEmpty()) {
+                    temp[i] = -1;
+                } else {
+                    temp[i] = stack.peek();
+                }
+            }
+            map.put(nums2[i], temp[i]);
+            stack.push(nums2[i]);
+        }
+        System.out.println(map.toString());
+        int[] res = new int[nums1.length];
+        for (int i = 0; i < nums1.length; i++) {
+            res[i] = map.get(nums1[i]);
+        }
+        return res;
+    }
+
     // 2673. 使二叉树所有路径值相等的最小代价
     public int minIncrements(int n, int[] cost) {
         int ans = 0;
