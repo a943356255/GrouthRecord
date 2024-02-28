@@ -29,6 +29,22 @@ public class LeetCodeMain15 {
         }
     }
 
+    // 2673. 使二叉树所有路径值相等的最小代价
+    public int minIncrements(int n, int[] cost) {
+        int ans = 0;
+        // 这里遍历，从后往前每次减2。兄弟节点，只能改变自身的值，才可能让路径相等，改变父节点的值不起作用，所以每次减二
+        for (int i = n - 2; i > 0; i -= 2) {
+            ans += Math.abs(cost[i] - cost[i + 1]);
+            // 叶节点 i 和 i+1 的双亲节点下标为 i/2（整数除法）
+            // 因为这里不能减少，只能增加，所以要去较大的值，而答案就要加上他们之间的差值
+            // 把叶子节点的值加到父节点上边，因为后续计算需要
+            // 这里的思路是自底向上遍历
+            cost[i / 2] += Math.max(cost[i], cost[i + 1]);
+        }
+
+        return ans;
+    }
+
     public int sum = 0;
     // 938. 二叉搜索树的范围和
     public int rangeSumBST(TreeNode root, int low, int high) {
