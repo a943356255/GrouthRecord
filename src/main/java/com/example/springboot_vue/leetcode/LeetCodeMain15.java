@@ -29,6 +29,29 @@ public class LeetCodeMain15 {
         }
     }
 
+    // 110. 平衡二叉树
+    public boolean isBalanced(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+
+        return treeHeight(root) >= 0;
+    }
+
+    public int treeHeight(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        int left = treeHeight(root.left);
+        int right = treeHeight(root.right);
+        if (left == -1 || right == -1 || Math.abs(left - right) > 1) {
+            return -1;
+        } else {
+            return 1 + Math.max(left, right);
+        }
+    }
+
     // 496. 下一个更大元素 I
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
         Map<Integer, Integer> map = new HashMap<>();
