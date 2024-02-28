@@ -15,6 +15,7 @@ import com.example.springboot_vue.utils.excel_util.ReadExcel;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
@@ -42,10 +43,22 @@ public class CRUDServiceImpl implements CRUDService {
 //    @Resource
 //    MongoTemplate mongoTemplate;
 
+    @Autowired
+    RabbitTemplate rabbitTemplate;
+
     @Override
     public JSONObject submitTest(Map<String, Object> map) {
+        String messageId = String.valueOf(UUID.randomUUID());
+        String messageData = "test message, hello!";
 
-        return null;
+        Map<String,Object> temp = new HashMap<>();
+        temp.put("messageId",messageId);
+        temp.put("messageData",messageData);
+
+        // 将消息携带绑定键值：TestDirectRouting 发送到交换机TestDirectExchange
+        rabbitTemplate.convertAndSend("DirectExchange", "DirectRouting", map);
+
+        return new JSONObject();
     }
 
     @Override

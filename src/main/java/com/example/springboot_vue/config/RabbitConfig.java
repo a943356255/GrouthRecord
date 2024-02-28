@@ -7,6 +7,9 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * 该config的作用是在启动时创建对应的内容，在注入RabbitTemplate时会用到如下的配置
+ */
 @Configuration
 public class RabbitConfig {
 

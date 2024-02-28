@@ -2,9 +2,8 @@ package com.example.springboot_vue.controller.crud_interface;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.springboot_vue.mapper.UserMapper;
-import com.example.springboot_vue.pojo.TestUser;
 import com.example.springboot_vue.service.CRUDService;
-import com.example.springboot_vue.utils.excel_util.ReadExcel;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.stream.*;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -35,6 +34,9 @@ public class CRUDInterface {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    RabbitTemplate rabbitTemplate;
 
     @RequestMapping("/testSubmit")
     public JSONObject submitTest(@RequestBody Map<String, Object> map) {
