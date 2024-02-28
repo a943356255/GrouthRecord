@@ -40,7 +40,7 @@ public class AutoIncrementDataListener implements ReadListener<City> {
 
             CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> saveData(tempList), executorService)
                     .exceptionally(ex -> {
-                        System.out.println(ex.toString());
+
 //                        wrongList.add(tempList);
                         return null;
                     });
@@ -60,6 +60,6 @@ public class AutoIncrementDataListener implements ReadListener<City> {
     }
 
     public int saveData(List<City> cachedDataList) {
-        return cityMapper.insertCityAll(cachedDataList);
+        return cityMapper.autoInsertCity(cachedDataList);
     }
 }

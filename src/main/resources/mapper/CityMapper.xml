@@ -52,7 +52,6 @@
         </foreach>
     </insert>
 
-
     <select id="selCity" resultMap="city">
         select `name`, `number`, parent_name  from city
     </select>

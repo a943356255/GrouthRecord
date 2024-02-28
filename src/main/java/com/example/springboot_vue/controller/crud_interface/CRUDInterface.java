@@ -56,6 +56,12 @@ public class CRUDInterface {
 //        ExecutorService executorService = Executors.newFixedThreadPool();
     }
 
+    @RequestMapping("/testParamAuto")
+    public String testRequestParamAuto(@RequestParam("filepath") String filepath) {
+        crudServiceImpl.insertAutoIdCity(filepath);
+        return "上传成功";
+    }
+
     @RequestMapping("/testParam")
     public String testRequestParam(@RequestParam("filepath") String filepath) {
         crudServiceImpl.insertCity(filepath);
