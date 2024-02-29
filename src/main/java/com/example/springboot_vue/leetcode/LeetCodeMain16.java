@@ -35,6 +35,29 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // 441. 排列硬币
+    public int arrangeCoins(int n) {
+        if (n == 1 || n == 2) {
+            return 1;
+        }
+        long res = 0;
+        int index = 1;
+        for (int i = 1; i < n; i++) {
+            res += i;
+            if (res > n) {
+                index = i;
+                break;
+            }
+            index = i;
+        }
+
+        if (res == n) {
+            return index;
+        } else {
+            return index - 1;
+        }
+    }
+
     int sumOfLeftLeaves = 0;
     // 404. 左叶子之和
     public int sumOfLeftLeaves(TreeNode root) {
