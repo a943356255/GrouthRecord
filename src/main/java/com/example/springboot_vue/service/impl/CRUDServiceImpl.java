@@ -48,15 +48,10 @@ public class CRUDServiceImpl implements CRUDService {
 
     @Override
     public JSONObject submitTest(Map<String, Object> map) {
-        String messageId = String.valueOf(UUID.randomUUID());
-        String messageData = "test message, hello!";
 
-        Map<String,Object> temp = new HashMap<>();
-        temp.put("messageId",messageId);
-        temp.put("messageData",messageData);
-
+        List<Integer> list = new ArrayList<>();
         // 将消息携带绑定键值：TestDirectRouting 发送到交换机TestDirectExchange
-        rabbitTemplate.convertAndSend("DirectExchange", "DirectRouting", map);
+        rabbitTemplate.convertAndSend("DirectExchange", "DirectRouting", list);
 
         return new JSONObject();
     }
