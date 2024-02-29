@@ -35,6 +35,26 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    int sumOfLeftLeaves = 0;
+    // 404. 左叶子之和
+    public int sumOfLeftLeaves(TreeNode root) {
+        dfsSumOfLeftLeaves(root);
+        return sumOfLeftLeaves;
+    }
+
+    public void dfsSumOfLeftLeaves(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        if (root.left != null && root.left.left == null && root.left.right == null) {
+            sumOfLeftLeaves += root.left.val;
+        }
+
+        dfsSumOfLeftLeaves(root.left);
+        dfsSumOfLeftLeaves(root.right);
+    }
+
     // 409. 最长回文串
     public int longestPalindrome(String s) {
         int res = 0;
