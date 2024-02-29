@@ -35,6 +35,31 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // 841. 钥匙和房间
+    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+        Set<Integer> set = new HashSet<>();
+        set.add(0);
+        Queue<Integer> queue = new ArrayDeque<>();
+        queue.add(0);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                // 这里是所有已经获得钥匙的房间
+                int index = queue.poll();
+                List<Integer> temp = rooms.get(index);
+                for (int j = 0; j < rooms.get(index).size(); j++) {
+                    if (!set.contains(rooms.get(index).get(j))) {
+                        queue.offer(rooms.get(index).get(j));
+                    }
+                }
+                set.addAll(temp);
+            }
+        }
+
+        System.out.println(set.toString());
+        return set.size() == rooms.size();
+    }
+
     // 140. 单词拆分 II
     public List<String> wordBreak(String s, List<String> wordDict) {
         Map<Integer, List<List<String>>> map = new HashMap<>();
