@@ -35,6 +35,30 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // 409. 最长回文串
+    public int longestPalindrome(String s) {
+        int res = 0;
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            map.merge(c, 1, Integer::sum);
+        }
+
+        int odd = 0;
+        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+            if (entry.getValue() % 2 != 0) {
+                odd++;
+            }
+            res += entry.getValue();
+        }
+
+        if (odd >= 2) {
+            res -= (odd - 1);
+        }
+
+        return res;
+    }
+
     // 841. 钥匙和房间
     public boolean canVisitAllRooms(List<List<Integer>> rooms) {
         Set<Integer> set = new HashSet<>();
