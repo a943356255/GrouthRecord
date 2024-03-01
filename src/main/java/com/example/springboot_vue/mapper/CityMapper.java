@@ -42,4 +42,7 @@ public interface CityMapper {
 
     @Insert("insert into test(test, test_01) values(test2, 'test2')")
     int insertTest1();
+
+    @Select("select test, test_01 from test")
+    Map<String, Object> getAllData();
 }

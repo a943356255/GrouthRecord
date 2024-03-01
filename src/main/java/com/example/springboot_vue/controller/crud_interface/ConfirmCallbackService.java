@@ -1,9 +1,10 @@
 package com.example.springboot_vue.controller.crud_interface;
 
+import lombok.SneakyThrows;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.TransactionStatus;
+import org.springframework.stereotype.Component;
 
 /**
  * correlationData：对象内部只有一个 id 属性，用来表示当前消息的唯一性。
@@ -13,25 +14,18 @@ import org.springframework.transaction.TransactionStatus;
  *
  * 这里回调的通知，应该是一个异步线程触发的，没办法保证事务
  */
+@Component
 public class ConfirmCallbackService implements RabbitTemplate.ConfirmCallback {
 
-    TransactionStatus transaction;
-
-    DataSourceTransactionManager dataSourceTransactionManager;
-
-    public ConfirmCallbackService(TransactionStatus transaction, DataSourceTransactionManager dataSourceTransactionManager) {
-        this.transaction = transaction;
-        this.dataSourceTransactionManager = dataSourceTransactionManager;
-    }
+    public volatile int mark = 0;
 
     @Override
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
         if (!ack) {
             System.out.println("消息发送异常!");
-            dataSourceTransactionManager.rollback(transaction);
         } else {
             System.out.println("correlationData = " + correlationData +  "cause = " + cause);
-            dataSourceTransactionManager.commit(transaction);
+            mark++;
         }
     }
 }

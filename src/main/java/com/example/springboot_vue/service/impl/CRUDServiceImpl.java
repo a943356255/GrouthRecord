@@ -6,6 +6,7 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.fastjson.JSONObject;
+import com.example.springboot_vue.config.RabbitConfig;
 import com.example.springboot_vue.controller.crud_interface.ConfirmCallbackService;
 import com.example.springboot_vue.controller.crud_interface.ReturnCallbackService;
 import com.example.springboot_vue.mapper.CityMapper;
@@ -17,6 +18,7 @@ import com.example.springboot_vue.utils.excel_util.ReadExcel;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -34,6 +36,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Service
 //@Transactional
@@ -49,46 +52,87 @@ public class CRUDServiceImpl implements CRUDService {
 
 //    @Resource
 //    MongoTemplate mongoTemplate;
-//
-//    @Autowired
-    DataSourceTransactionManager dataSourceTransactionManager;
 
     @Autowired
     RabbitTemplate rabbitTemplate;
 
-//    @Autowired
-//    private ConfirmCallbackService confirmCallbackService;
+    DataSourceTransactionManager dataSourceTransactionManager;
+
+    @Autowired
+    private ConfirmCallbackService confirmCallbackService;
 
     @Autowired
     private ReturnCallbackService returnCallbackService;
 
+    ReentrantLock lock = new ReentrantLock();
+
+    @RabbitListener(queues = "DirectQueue")
+    public void getMqData() {
+
+    }
+
     @Override
     public JSONObject submitTest(Map<String, Object> map, DataSourceTransactionManager dataSourceTransactionManager) {
-//        ConfirmCallbackService confirmCallbackService = new ConfirmCallbackService(cityMapper);
-        /*
-         * 确保消息发送失败后可以重新返回到队列中
-         * 注意：yml需要配置 publisher-returns: true
-         */
-        rabbitTemplate.setMandatory(true);
+        lock.lock();
+        try {
+            /*
+             * 确保消息发送失败后可以重新返回到队列中
+             * 注意：yml需要配置 publisher-returns: true
+             */
+            rabbitTemplate.setMandatory(true);
+            // 消费者确认收到消息后，手动ack回执回调处理
+            rabbitTemplate.setConfirmCallback(confirmCallbackService);
+            // 消息投递到队列失败回调处理
+            rabbitTemplate.setReturnsCallback(returnCallbackService);
+            int val = confirmCallbackService.mark;
+            // 手动开启一个事务
+            DefaultTransactionDefinition df = new DefaultTransactionDefinition();
+            df.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+            TransactionStatus transaction = dataSourceTransactionManager.getTransaction(df);
 
-        // 消息投递到队列失败回调处理
-        rabbitTemplate.setReturnsCallback(returnCallbackService);
+            // 插入数据
+            cityMapper.insertTest();
 
-        DataSource dataSource = dataSourceTransactionManager.getDataSource();
+            // 生成10000条数据
+            List<List<Integer>> list = new ArrayList<>();
+            for (int i = 0; i < 100; i++) {
+                List<Integer> res = new ArrayList<>();
+                for (int j = 0; j < 100; j++) {
+                    res.add(j);
+                }
+                list.add(res);
+            }
 
-        // 手动开启一个事务
-        DefaultTransactionDefinition df = new DefaultTransactionDefinition();
-        df.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        TransactionStatus transaction = dataSourceTransactionManager.getTransaction(df);
-        ConfirmCallbackService confirmCallbackService = new ConfirmCallbackService(transaction, dataSourceTransactionManager);
+            for (int i = 0; i < 100; i++) {
+                // 将消息携带绑定键值：DirectRouting 发送到交换机DirectExchange
+                rabbitTemplate.convertAndSend("DirectExchange", "DirectRouting", list.get(i));
+            }
 
-        // 消费者确认收到消息后，手动ack回执回调处理
-        rabbitTemplate.setConfirmCallback(confirmCallbackService);
-        cityMapper.insertTest();
+            int index = 0;
+            while (true) {
+                if (confirmCallbackService.mark == val + 100) {
+                    dataSourceTransactionManager.commit(transaction);
+                    break;
+                } else {
+                    if (index == 103) {
+                        System.out.println("消息发送异常，事务回滚");
+                        dataSourceTransactionManager.rollback(transaction);
+                        break;
+                    }
+                    index++;
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
+        }
 
-        List<Integer> list = new ArrayList<>();
-        // 将消息携带绑定键值：DirectRouting 发送到交换机DirectExchange
-        rabbitTemplate.convertAndSend("DirectExchange", "DirectRouting", list);
         return new JSONObject();
     }
 

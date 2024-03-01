@@ -25,4 +25,5 @@ public interface CRUDService {
     void insertAutoIdCity(String filepath);
 
     JSONObject submitTest(Map<String, Object> map, DataSourceTransactionManager dataSourceTransactionManager);
+
 }
