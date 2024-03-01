@@ -15,9 +15,11 @@ import com.example.springboot_vue.pojo.city.City;
 import com.example.springboot_vue.service.CRUDService;
 import com.example.springboot_vue.utils.excel_util.EasyExcelDemo;
 import com.example.springboot_vue.utils.excel_util.ReadExcel;
+import com.rabbitmq.client.Channel;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +32,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import javax.sql.DataSource;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
@@ -65,10 +64,20 @@ public class CRUDServiceImpl implements CRUDService {
     private ReturnCallbackService returnCallbackService;
 
     ReentrantLock lock = new ReentrantLock();
-
+    int first = 0;
     @RabbitListener(queues = "DirectQueue")
-    public void getMqData() {
-
+    public void getMqData(String msg, Channel channel, Message message) throws IOException {
+//        System.out.println("msg = " + msg);
+//        System.out.println("message = " + message.toString());
+        first++;
+        int val = cityMapper.insertTest();
+        // 消息回退
+        if (first == 50) {
+            channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
+        } else if (val > 0) {
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+        }
+        System.out.println("最终的first应为101， 目前first = " + first);
     }
 
     @Override
