@@ -7,6 +7,8 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.stream.*;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,9 +40,12 @@ public class CRUDInterface {
     @Autowired
     RabbitTemplate rabbitTemplate;
 
+    @Autowired
+    DataSourceTransactionManager dataSourceTransactionManager;
+
     @RequestMapping("/testSubmit")
     public JSONObject submitTest(@RequestBody Map<String, Object> map) {
-        return crudServiceImpl.submitTest(map);
+        return crudServiceImpl.submitTest(map, dataSourceTransactionManager);
     }
 
     @RequestMapping("/allCRUD")

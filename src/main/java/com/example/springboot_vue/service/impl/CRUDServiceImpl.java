@@ -6,6 +6,8 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.fastjson.JSONObject;
+import com.example.springboot_vue.controller.crud_interface.ConfirmCallbackService;
+import com.example.springboot_vue.controller.crud_interface.ReturnCallbackService;
 import com.example.springboot_vue.mapper.CityMapper;
 import com.example.springboot_vue.mapper.crud.CRUDMapper;
 import com.example.springboot_vue.pojo.city.City;
@@ -19,8 +21,13 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import javax.sql.DataSource;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,27 +39,56 @@ import java.util.concurrent.*;
 //@Transactional
 public class CRUDServiceImpl implements CRUDService {
 
+    ThreadLocal<City> threadLocal = new ThreadLocal<>();
+
     @Autowired
     CRUDMapper crudMapper;
 
     @Autowired
     CityMapper cityMapper;
 
-    @Autowired
-    DataSourceTransactionManager dataSourceTransactionManager;
 //    @Resource
 //    MongoTemplate mongoTemplate;
+//
+//    @Autowired
+    DataSourceTransactionManager dataSourceTransactionManager;
 
     @Autowired
     RabbitTemplate rabbitTemplate;
 
+//    @Autowired
+//    private ConfirmCallbackService confirmCallbackService;
+
+    @Autowired
+    private ReturnCallbackService returnCallbackService;
+
     @Override
-    public JSONObject submitTest(Map<String, Object> map) {
+    public JSONObject submitTest(Map<String, Object> map, DataSourceTransactionManager dataSourceTransactionManager) {
+//        ConfirmCallbackService confirmCallbackService = new ConfirmCallbackService(cityMapper);
+        /*
+         * 确保消息发送失败后可以重新返回到队列中
+         * 注意：yml需要配置 publisher-returns: true
+         */
+        rabbitTemplate.setMandatory(true);
+
+        // 消息投递到队列失败回调处理
+        rabbitTemplate.setReturnsCallback(returnCallbackService);
+
+        DataSource dataSource = dataSourceTransactionManager.getDataSource();
+
+        // 手动开启一个事务
+        DefaultTransactionDefinition df = new DefaultTransactionDefinition();
+        df.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        TransactionStatus transaction = dataSourceTransactionManager.getTransaction(df);
+        ConfirmCallbackService confirmCallbackService = new ConfirmCallbackService(transaction, dataSourceTransactionManager);
+
+        // 消费者确认收到消息后，手动ack回执回调处理
+        rabbitTemplate.setConfirmCallback(confirmCallbackService);
+        cityMapper.insertTest();
 
         List<Integer> list = new ArrayList<>();
-        // 将消息携带绑定键值：TestDirectRouting 发送到交换机TestDirectExchange
+        // 将消息携带绑定键值：DirectRouting 发送到交换机DirectExchange
         rabbitTemplate.convertAndSend("DirectExchange", "DirectRouting", list);
-
         return new JSONObject();
     }
 

@@ -36,4 +36,10 @@ public interface CityMapper {
     List<City> getPageCity(@Param("currentPage") int currentPage, @Param("pageCount") int pageCount);
 
     int autoInsertCity(@Param("list") List<City> list);
+
+    @Insert("insert into test(test, test_01) values('test1', 'test1')")
+    int insertTest();
+
+    @Insert("insert into test(test, test_01) values(test2, 'test2')")
+    int insertTest1();
 }

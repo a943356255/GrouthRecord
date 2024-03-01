@@ -2,6 +2,8 @@ package com.example.springboot_vue.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.springboot_vue.pojo.city.City;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import java.util.List;
 import java.util.Map;
@@ -22,5 +24,5 @@ public interface CRUDService {
 
     void insertAutoIdCity(String filepath);
 
-    JSONObject submitTest(Map<String, Object> map);
+    JSONObject submitTest(Map<String, Object> map, DataSourceTransactionManager dataSourceTransactionManager);
 }
