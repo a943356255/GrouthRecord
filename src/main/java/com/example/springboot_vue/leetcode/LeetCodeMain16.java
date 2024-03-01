@@ -35,7 +35,49 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
-    // LCP 03. 机器人大冒险
+    // 833. 字符串中的查找与替换
+    public String findReplaceString(String s, int[] indices, String[] sources, String[] targets) {
+        StringBuilder res = new StringBuilder();
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < indices.length; i++) {
+            map.put(indices[i], i);
+        }
+
+        for (int i = 0; i < s.length(); i++) {
+            if (map.containsKey(i)) {
+                int index = map.get(i);
+                String str = sources[index];
+                int mark = 0;
+                for (int j = 0; j < str.length(); j++) {
+                    char c;
+                    if (j + i < s.length()) {
+                        c = s.charAt(j + i);
+                    } else {
+                        mark = 1;
+                        break;
+                    }
+                    char sI = str.charAt(j);
+                    if (c != sI) {
+                        mark = 1;
+                        break;
+                    }
+                }
+                if (mark == 0) {
+                    res.append(targets[index]);
+                    i += str.length() - 1;
+                } else {
+                    res.append(s.charAt(i));
+                }
+            } else {
+                char c = s.charAt(i);
+                res.append(c);
+            }
+        }
+
+        return res.toString();
+    }
+
+    // LCP 03. 机器人大冒险,这道题2021.03.15 09:41没做出来，现在仍然没做出来
     public boolean robot(String command, int[][] obstacles, int x, int y) {
         boolean res = false;
         int indexX = 0, indexY = 0;
