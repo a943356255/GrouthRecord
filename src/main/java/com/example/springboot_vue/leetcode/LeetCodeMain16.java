@@ -35,6 +35,25 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // 2369. 检查数组是否存在有效划分
+    public boolean validPartition(int[] nums) {
+        int n = nums.length;
+        boolean[] f = new boolean[n + 1];
+        f[0] = true;
+        for (int i = 1; i < n; i++) {
+            if (f[i - 1] && nums[i] == nums[i - 1] ||
+                    i > 1 && f[i - 2] && (nums[i] == nums[i - 1] && nums[i] == nums[i - 2] ||
+                            nums[i] == nums[i - 1] + 1 && nums[i] == nums[i - 2] + 2)) {
+                // f[i - 1] && nums[i] == nums[i - 1] 这里是前一个是true，然后本次的元素和前一个元素相等
+                // i > 1 && f[i - 2] && (nums[i] == nums[i - 1] && nums[i] == nums[i - 2] 这里是判断三个连续相等的情况
+                // nums[i] == nums[i - 1] + 1 && nums[i] == nums[i - 2] + 2 这里是判断三个递增的
+                f[i + 1] = true;
+            }
+        }
+        System.out.println(Arrays.toString(f));
+        return f[n];
+    }
+
     // 357. 统计各位数字都不同的数字个数
     public int countNumbersWithUniqueDigits(int n) {
         if (n == 0) {
