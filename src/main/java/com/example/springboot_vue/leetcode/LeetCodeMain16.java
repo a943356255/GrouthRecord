@@ -35,6 +35,23 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // LCR 127. 跳跃训练
+    public int trainWays(int num) {
+        if (num == 0 || num == 1) {
+            return 1;
+        }
+
+        int temp = 1000000007;
+
+        int[] dp = new int[num + 1];
+        dp[0] = 0; dp[1] = 1; dp[2] = 2;
+        for (int i = 3; i <= num; i++) {
+            dp[i] = (dp[i - 1] + dp[i - 2]) % temp;
+        }
+
+        return dp[num];
+    }
+
     // 2369. 检查数组是否存在有效划分
     public boolean validPartition(int[] nums) {
         int n = nums.length;
