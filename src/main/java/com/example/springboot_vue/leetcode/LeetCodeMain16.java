@@ -35,6 +35,51 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // LCP 03. 机器人大冒险
+    public boolean robot(String command, int[][] obstacles, int x, int y) {
+        boolean res = false;
+        int indexX = 0, indexY = 0;
+        for (int i = 0; i < command.length(); i++) {
+            char c = command.charAt(i);
+            if (c == 'U') {
+                indexY++;
+            } else {
+                indexX++;
+            }
+            System.out.println("indexX = " + indexX + " indexY + " + indexY);
+            // 对于每一个到达的位置x，和y都需要判断一下是否有障碍
+            for (int j = 0; j < obstacles.length; j++) {
+                if (obstacles[j][0] > x || obstacles[j][1] > y || indexX == 0 || indexY == 0) {
+                    continue;
+                }
+                if (obstacles[j][0] % indexX == 0 && obstacles[j][1] % indexY == 0) {
+                    return false;
+                }
+            }
+
+            // 直接到达
+            if (indexX == x && indexY == y) {
+                res = true;
+                break;
+            }
+
+            // 循环内可以到达
+            if (indexX != 0 && indexY != 0) {
+                if (x % indexX == 0 && y % indexY == 0) {
+                    res = true;
+                    break;
+                }
+            }
+
+            // 一次循环已经超过,因为不能回退
+            if (indexX > x || indexY > y) {
+                return false;
+            }
+        }
+
+        return res;
+    }
+
     // LCR 127. 跳跃训练
     public int trainWays(int num) {
         if (num == 0 || num == 1) {
