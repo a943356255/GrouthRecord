@@ -35,6 +35,28 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // 229. 多数元素 II
+    public List<Integer> majorityElement(int[] nums) {
+        List<Integer> res = new ArrayList<>();
+        int mark = nums.length / 3;
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            if (map.containsKey(num)) {
+                map.put(num, map.get(num) + 1);
+            } else {
+                map.put(num, 1);
+            }
+        }
+
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            if (entry.getValue() >= mark) {
+                res.add(entry.getKey());
+            }
+        }
+
+        return res;
+    }
+
     // 203. 移除链表元素
     public ListNode removeElements(ListNode head, int val) {
         ListNode res = new ListNode();
