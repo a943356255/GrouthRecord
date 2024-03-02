@@ -35,6 +35,37 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // 395. 至少有 K 个重复字符的最长子串
+    public int longestSubstring(String s, int k) {
+        int left = 0, right = 0;
+        int[] arr = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+
+        }
+    }
+
+    // 525. 连续数组
+    public int findMaxLength(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1);
+        int count = 0, max = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 1) {
+                count++;
+            } else {
+                count--;
+            }
+
+            if (!map.containsKey(count)) {
+                map.put(count, i);
+            } else {
+                max = Math.max(max, i - map.get(count));
+            }
+        }
+
+        return max;
+    }
+
     // 229. 多数元素 II
     public List<Integer> majorityElement(int[] nums) {
         List<Integer> res = new ArrayList<>();
