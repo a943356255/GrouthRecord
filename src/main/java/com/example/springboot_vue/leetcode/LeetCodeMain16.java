@@ -35,8 +35,31 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // 203. 移除链表元素
+    public ListNode removeElements(ListNode head, int val) {
+        ListNode res = new ListNode();
+        ListNode temp = res;
+        res.next = head;
+        ListNode fast = head;
+        while (fast != null) {
+            if (fast.val != val) {
+                fast = fast.next;
+                res = res.next;
+            } else {
+                while (fast != null && fast.val == val) {
+                    System.out.println(fast.val);
+                    fast = fast.next;
+                }
+                res.next = fast;
+            }
+        }
+
+        return temp;
+    }
+
     // 2368. 受限条件下可到达节点的数目
     public int reachableNodes(int n, int[][] edges, int[] restricted) {
+        // 这里的map可以优化为List数组
         Map<Integer, List<Integer>> map = new HashMap<>();
         for (int i = 0; i < edges.length; i++) {
             if (map.get(edges[i][0]) != null) {
