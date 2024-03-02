@@ -35,6 +35,68 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // 2368. 受限条件下可到达节点的数目
+    public int reachableNodes(int n, int[][] edges, int[] restricted) {
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int i = 0; i < edges.length; i++) {
+            if (map.get(edges[i][0]) != null) {
+                map.get(edges[i][0]).add(edges[i][1]);
+            } else {
+                List<Integer> list = new ArrayList<>();
+                list.add(edges[i][1]);
+                map.put(edges[i][0], list);
+            }
+
+            if (map.get(edges[i][1]) != null) {
+                map.get(edges[i][1]).add(edges[i][0]);
+            } else {
+                List<Integer> list = new ArrayList<>();
+                list.add(edges[i][0]);
+                map.put(edges[i][1], list);
+            }
+        }
+        int res = 1;
+        Set<Integer> wrongNode = new HashSet<>();
+        for (int i : restricted) {
+            wrongNode.add(i);
+        }
+        // 存储已经走过的节点
+        Set<String> set = new HashSet<>();
+        Queue<Integer> queue = new ArrayDeque<>();
+        queue.add(0);
+        // 从0开始广搜
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                // 初始节点
+                int index = queue.poll();
+                List<Integer> temp = map.get(index);
+                for (int j = 0; j < temp.size(); j++) {
+                    // 该节点不是错误节点，可以进入
+                    if (!wrongNode.contains(temp.get(j))) {
+                        // 用于标记路径是否走过
+                        String str = index + "-" + temp.get(j);
+                        String str2 = temp.get(j) + "-" + index;
+                        // 不包含
+                        if (!set.contains(str) && !set.contains(str2)) {
+                            queue.offer(temp.get(j));
+                            res++;
+                            set.add(str);
+                            set.add(str2);
+                        }
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
+
+    // 825. 适龄的朋友
+    public int numFriendRequests(int[] ages) {
+        return 0;
+    }
+
     // 833. 字符串中的查找与替换
     public String findReplaceString(String s, int[] indices, String[] sources, String[] targets) {
         StringBuilder res = new StringBuilder();
