@@ -5,7 +5,7 @@ import java.util.*;
 public class LeetCodeMain16 {
 
     public static void main(String[] args) {
-        String str = "411032199811252314 + 199929992992";
+        String str = "1 + 199929992992";
     }
 
 //    public List<String> wordBreak(String s, List<String> wordDict) {
@@ -37,6 +37,7 @@ public class LeetCodeMain16 {
 
     // 395. 至少有 K 个重复字符的最长子串
     public int longestSubstring(String s, int k) {
+
         return 0;
     }
 
