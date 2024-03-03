@@ -37,11 +37,47 @@ public class LeetCodeMain16 {
 
     // 395. 至少有 K 个重复字符的最长子串
     public int longestSubstring(String s, int k) {
-        int left = 0, right = 0;
-        int[] arr = new int[26];
-        for (int i = 0; i < s.length(); i++) {
+        return 0;
+    }
 
+    // 825. 适龄的朋友
+    public int numFriendRequests(int[] ages) {
+        Arrays.sort(ages);
+        int left = 0, res = 0;
+        for (int i = 0; i < ages.length; i++) {
+            if (ages[i] < 15) {
+                continue;
+            }
+
+            while (left < i) {
+                if (ages[i] * 0.5 + 7 >= ages[left]) {
+                    left++;
+                } else {
+                    break;
+                }
+            }
+
+            int temp = -1;
+            if (i + 1 < ages.length) {
+                if (ages[i + 1] == ages[i]) {
+                    temp = i + 1;
+                    while (temp < ages.length - 1 && ages[temp] == ages[i]) {
+                        temp++;
+                    }
+                }
+            }
+
+            if (temp != -1) {
+                if (ages[temp] != ages[i]) {
+                    temp--;
+                }
+                res += temp - left - 1;
+            } else {
+                res += (i - left);
+            }
         }
+
+        return res;
     }
 
     // 525. 连续数组
@@ -166,11 +202,6 @@ public class LeetCodeMain16 {
         }
 
         return res;
-    }
-
-    // 825. 适龄的朋友
-    public int numFriendRequests(int[] ages) {
-        return 0;
     }
 
     // 833. 字符串中的查找与替换
