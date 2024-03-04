@@ -12,6 +12,7 @@ import com.example.springboot_vue.controller.crud_interface.ReturnCallbackServic
 import com.example.springboot_vue.mapper.CityMapper;
 import com.example.springboot_vue.mapper.crud.CRUDMapper;
 import com.example.springboot_vue.pojo.city.City;
+import com.example.springboot_vue.pojo.city.Paper;
 import com.example.springboot_vue.service.CRUDService;
 import com.example.springboot_vue.utils.excel_util.EasyExcelDemo;
 import com.example.springboot_vue.utils.excel_util.ReadExcel;
@@ -23,6 +24,9 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionDefinition;
@@ -55,6 +59,9 @@ public class CRUDServiceImpl implements CRUDService {
     @Autowired
     RabbitTemplate rabbitTemplate;
 
+    @Autowired
+    RedisTemplate<String, Object> redisTemplate;
+
     DataSourceTransactionManager dataSourceTransactionManager;
 
     @Autowired
@@ -78,6 +85,32 @@ public class CRUDServiceImpl implements CRUDService {
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         }
         System.out.println("最终的first应为101， 目前first = " + first);
+    }
+
+    @Override
+    public void insertRedis() {
+        HashOperations<String, String, Object> stringObjectObjectHashOperations = redisTemplate.opsForHash();
+        String paperId = "测评任务1";
+        String hashKey = "12345678901111111";
+        for (int i = 0; i < 10000; i++) {
+            List<Paper> list = new ArrayList<>();
+            for (int j = 0; j < 25; j++) {
+                Paper paper = new Paper();
+                paper.setA("A");
+                paper.setB("B");
+                paper.setC("C");
+                paper.setD("D");
+                paper.setaFile("TM0000001173A.png");
+                paper.setbFile("TM0000001173A.png");
+                paper.setcFile("TM0000001173A.png");
+                paper.setdFile("TM0000001173A.png");
+                paper.setTitle("在博物馆参观时同学们看到一尊长了翅膀的怪兽，颜色以黄色和绿色为主，和有名的唐三彩的配色一致，那么据此推测《三彩镇墓兽》应该是中国哪个朝代的艺术品？");
+                list.add(paper);
+            }
+            stringObjectObjectHashOperations.put(paperId, hashKey + i, list);
+        }
+
+//        redisTemplate.opsForValue().set("40032323232442342352352", list);
     }
 
     @Override

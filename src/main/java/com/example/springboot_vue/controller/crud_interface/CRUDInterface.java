@@ -43,6 +43,12 @@ public class CRUDInterface {
     @Autowired
     DataSourceTransactionManager dataSourceTransactionManager;
 
+    @RequestMapping("/testRedis")
+    public JSONObject testRedis(@RequestBody Map<String, Object> map) {
+        crudServiceImpl.insertRedis();
+        return new JSONObject();
+    }
+
     @RequestMapping("/testSubmit")
     public JSONObject submitTest(@RequestBody Map<String, Object> map) {
         return crudServiceImpl.submitTest(map, dataSourceTransactionManager);

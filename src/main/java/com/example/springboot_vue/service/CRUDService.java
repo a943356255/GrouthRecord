@@ -26,4 +26,5 @@ public interface CRUDService {
 
     JSONObject submitTest(Map<String, Object> map, DataSourceTransactionManager dataSourceTransactionManager);
 
+    void insertRedis();
 }
