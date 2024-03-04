@@ -28,7 +28,7 @@ public class LeetCodeMain16 {
 //        for (String value : wordDict) {
 //            map.put(value, "1");
 //        }
-//
+
 //        StringBuilder first = new StringBuilder();
 //        for (int i = 0; i < s.length(); i++) {
 //            char c = s.charAt(i);
@@ -38,10 +38,10 @@ public class LeetCodeMain16 {
 //                dfs(temp, i + 1, s, map);
 //            }
 //        }
-//
+
 //        return wordBreak;
 //    }
-//
+
 //    public void dfs(StringBuilder str, int index, String s, Map<String, String> map) {
 //        str.append(" ");
 //        for (int i = index; i < s.length(); i++) {
@@ -50,10 +50,41 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+
     // 395. 至少有 K 个重复字符的最长子串
     public int longestSubstring(String s, int k) {
 
         return 0;
+    }
+
+
+
+    int longestSubstringRes = 0;
+    // 687. 最长同值路径
+    public int longestUnivaluePath(TreeNode root) {
+        longestSubstringRes = longestSubstringDfs(root);
+        return longestSubstringRes;
+    }
+
+    public int longestSubstringDfs(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        int left = longestSubstringDfs(root.left);
+        int right = longestSubstringDfs(root.right);
+
+        int left1 = 0, right1 = 0;
+        if (root.left != null && root.left.val == root.val) {
+            left1 = left + 1;
+        }
+
+        if (root.right != null && root.val == root.right.val) {
+            right1 = right + 1;
+        }
+
+        longestSubstringRes = Math.max(longestSubstringRes, left1 + right1);
+        return Math.max(left1, right1);
     }
 
     // 594. 最长和谐子序列
