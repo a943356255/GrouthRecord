@@ -50,6 +50,41 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // 1019. 链表中的下一个更大节点
+    public int[] nextLargerNodes(ListNode head) {
+        if (head == null) {
+            return new int[0];
+        }
+
+        List<Integer> list = new ArrayList<>();
+        while (head != null) {
+            list.add(head.val);
+            head = head.next;
+        }
+        int[] arr = new int[list.size()];
+        arr[arr.length - 1] = 0;
+        Stack<Integer> stack = new Stack<>();
+        stack.push(list.get(list.size() - 1));
+        for (int i = list.size() - 2; i >= 0; i--) {
+            if (stack.peek() > list.get(i)) {
+                arr[i] = stack.peek();
+            } else {
+                while (!stack.isEmpty() && stack.peek() <= list.get(i)) {
+                    stack.pop();
+                }
+                if (stack.isEmpty()) {
+                    arr[i] = 0;
+                } else {
+                    arr[i] = stack.peek();
+                }
+            }
+            stack.push(list.get(i));
+            System.out.println(stack.toString());
+        }
+
+        return arr;
+    }
+
     // 1976. 到达目的地的方案数
     public int countPaths(int n, int[][] roads) {
         int mod = 1000000007;
