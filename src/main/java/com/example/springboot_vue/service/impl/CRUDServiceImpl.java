@@ -72,12 +72,40 @@ public class CRUDServiceImpl implements CRUDService {
 
     ReentrantLock lock = new ReentrantLock();
     int first = 0;
+
     @RabbitListener(queues = "DirectQueue")
     public void getMqData(String msg, Channel channel, Message message) throws IOException {
 //        System.out.println("msg = " + msg);
 //        System.out.println("message = " + message.toString());
-        first++;
-        int val = cityMapper.insertTest();
+        // 获取到所有的uid
+        HashOperations<String, String, Object> stringObjectObjectHashOperations = redisTemplate.opsForHash();
+        String paperId = "测评任务1";
+        String[] uid = msg.split(",");
+        List<City> cityList = new ArrayList<>();
+        for (int i = 0; i < uid.length; i++) {
+            List<Paper> paperList = new ArrayList<>();
+            for (int j = 0; j < 25; j++) {
+                Paper paper = new Paper();
+                paper.setA("A");
+                paper.setB("B");
+                paper.setC("C");
+                paper.setD("D");
+                paper.setaFile("TM0000001173A.png");
+                paper.setbFile("TM0000001173A.png");
+                paper.setcFile("TM0000001173A.png");
+                paper.setdFile("TM0000001173A.png");
+                paper.setTitle("在博物馆参观时同学们看到一尊长了翅膀的怪兽，颜色以黄色和绿色为主，和有名的唐三彩的配色一致，那么据此推测《三彩镇墓兽》应该是中国哪个朝代的艺术品？");
+                paperList.add(paper);
+            }
+
+            stringObjectObjectHashOperations.put(paperId, uid[i], paperList);
+            City city = new City(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
+            city.setMarkId(first++);
+            cityList.add(city);
+        }
+        // 将试卷存入数据库
+        int val = cityMapper.insertCityAll(cityList);
+
         // 消息回退
         if (first == 50) {
             channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
@@ -92,23 +120,23 @@ public class CRUDServiceImpl implements CRUDService {
         HashOperations<String, String, Object> stringObjectObjectHashOperations = redisTemplate.opsForHash();
         String paperId = "测评任务1";
         String hashKey = "12345678901111111";
-        for (int i = 0; i < 10000; i++) {
-            List<Paper> list = new ArrayList<>();
-            for (int j = 0; j < 25; j++) {
-                Paper paper = new Paper();
-                paper.setA("A");
-                paper.setB("B");
-                paper.setC("C");
-                paper.setD("D");
-                paper.setaFile("TM0000001173A.png");
-                paper.setbFile("TM0000001173A.png");
-                paper.setcFile("TM0000001173A.png");
-                paper.setdFile("TM0000001173A.png");
-                paper.setTitle("在博物馆参观时同学们看到一尊长了翅膀的怪兽，颜色以黄色和绿色为主，和有名的唐三彩的配色一致，那么据此推测《三彩镇墓兽》应该是中国哪个朝代的艺术品？");
-                list.add(paper);
-            }
-            stringObjectObjectHashOperations.put(paperId, hashKey + i, list);
-        }
+//        for (int i = 0; i < 10000; i++) {
+//            List<Paper> list = new ArrayList<>();
+//            for (int j = 0; j < 25; j++) {
+//                Paper paper = new Paper();
+//                paper.setA("A");
+//                paper.setB("B");
+//                paper.setC("C");
+//                paper.setD("D");
+//                paper.setaFile("TM0000001173A.png");
+//                paper.setbFile("TM0000001173A.png");
+//                paper.setcFile("TM0000001173A.png");
+//                paper.setdFile("TM0000001173A.png");
+//                paper.setTitle("在博物馆参观时同学们看到一尊长了翅膀的怪兽，颜色以黄色和绿色为主，和有名的唐三彩的配色一致，那么据此推测《三彩镇墓兽》应该是中国哪个朝代的艺术品？");
+//                list.add(paper);
+//            }
+//            stringObjectObjectHashOperations.put(paperId, hashKey + i, list);
+//        }
 
 //        redisTemplate.opsForValue().set("40032323232442342352352", list);
     }
@@ -136,11 +164,11 @@ public class CRUDServiceImpl implements CRUDService {
             cityMapper.insertTest();
 
             // 生成10000条数据
-            List<List<Integer>> list = new ArrayList<>();
+            List<List<String>> list = new ArrayList<>();
             for (int i = 0; i < 100; i++) {
-                List<Integer> res = new ArrayList<>();
+                List<String> res = new ArrayList<>();
                 for (int j = 0; j < 100; j++) {
-                    res.add(j);
+                    res.add(UUID.randomUUID().toString());
                 }
                 list.add(res);
             }

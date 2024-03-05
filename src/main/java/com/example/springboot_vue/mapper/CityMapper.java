@@ -1,6 +1,7 @@
 package com.example.springboot_vue.mapper;
 
 import com.example.springboot_vue.pojo.city.City;
+import com.example.springboot_vue.pojo.city.Paper;
 import com.example.springboot_vue.pojo.city.UCity;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
@@ -45,4 +46,6 @@ public interface CityMapper {
 
     @Select("select test, test_01 from test")
     Map<String, Object> getAllData();
+
+    int insertPaper(List<Paper> list);
 }

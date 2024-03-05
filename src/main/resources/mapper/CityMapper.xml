@@ -45,6 +45,10 @@
         </foreach>
     </insert>
 
+    <insert id="insertPaper" parameterType="java.util.List">
+
+    </insert>
+
     <insert id="insertUCityAll" parameterType="java.util.List">
         insert into city_temp(`name`, parent_name, `number`, column_1, column_2, mark_id) values
         <foreach collection="list" separator="," item="item">
