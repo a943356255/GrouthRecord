@@ -6,21 +6,23 @@ public class LeetCodeMain16 {
 
     public static void main(String[] args) {
         String str = "1 + 199929992992";
-
+        int[] arr = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
+        LeetCodeMain16 leetCodeMain16 = new LeetCodeMain16();
+        System.out.println(leetCodeMain16.findPeakElement(arr));
         /*
             默认情况下，初始堆内存大小为：电脑内存大小/64
             默认情况下，最大堆内存大小为：电脑内存大小/4
          */
         //返回 JVM 堆大小
-        long initalMemory = Runtime.getRuntime().totalMemory() / 1024 /1024;
-        //返回 JVM 堆的最大内存
-        long maxMemory = Runtime.getRuntime().maxMemory() / 1024 /1024;
-
-        System.out.println("-Xms : " + initalMemory + "M");
-        System.out.println("-Xmx : " + maxMemory + "M");
-
-        System.out.println("系统内存大小：" + initalMemory * 64 / 1024 + "G");
-        System.out.println("系统内存大小：" + maxMemory * 4 / 1024 + "G");
+//        long initalMemory = Runtime.getRuntime().totalMemory() / 1024 /1024;
+//        //返回 JVM 堆的最大内存
+//        long maxMemory = Runtime.getRuntime().maxMemory() / 1024 /1024;
+//
+//        System.out.println("-Xms : " + initalMemory + "M");
+//        System.out.println("-Xmx : " + maxMemory + "M");
+//
+//        System.out.println("系统内存大小：" + initalMemory * 64 / 1024 + "G");
+//        System.out.println("系统内存大小：" + maxMemory * 4 / 1024 + "G");
     }
 
 //    public List<String> wordBreak(String s, List<String> wordDict) {
@@ -49,6 +51,75 @@ public class LeetCodeMain16 {
 //
 //        }
 //    }
+
+    // BM19 寻找峰值 （牛客）
+    public int findPeakElement (int[] nums) {
+        if (nums.length == 1) {
+            return 0;
+        }
+        if (nums.length == 2) {
+            if (nums[0] > nums[1]) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+        // write code here
+        int left = 0, right = nums.length - 1, mid;
+        while (left <= right) {
+            mid = (left + right) / 2;
+            // 边界情况
+            if (mid == 0) {
+                if (mid + 1 < nums.length && nums[mid + 1] < nums[mid]) {
+                    return mid;
+                }
+            }
+            if (mid == nums.length - 1) {
+                if (mid - 1 >= 0 && nums[mid - 1] < nums[mid]) {
+                    return mid;
+                }
+            }
+            if (nums[mid] > nums[mid - 1] && nums[mid] > nums[mid + 1]) {
+                return mid;
+            } else {
+                if (nums[mid] < nums[mid + 1] && nums[mid] > nums[mid - 1]) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    // 1774. 最接近目标价格的甜点成本
+    int res;
+    public int closestCost(int[] baseCosts, int[] toppingCosts, int target) {
+        res = Arrays.stream(baseCosts).min().getAsInt();
+        for (int b : baseCosts) {
+            dfs(toppingCosts, 0, b, target);
+        }
+        return res;
+    }
+
+    public void dfs(int[] toppingCosts, int p, int curCost, int target) {
+        if (Math.abs(res - target) < curCost - target) {
+            return;
+        } else if (Math.abs(res - target) >= Math.abs(curCost - target)) {
+            if (Math.abs(res - target) > Math.abs(curCost - target)) {
+                res = curCost;
+            } else {
+                res = Math.min(res, curCost);
+            }
+        }
+        if (p == toppingCosts.length) {
+            return;
+        }
+        dfs(toppingCosts, p + 1, curCost + toppingCosts[p] * 2, target);
+        dfs(toppingCosts, p + 1, curCost + toppingCosts[p], target);
+        dfs(toppingCosts, p + 1, curCost, target);
+    }
 
     // 1019. 链表中的下一个更大节点
     public int[] nextLargerNodes(ListNode head) {
