@@ -1,9 +1,9 @@
 package com.example.springboot_vue.controller.crud_interface;
 
-import lombok.SneakyThrows;
-import net.bytebuddy.implementation.bytecode.Throw;
+import com.example.springboot_vue.mapper.CityMapper;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,13 +19,16 @@ public class ConfirmCallbackService implements RabbitTemplate.ConfirmCallback {
 
     public volatile int mark = 0;
 
+    @Autowired
+    CityMapper cityMapper;
+
     @Override
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
         if (!ack) {
             System.out.println("消息发送异常!");
         } else {
-            System.out.println("correlationData = " + correlationData +  "cause = " + cause);
-            mark++;
+            System.out.println("消息接收时的id = " + correlationData.getId());
+            cityMapper.update(correlationData.getId());
         }
     }
 }

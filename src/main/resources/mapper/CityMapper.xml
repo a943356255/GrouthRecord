@@ -49,6 +49,13 @@
 
     </insert>
 
+    <insert id="insertMessage" parameterType="java.util.List">
+        insert into message_table(id, route_key, message_body, queue_name, success, status, exchange_name) values
+        <foreach collection="list" separator="," item="item">
+            (#{item.id}, #{item.routeKey}, #{item.messageBody}, #{item.queueName}, #{item.success}, #{item.status}, #{item.exchangeName})
+        </foreach>
+    </insert>
+
     <insert id="insertUCityAll" parameterType="java.util.List">
         insert into city_temp(`name`, parent_name, `number`, column_1, column_2, mark_id) values
         <foreach collection="list" separator="," item="item">

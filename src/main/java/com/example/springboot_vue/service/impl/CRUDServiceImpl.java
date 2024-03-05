@@ -12,18 +12,22 @@ import com.example.springboot_vue.controller.crud_interface.ReturnCallbackServic
 import com.example.springboot_vue.mapper.CityMapper;
 import com.example.springboot_vue.mapper.crud.CRUDMapper;
 import com.example.springboot_vue.pojo.city.City;
+import com.example.springboot_vue.pojo.city.MyMessage;
 import com.example.springboot_vue.pojo.city.Paper;
 import com.example.springboot_vue.service.CRUDService;
 import com.example.springboot_vue.utils.excel_util.EasyExcelDemo;
 import com.example.springboot_vue.utils.excel_util.ReadExcel;
 import com.rabbitmq.client.Channel;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.amqp.RabbitProperties;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -62,6 +66,7 @@ public class CRUDServiceImpl implements CRUDService {
     @Autowired
     RedisTemplate<String, Object> redisTemplate;
 
+    @Autowired
     DataSourceTransactionManager dataSourceTransactionManager;
 
     @Autowired
@@ -74,10 +79,15 @@ public class CRUDServiceImpl implements CRUDService {
     int first = 0;
 
     @RabbitListener(queues = "DirectQueue")
-    public void getMqData(String msg, Channel channel, Message message) throws IOException {
-//        System.out.println("msg = " + msg);
-//        System.out.println("message = " + message.toString());
+    @Transactional(rollbackFor = Exception.class)
+    public void getMqData(String msg, Channel channel, Message message) throws Exception {
         // 获取到所有的uid
+        String uuid = message.getMessageProperties().getHeaders().get("spring_returned_message_correlation").toString();
+        int success = cityMapper.getSuccess(uuid);
+        // 已经消费过了
+        if (success == 1) {
+            return;
+        }
         HashOperations<String, String, Object> stringObjectObjectHashOperations = redisTemplate.opsForHash();
         String paperId = "测评任务1";
         String[] uid = msg.split(",");
@@ -101,18 +111,19 @@ public class CRUDServiceImpl implements CRUDService {
             stringObjectObjectHashOperations.put(paperId, uid[i], paperList);
             City city = new City(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
             city.setMarkId(first++);
+            // 出错
+            if (city.getMarkId() == 50) {
+                city.setMarkId(49);
+            }
             cityList.add(city);
         }
         // 将试卷存入数据库
         int val = cityMapper.insertCityAll(cityList);
+        int update = cityMapper.updateSuccess(uuid);
 
-        // 消息回退
-        if (first == 50) {
-            channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
-        } else if (val > 0) {
-            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+        if (val < 0 || update < 0) {
+            throw new Exception();
         }
-        System.out.println("最终的first应为101， 目前first = " + first);
     }
 
     @Override
@@ -162,41 +173,56 @@ public class CRUDServiceImpl implements CRUDService {
 
             // 插入数据
             cityMapper.insertTest();
-
+            List<MyMessage> messages = new ArrayList<>();
             // 生成10000条数据
             List<List<String>> list = new ArrayList<>();
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 3; i++) {
                 List<String> res = new ArrayList<>();
                 for (int j = 0; j < 100; j++) {
                     res.add(UUID.randomUUID().toString());
                 }
+
+                MyMessage message = new MyMessage();
+                message.setId(UUID.randomUUID().toString());
+                message.setRouteKey("DirectRouting");
+                message.setQueueName("DirectQueue");
+                message.setExchangeName("DirectExchange");
+                message.setStatus(0);
+                message.setSuccess(0);
+                message.setMessageBody(res.toString());
+
+                messages.add(message);
                 list.add(res);
             }
+            cityMapper.insertMessage(messages);
+            dataSourceTransactionManager.commit(transaction);
 
-            for (int i = 0; i < 100; i++) {
+            // 发送消息
+            for (int i = 0; i < 3; i++) {
+                CorrelationData correlationData = new CorrelationData(messages.get(i).getId());
                 // 将消息携带绑定键值：DirectRouting 发送到交换机DirectExchange
-                rabbitTemplate.convertAndSend("DirectExchange", "DirectRouting", list.get(i));
+                System.out.println("发送时的id = " + correlationData.getId());
+                rabbitTemplate.convertAndSend("DirectExchange", "DirectRouting", list.get(i), correlationData);
             }
 
-            int index = 0;
-            while (true) {
-                if (confirmCallbackService.mark == val + 100) {
-                    dataSourceTransactionManager.commit(transaction);
-                    break;
-                } else {
-                    if (index == 103) {
-                        System.out.println("消息发送异常，事务回滚");
-                        dataSourceTransactionManager.rollback(transaction);
-                        break;
-                    }
-                    index++;
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+//            while (true) {
+//                if (confirmCallbackService.mark == val + 100) {
+//                    dataSourceTransactionManager.commit(transaction);
+//                    break;
+//                } else {
+//                    if (index == 103) {
+//                        System.out.println("消息发送异常，事务回滚");
+//                        dataSourceTransactionManager.rollback(transaction);
+//                        break;
+//                    }
+//                    index++;
+//                    try {
+//                        Thread.sleep(500);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

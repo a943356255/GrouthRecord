@@ -1,11 +1,13 @@
 package com.example.springboot_vue.mapper;
 
 import com.example.springboot_vue.pojo.city.City;
+import com.example.springboot_vue.pojo.city.MyMessage;
 import com.example.springboot_vue.pojo.city.Paper;
 import com.example.springboot_vue.pojo.city.UCity;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -48,4 +50,15 @@ public interface CityMapper {
     Map<String, Object> getAllData();
 
     int insertPaper(List<Paper> list);
+
+    int insertMessage(List<MyMessage> list);
+
+    @Update("update message_table set status = 1 where id = #{id}")
+    int update(String id);
+
+    @Update("update message_table set success = 1 where id = #{id}")
+    int updateSuccess(String id);
+
+    @Select("select success from message_table where id = #{id}")
+    int getSuccess(String id);
 }
