@@ -52,6 +52,65 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // 交换给定值(牛客)
+    // 该题，原题意是交换m，n下标位置的元素，我理解为交换m 和 n 这两个值的元素
+    public ListNode reverseBetween (ListNode head, int m, int n) {
+        // write code here
+        if (head == null || head. next == null) {
+            return head;
+        }
+        ListNode beforeMNode = new ListNode(0);
+        ListNode beforeNNode = new ListNode(0);
+        ListNode res = new ListNode(0);
+        res.next = head;
+        while (head != null && head.next != null) {
+            if (head.next.val == m) {
+                beforeMNode.next = head;
+            }
+            if (head.next.val == n) {
+                beforeNNode.next = head;
+            }
+            if (beforeMNode.next != null && beforeNNode.next != null) {
+                break;
+            }
+            head = head.next;
+        }
+        if (beforeMNode.next == null || beforeNNode.next == null) {
+            return res.next;
+        }
+
+        ListNode temp = beforeNNode.next.next;
+        beforeNNode.next.next = beforeMNode.next.next;
+        beforeMNode.next.next.next = temp.next;
+        temp.next = beforeNNode.next;
+        beforeMNode.next.next = temp;
+
+        return res.next;
+    }
+
+    // 42. 接雨水
+    public int trap(int[] height) {
+        int res = 0;
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < height.length; i++) {
+            int column = 0, last = 0;
+            while (!stack.isEmpty() && height[i] > height[stack.peek()]) {
+                int val = stack.pop();
+                column += height[val];
+                last = val;
+            }
+            if (stack.isEmpty()) {
+                res += (i - last - 1) * height[last] - column;
+            } else {
+                res += (i - stack.peek() - 1) * height[i] - column;
+            }
+            System.out.println("i = " + i + " last = " + last + " column = " + column);
+            stack.push(i);
+        }
+
+        return res;
+    }
+
     // 2917. 找出数组中的 K-or 值
     public int findKOr(int[] nums, int k) {
         int ans = 0;
