@@ -52,6 +52,18 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // 2575. 找出字符串的可整除数组
+    public int[] divisibilityArray(String word, int m) {
+        long tmp = 0;
+        int n = word.length();
+        int[] res = new int[n];
+        for (int i = 0; i < n; i++) {
+            tmp = (tmp * 10 + word.charAt(i) - '0') % m;
+            res[i] = tmp == 0 ? 1 : 0;
+        }
+        return res;
+    }
+
     // 交换给定值(牛客)
     // 该题，原题意是交换m，n下标位置的元素，我理解为交换m 和 n 这两个值的元素
     public ListNode reverseBetween (ListNode head, int m, int n) {
