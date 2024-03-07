@@ -68,6 +68,38 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // BM16 删除有序链表中重复的元素-II
+    public ListNode deleteDuplicates (ListNode head) {
+        // write code here
+        if (head == null) {
+            return head;
+        }
+        ListNode res = new ListNode(0);
+        ListNode before = res;
+        res.next = head;
+        int lastVal = head.val;
+        head = head.next;
+        while (head != null) {
+            if (head.val == lastVal) {
+                // 如果出现重复，则一直往下
+                while (head != null && head.val == lastVal) {
+                    head = head.next;
+                }
+                before.next = head;
+                if (head != null) {
+                    lastVal = head.val;
+                    head = head.next;
+                }
+            } else {
+                before = before.next;
+                lastVal = head.val;
+                head = head.next;
+            }
+        }
+
+        return res.next;
+    }
+
     // 2575. 找出字符串的可整除数组
     public int[] divisibilityArray(String word, int m) {
         long tmp = 0;
