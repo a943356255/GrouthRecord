@@ -31,6 +31,8 @@ public class LockCityDataListener implements ReadListener<City> {
 
     DataSourceTransactionManager dataSourceTransactionManager;
 
+    InheritableThreadLocal<Map<Long, Integer>> inheritableThreadLocal = new InheritableThreadLocal<>();
+
     int currentStartNumber = 0;
     /**
      * 这里是设置批量插入数据的大小
@@ -62,7 +64,6 @@ public class LockCityDataListener implements ReadListener<City> {
         this.cityMapper = cityMapper;
     }
 
-    @SneakyThrows
     @Override
     public void invoke(City city, AnalysisContext analysisContext) {
         if (index <= 0) {
@@ -105,12 +106,15 @@ public class LockCityDataListener implements ReadListener<City> {
             // 清理 list
             cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
 
-            CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> saveData(tempList), executorService)
-                    .exceptionally(ex -> {
-                        System.out.println(ex.toString());
-//                        wrongList.add(tempList);
-                        return null;
-                    });
+            CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
+                saveData(tempList);
+                // 以当前id为key，存储val
+                inheritableThreadLocal.get().put(Thread.currentThread().getId(), 1);
+                return 1;
+            }, executorService).exceptionally(ex -> {
+
+                return null;
+            });
             allFutures.add(future);
         }
     }
