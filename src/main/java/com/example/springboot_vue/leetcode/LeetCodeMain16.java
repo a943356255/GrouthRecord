@@ -1,14 +1,30 @@
 package com.example.springboot_vue.leetcode;
 
+import com.example.springboot_vue.pojo.city.City;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class LeetCodeMain16 {
 
     public static void main(String[] args) {
-        String str = "1 + 199929992992";
-        int[] arr = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
-        LeetCodeMain16 leetCodeMain16 = new LeetCodeMain16();
-        System.out.println(leetCodeMain16.findPeakElement(arr));
+//        String str = "1 + 199929992992";
+//        int[] arr = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
+//        LeetCodeMain16 leetCodeMain16 = new LeetCodeMain16();
+//        System.out.println(leetCodeMain16.findPeakElement(arr));
+//        List<String> list = new ArrayList<>();
+//        Map<String, String> map = new HashMap<>();
+//        for (Map.Entry<String, String> entry : map.entrySet()) {
+//            list.add(entry.getKey());
+//        }
+//        list = new ArrayList<>(map.keySet());
+        City city = new City();
+        city.setName("123");
+        City city1 = city;
+        city1.setName("1234");
+        // 这里，没有重写是，比的就是引用是否一致
+        System.out.println(city.equals(city1));
+
         /*
             默认情况下，初始堆内存大小为：电脑内存大小/64
             默认情况下，最大堆内存大小为：电脑内存大小/4

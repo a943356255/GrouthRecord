@@ -73,4 +73,11 @@ public class City {
     public void setParentName(String parentName) {
         this.parentName = parentName;
     }
+
+//    @Override
+//    public boolean equals(Object obj) {
+//        City city = (City) obj;
+//        return city.name.equals(this.name);
+////        return super.equals(obj);
+//    }
 }
