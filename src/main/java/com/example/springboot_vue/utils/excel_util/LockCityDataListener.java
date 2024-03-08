@@ -44,6 +44,7 @@ public class LockCityDataListener implements ReadListener<City> {
      */
     private List<City> cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
 
+    int status = 0;
     /**
      * 创建一个线程池
      */
@@ -67,10 +68,10 @@ public class LockCityDataListener implements ReadListener<City> {
     @Override
     public void invoke(City city, AnalysisContext analysisContext) {
         if (index <= 0) {
-            // 这里是手动开启事务
-//            DefaultTransactionDefinition df = new DefaultTransactionDefinition();
-//            df.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-//            TransactionStatus transaction = dataSourceTransactionManager.getTransaction(df);
+            // 这里是手动开启事务,因为我需要确保申请id修改了version表和插入insertId这两个事务一致，即必须全部成功
+            DefaultTransactionDefinition df = new DefaultTransactionDefinition();
+            df.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+            TransactionStatus transaction = dataSourceTransactionManager.getTransaction(df);
             // 这里需要注意,我觉得使用了forUpdate之后，应该不会进入while循环了
             Map<String, Object> map = cityMapper.getTotalData();
             int currentData = (int) map.get("column_count");
@@ -88,11 +89,15 @@ public class LockCityDataListener implements ReadListener<City> {
             }
             index = rowNumber;
             currentStartNumber = (int) map.get("column_count");
+
+            // 这里需要有一个insert语句，即将申请到的id存入数据库
+            cityMapper.insertId(currentStartNumber + 1, currentStartNumber + index);
+
 //            rabbitMQProvider.sendMessage("当前活跃线程数：" + executorService.getActiveCount());
 //            rabbitMQProvider.sendMessage("当前任务数量为：" + executorService.getTaskCount());
 //            rabbitMQProvider.sendMessage("当前队列中元素为：" + executorService.getQueue().toString());
             // 手动提交事务
-//            dataSourceTransactionManager.commit(transaction);
+            dataSourceTransactionManager.commit(transaction);
         }
         city.setMarkId(++currentStartNumber);
         cachedDataList.add(city);
@@ -112,7 +117,8 @@ public class LockCityDataListener implements ReadListener<City> {
                 inheritableThreadLocal.get().put(Thread.currentThread().getId(), 1);
                 return 1;
             }, executorService).exceptionally(ex -> {
-
+                status = 1;
+                executorService.shutdown();
                 return null;
             });
             allFutures.add(future);

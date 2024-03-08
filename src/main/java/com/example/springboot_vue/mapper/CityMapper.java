@@ -61,4 +61,7 @@ public interface CityMapper {
 
     @Select("select success from message_table where id = #{id}")
     int getSuccess(String id);
+
+    @Insert("insert into mark_table(start, end) values(#{start}, #{end})")
+    int insertId(int start, int end);
 }
