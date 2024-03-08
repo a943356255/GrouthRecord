@@ -68,6 +68,27 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // BM52 数组中只出现一次的两个数字（牛客）
+    public int[] FindNumsAppearOnce (int[] nums) {
+        // write code here
+        Map<Integer, Integer> map = new HashMap<>();
+        int[] res = new int[2];
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(nums[i])) {
+                map.put(nums[i], map.get(nums[i]) + 1);
+            } else {
+                map.put(nums[i], 1);
+            }
+        }
+        int index = 0;
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            if (entry.getValue() == 1) {
+                res[index++] = entry.getKey();
+            }
+        }
+        return res;
+    }
+
     // BM51 数组中出现次数超过一半的数字(牛客)
     public int MoreThanHalfNum_Solution (int[] numbers) {
         // write code here
