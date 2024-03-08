@@ -14,7 +14,7 @@ public interface CRUDService {
 
     void test(Map<String, Object> map);
 
-    void insertCity(String filepath);
+    void insertCity(String filepath) throws InterruptedException;
 
     void exportCity(String name, String pageRange, int pageSize, String path);
 

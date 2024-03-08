@@ -81,8 +81,11 @@ public class CRUDInterface {
     }
 
     @RequestMapping("/testParam")
-    public String testRequestParam(@RequestParam("filepath") String filepath) {
-        crudServiceImpl.insertCity(filepath);
+    public String testRequestParam(@RequestBody Map<String, String> map) throws InterruptedException {
+//        String filepath = map.get("filepath");
+        String tempPath = "D:\\bilibili_video\\test3.xlsx";
+//        System.out.println("filepath = " + filepath);
+        crudServiceImpl.insertCity(tempPath);
         return "上传成功";
     }
 

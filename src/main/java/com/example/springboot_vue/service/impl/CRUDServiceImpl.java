@@ -78,6 +78,8 @@ public class CRUDServiceImpl implements CRUDService {
     ReentrantLock lock = new ReentrantLock();
     int first = 0;
 
+    InheritableThreadLocal<Map<String, Integer>> inheritableThreadLocal = new InheritableThreadLocal<>();
+
     @RabbitListener(queues = "DirectQueue")
     @Transactional(rollbackFor = Exception.class)
     public void getMqData(String msg, Channel channel, Message message) throws Exception {
@@ -333,9 +335,30 @@ public class CRUDServiceImpl implements CRUDService {
     }
 
     @Override
-    public void insertCity(String filepath) {
+    public void insertCity(String filepath) throws InterruptedException {
         EasyExcelDemo easyExcelDemo = new EasyExcelDemo();
-        easyExcelDemo.readExcel(cityMapper, dataSourceTransactionManager, filepath);
+
+        easyExcelDemo.readExcel(cityMapper, inheritableThreadLocal, filepath, dataSourceTransactionManager);
+
+        //        new Thread(() -> {
+//            Timer timer = new Timer();
+//            timer.schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+//                    System.out.println("执行一次");
+//                    // 子线程出现问题
+//                    if (inheritableThreadLocal.get() != null) {
+//                        System.out.println("执行出错误");
+//                        if (inheritableThreadLocal.get().get("wrong") != null) {
+//                            System.out.println("子线程主线问题");
+//                            // 这里执行清除之前插入的代码
+//                            List<Map<String, Integer>> map = cityMapper.getRecord("1234", "shtt");
+//                            System.out.println(map.toString());
+//                        }
+//                    }
+//                }
+//            }, 1000, 1000);
+//        }).start();
 //        InputStream inputStream = null;
 //        try {
 //             inputStream = new BufferedInputStream(new FileInputStream("D:\\bilibili_video\\test.xlsx"));

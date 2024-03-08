@@ -27,8 +27,8 @@ public class EasyExcelDemo {
         EasyExcel.read(filepath, City.class, new AutoIncrementDataListener(cityMapper)).doReadAll();
     }
 
-    public void readExcel(CityMapper cityMapper, DataSourceTransactionManager dataSourceTransactionManager, String filepath) {
-        EasyExcel.read(filepath, City.class, new LockCityDataListener(cityMapper, dataSourceTransactionManager)).doReadAll();
+    public void readExcel(CityMapper cityMapper, InheritableThreadLocal<Map<String, Integer>> inheritableThreadLocal, String filepath, DataSourceTransactionManager dataSourceTransactionManager) {
+        EasyExcel.read(filepath, City.class, new LockCityDataListener(cityMapper, inheritableThreadLocal, dataSourceTransactionManager)).doReadAll();
     }
 
     public void readExcelByOneThread(CityMapper cityMapper, DataSourceTransactionManager dataSourceTransactionManager, String filepath) {

@@ -56,6 +56,14 @@
         </foreach>
     </insert>
 
+
+    <delete id="deleteRecord" >
+        delete from city where
+        <foreach collection="map" separator="and" item="item">
+            id > #{item.start}
+        </foreach>
+    </delete>
+
     <insert id="insertUCityAll" parameterType="java.util.List">
         insert into city_temp(`name`, parent_name, `number`, column_1, column_2, mark_id) values
         <foreach collection="list" separator="," item="item">

@@ -17,6 +17,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
@@ -31,7 +32,7 @@ public class LockCityDataListener implements ReadListener<City> {
 
     DataSourceTransactionManager dataSourceTransactionManager;
 
-    InheritableThreadLocal<Map<Long, Integer>> inheritableThreadLocal = new InheritableThreadLocal<>();
+    InheritableThreadLocal<Map<String, Integer>> inheritableThreadLocal;
 
     int currentStartNumber = 0;
     /**
@@ -61,8 +62,10 @@ public class LockCityDataListener implements ReadListener<City> {
         this.dataSourceTransactionManager = dataSourceTransactionManager;
     }
 
-    public LockCityDataListener(CityMapper cityMapper, ExecutorService executorService) {
+    public LockCityDataListener(CityMapper cityMapper, InheritableThreadLocal<Map<String, Integer>> inheritableThreadLocal, DataSourceTransactionManager dataSourceTransactionManager) {
         this.cityMapper = cityMapper;
+        this.inheritableThreadLocal = inheritableThreadLocal;
+        this.dataSourceTransactionManager = dataSourceTransactionManager;
     }
 
     @Override
@@ -91,7 +94,7 @@ public class LockCityDataListener implements ReadListener<City> {
             currentStartNumber = (int) map.get("column_count");
 
             // 这里需要有一个insert语句，即将申请到的id存入数据库
-            cityMapper.insertId(currentStartNumber + 1, currentStartNumber + index);
+            cityMapper.insertId(currentStartNumber + 1, currentStartNumber + index, "1234", "shtt");
 
 //            rabbitMQProvider.sendMessage("当前活跃线程数：" + executorService.getActiveCount());
 //            rabbitMQProvider.sendMessage("当前任务数量为：" + executorService.getTaskCount());
@@ -113,16 +116,18 @@ public class LockCityDataListener implements ReadListener<City> {
 
             CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
                 saveData(tempList);
-                // 以当前id为key，存储val
-                inheritableThreadLocal.get().put(Thread.currentThread().getId(), 1);
                 return 1;
             }, executorService).exceptionally(ex -> {
-                status = 1;
-                executorService.shutdown();
-                return null;
+                wrongList.add(tempList);
+                return 0;
             });
             allFutures.add(future);
         }
+    }
+
+    @Override
+    public void onException(Exception exception, AnalysisContext context) throws Exception {
+        System.out.println("进入该方法");
     }
 
     /**
@@ -137,9 +142,13 @@ public class LockCityDataListener implements ReadListener<City> {
             cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
             index = 0;
         }
+
         CompletableFuture<Void> allCompleted = CompletableFuture.allOf(allFutures.toArray(new CompletableFuture[0]));
         allCompleted.join();
         System.out.println("wrongList的大小为" + wrongList.size());
+        for (int i = 0; i < wrongList.size(); i++) {
+            saveData(wrongList.get(i));
+        }
     }
 
     public int saveData(List<City> cachedDataList) {

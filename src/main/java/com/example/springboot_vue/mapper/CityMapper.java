@@ -62,6 +62,11 @@ public interface CityMapper {
     @Select("select success from message_table where id = #{id}")
     int getSuccess(String id);
 
-    @Insert("insert into mark_table(start, end) values(#{start}, #{end})")
-    int insertId(int start, int end);
+    @Insert("insert into mark_table(start, end, user, type) values(#{start}, #{end}, #{user}, #{type})")
+    int insertId(int start, int end, String user, String type);
+
+    @Select("select start, end from mark_table where user = #{user} and type = #{type}")
+    List<Map<String, Integer>> getRecord(String user, String type);
+
+    int deleteRecord(Map<String, Integer> map);
 }
