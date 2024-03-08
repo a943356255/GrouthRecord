@@ -64,9 +64,31 @@ public class LeetCodeMain16 {
 //        str.append(" ");
 //        for (int i = index; i < s.length(); i++) {
 //            char c = s.charAt(i);
-//
+
 //        }
 //    }
+
+    // 2834. 找出美丽数组的最小和
+    public int minimumPossibleSum(int n, int target) {
+        int mod = 100000007;
+        int index = 2;
+        int res = 1;
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(target - 1, 1);
+
+        for (int i = 1; i < n; i++) {
+            System.out.println(map.toString());
+            if (map.containsKey(index)) {
+                while (map.containsKey(target - index)) {
+                    index++;
+                }
+            }
+            res = (res + index) % mod;
+            map.put(target - index, 1);
+            index++;
+        }
+        return res;
+    }
 
     // BM16 删除有序链表中重复的元素-II
     public ListNode deleteDuplicates (ListNode head) {
