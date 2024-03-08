@@ -68,6 +68,36 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // BM14 链表的奇偶重排（牛客）
+    public ListNode oddEvenList (ListNode head) {
+        // write code here
+        if (head == null) {
+            return null;
+        }
+
+        ListNode slow = new ListNode(0);
+        ListNode fast = new ListNode(0);
+        ListNode res = slow, fastTemp = fast;
+        int index = 0;
+        while (head != null) {
+            if (index % 2 == 0) {
+                slow.next = head;
+                head = head.next;
+                slow = slow.next;
+                slow.next = null;
+            } else {
+                fast.next = head;
+                head = head.next;
+                fast = fast.next;
+                fast.next = null;
+            }
+            index++;
+        }
+
+        slow.next = fastTemp.next;
+        return res.next;
+    }
+
     // 2834. 找出美丽数组的最小和
     public int minimumPossibleSum(int n, int target) {
         int mod = 100000007;
