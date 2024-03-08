@@ -68,6 +68,26 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // BM51 数组中出现次数超过一半的数字(牛客)
+    public int MoreThanHalfNum_Solution (int[] numbers) {
+        // write code here
+        int res = numbers[0];
+        int count = 1;
+        for (int i = 1; i < numbers.length; i++) {
+            if (numbers[i] == res) {
+                count++;
+            } else {
+                count--;
+                if (count == 0) {
+                    count = 1;
+                    res = numbers[i];
+                }
+            }
+        }
+
+        return res;
+    }
+
     // BM14 链表的奇偶重排（牛客）
     public ListNode oddEvenList (ListNode head) {
         // write code here
