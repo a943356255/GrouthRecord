@@ -68,6 +68,26 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // BM17 二分查找-I
+    public int search (int[] nums, int target) {
+        if (nums.length == 0) {
+            return -1;
+        }
+        // write code here
+        int left = 0, right = nums.length - 1, mid = 0;
+        while (left <= right) {
+            mid = (left + right) / 2;
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] > target) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return -1;
+    }
+
     // BM11 链表相加(二)(牛客)
     public ListNode addInList (ListNode head1, ListNode head2) {
         // write code here
