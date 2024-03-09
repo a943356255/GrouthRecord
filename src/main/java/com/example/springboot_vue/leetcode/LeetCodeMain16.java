@@ -68,6 +68,22 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // 2063. 所有子字符串中的元音
+    public long countVowels(String word) {
+        Set<Character> set = new HashSet<>();
+        set.add('a');set.add('e');set.add('i');set.add('o');set.add('u');
+        long res = 0;
+        int n = word.length();
+        for (int i = 0; i < word.length(); i++) {
+            char c = word.charAt(i);
+            if (set.contains(c)) {
+                res += (long) (i + 1) * (n - i);
+            }
+        }
+
+        return res;
+    }
+
     // 378. 有序矩阵中第 K 小的元素
     public int kthSmallest(int[][] matrix, int k) {
         int n = matrix.length;
