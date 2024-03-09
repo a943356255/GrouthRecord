@@ -68,6 +68,33 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // BM7 链表中环的入口结点
+    public ListNode EntryNodeOfLoop(ListNode pHead) {
+        ListNode fast = new ListNode(0);
+        ListNode slow = new ListNode(0);
+        fast = pHead;
+        slow = pHead;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (fast == slow) {
+                break;
+            }
+        }
+
+        if (fast == null || fast.next == null) {
+            return null;
+        }
+
+        fast = pHead;
+        while (fast != slow) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+
+        return fast;
+    }
+
     // 2063. 所有子字符串中的元音
     public long countVowels(String word) {
         Set<Character> set = new HashSet<>();
