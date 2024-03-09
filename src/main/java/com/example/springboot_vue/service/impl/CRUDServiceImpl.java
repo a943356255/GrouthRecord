@@ -94,6 +94,7 @@ public class CRUDServiceImpl implements CRUDService {
         String paperId = "测评任务1";
         String[] uid = msg.split(",");
         List<City> cityList = new ArrayList<>();
+        Map<String, List<Paper>> allPaper = new HashMap<>();
         for (int i = 0; i < uid.length; i++) {
             List<Paper> paperList = new ArrayList<>();
             for (int j = 0; j < 25; j++) {
@@ -109,8 +110,8 @@ public class CRUDServiceImpl implements CRUDService {
                 paper.setTitle("在博物馆参观时同学们看到一尊长了翅膀的怪兽，颜色以黄色和绿色为主，和有名的唐三彩的配色一致，那么据此推测《三彩镇墓兽》应该是中国哪个朝代的艺术品？");
                 paperList.add(paper);
             }
-
-            stringObjectObjectHashOperations.put(paperId, uid[i], paperList);
+            allPaper.put(uid[i], paperList);
+            // stringObjectObjectHashOperations.put(paperId, uid[i], paperList);
             City city = new City(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
             city.setMarkId(first++);
             // 出错
@@ -122,6 +123,8 @@ public class CRUDServiceImpl implements CRUDService {
         // 将试卷存入数据库
         int val = cityMapper.insertCityAll(cityList);
         int update = cityMapper.updateSuccess(uuid);
+        // 改为批量插入
+        stringObjectObjectHashOperations.putAll(paperId, allPaper);
 
         if (val < 0 || update < 0) {
             throw new Exception();
