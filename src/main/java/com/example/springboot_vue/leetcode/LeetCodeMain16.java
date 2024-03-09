@@ -68,10 +68,69 @@ public class LeetCodeMain16 {
 //        }
 //    }
 
+    // BM11 链表相加(二)(牛客)
+    public ListNode addInList (ListNode head1, ListNode head2) {
+        // write code here
+        ListNode temp1 = new ListNode(0);
+        ListNode temp2 = new ListNode(0);
+        // 头插法，转置链表
+        while (head1 != null) {
+            ListNode temp = new ListNode(head1.val);
+            temp.next = temp1.next;
+            temp1.next = temp;
+            head1 = head1.next;
+        }
+        while (head2 != null) {
+            ListNode temp = new ListNode(head2.val);
+            temp.next = temp2.next;
+            temp2.next = temp;
+            head2 = head2.next;
+        }
+        temp1 = temp1.next;
+        temp2 = temp2.next;
+        int tempVal = 0;
+        ListNode res = new ListNode(0);
+        while (temp1 != null && temp2 != null) {
+            int val = tempVal + temp1.val + temp2.val;
+            ListNode temp = new ListNode(val % 10);
+            tempVal = val / 10;
+            temp.next = res.next;
+            res.next = temp;
+            temp1 = temp1.next;
+            temp2 = temp2.next;
+        }
+
+        while (temp1 != null) {
+            int val = tempVal + temp1.val;
+            tempVal = val / 10;
+            ListNode temp = new ListNode(val % 10);
+            temp.next = res.next;
+            res.next = temp;
+            temp1 = temp1.next;
+        }
+
+        while (temp2 != null) {
+            int val = tempVal + temp2.val;
+            tempVal = val / 10;
+            ListNode temp = new ListNode(val % 10);
+            temp.next = res.next;
+            res.next = temp;
+            temp2 = temp2.next;
+        }
+
+        if (tempVal != 0) {
+            ListNode temp = new ListNode(1);
+            temp.next = res.next;
+            res.next = temp;
+        }
+
+        return res.next;
+    }
+
     // BM7 链表中环的入口结点
     public ListNode EntryNodeOfLoop(ListNode pHead) {
-        ListNode fast = new ListNode(0);
-        ListNode slow = new ListNode(0);
+        ListNode fast;
+        ListNode slow;
         fast = pHead;
         slow = pHead;
         while (fast != null && fast.next != null) {
