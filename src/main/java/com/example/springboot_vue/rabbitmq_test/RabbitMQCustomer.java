@@ -21,7 +21,7 @@ public class RabbitMQCustomer {
         // channel.basicQos(1);
 
         // 这里绑定的是队列的名字
-        channel.basicConsume("queueName", true, new DefaultConsumer(channel) {
+        channel.basicConsume("DirectQueue", true, new DefaultConsumer(channel) {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                 super.handleDelivery(consumerTag, envelope, properties, body);
