@@ -1,13 +1,56 @@
 package com.example.springboot_vue.leetcode;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class LeetCodeMain17 {
 
     public static void main(String[] args) {
         var list = new ArrayList<Integer>();
+    }
+
+    // BM45 滑动窗口的最大值，纯手写板
+    public ArrayList<Integer> maxInWindows (int[] num, int size) {
+        if (size == 0 || size > num.length) {
+            return new ArrayList<>();
+        }
+        if (size == num.length) {
+            int max = Arrays.stream(num).max().getAsInt();
+            ArrayList<Integer> list = new ArrayList<>();
+            list.add(max);
+            return list;
+        }
+        if (size == 1) {
+            ArrayList<Integer> list = new ArrayList<>();
+            for (int i : num) {
+                list.add(i);
+            }
+            return list;
+        }
+
+        ArrayList<Integer> res = new ArrayList<>();
+        PriorityQueue<int[]> queue = new PriorityQueue<>((a, b) -> (b[0] - a[0]));
+        int left = 0, right = 0;
+        for (int i = 0; i < size; i++) {
+            queue.offer(new int[]{num[i], i});
+            right = i;
+        }
+
+        res.add(queue.peek()[0]);
+        while (right < num.length) {
+            right++;
+            if (right == num.length) {
+                break;
+            }
+            left++;
+            queue.offer(new int[]{num[right], right});
+            while (!queue.isEmpty() && queue.size() > size && queue.peek()[1] < left) {
+                queue.poll();
+            }
+            res.add(queue.peek()[0]);
+
+        }
+
+        return res;
     }
 
     ArrayList<Integer> getPath(TreeNode root, int target) {
