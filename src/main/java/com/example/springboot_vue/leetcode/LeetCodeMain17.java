@@ -8,6 +8,23 @@ public class LeetCodeMain17 {
         var list = new ArrayList<Integer>();
     }
 
+    // BM53 缺失的第一个正整数
+    public int minNumberDisappeared (int[] nums) {
+        // write code here
+        Set<Integer> set = new HashSet<>();
+        for (int i = 0; i < nums.length; i++) {
+            set.add(nums[i]);
+        }
+
+        for (int i = 1; i <= nums.length; i++) {
+            if (!set.contains(i)) {
+                return i;
+            }
+        }
+
+        return set.size() + 1;
+    }
+
     // BM45 滑动窗口的最大值，纯手写板
     public ArrayList<Integer> maxInWindows (int[] num, int size) {
         if (size == 0 || size > num.length) {
