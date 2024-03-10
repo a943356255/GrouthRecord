@@ -10,6 +10,47 @@ public class LeetCodeMain17 {
         var list = new ArrayList<Integer>();
     }
 
+    ArrayList<Integer> getPath(TreeNode root, int target) {
+        ArrayList<Integer> path = new ArrayList<>();
+        while (root != null) {
+            if (root.val != target) {
+                path.add(root.val);
+                if (root.val > target) {
+                    root = root.left;
+                } else {
+                    root = root.right;
+                }
+            } else {
+                path.add(root.val);
+                break;
+            }
+        }
+
+        return path;
+    }
+
+    // 二叉树的公共祖先
+    public int lowestCommonAncestor (TreeNode root, int p, int q) {
+        // write code here
+        ArrayList<Integer> pList = getPath(root, p);
+        ArrayList<Integer> qList = getPath(root, q);
+        int res = 0;
+        for (int i = 0; i < pList.size() && i < qList.size(); i++) {
+            int x = pList.get(i);
+            int y = qList.get(i);
+            System.out.println("x = " + x + " y = " + y);
+            System.out.println("pList.get(i) = " + pList.get(i) + " qList.get(i) = " + qList.get(i));
+            System.out.println(pList.get(i) == qList.get(i));
+            if (pList.get(i).equals(qList.get(i))) {
+                res = pList.get(i);
+            } else {
+                break;
+            }
+        }
+
+        return res;
+    }
+
     // 299. 猜数字游戏
     public String getHint(String secret, String guess) {
         int count1 = 0;
