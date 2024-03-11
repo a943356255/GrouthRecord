@@ -4,6 +4,7 @@ import com.example.springboot_vue.pojo.city.City;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 public class LeetCodeMain17 {
@@ -13,20 +14,27 @@ public class LeetCodeMain17 {
 //        char c = 'b';
 //        System.out.println(c - 'a' + 'A');
         Class<?> tClass = City.class;
-        Object o = new City[5];
+        City[] cities = new City[5];
+        for (int i = 0; i < 5; i++) {
+            City city = new City();
+            city.setTest(String.valueOf(i));
+            cities[i] = city;
+        }
+
+        Object o = cities;
+        // 方法1
         Object[] objects = new Object[Array.getLength(o)];
         for (int i = 0; i < Array.getLength(o); i++) {
             objects[i] = Array.get(o, i);
+            Method method = tClass.getDeclaredMethod("getTest");
+            System.out.println(method.invoke(objects[i]));
         }
 
-//        Class<?> clazz = City.class;
-//        System.out.println("name = " + clazz.getName());
-//
-//        String[] name = clazz.getName().split("\\.");
-
-//        System.out.println(objects.toString());
-//        City[] temp = (City[]) objects;
-//        System.out.println(temp.length);
+        // 方法2
+        City[] cities1 = (City[]) o;
+        for (int i = 0; i < cities1.length; i++) {
+            System.out.println(cities1[i].getTest());
+        }
     }
 
     // 15. 三数之和
