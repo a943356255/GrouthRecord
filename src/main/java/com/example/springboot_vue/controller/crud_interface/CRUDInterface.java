@@ -51,6 +51,7 @@ public class CRUDInterface {
 
     @RequestMapping("/testSubmit")
     public JSONObject submitTest(@RequestBody Map<String, Object> map) {
+
         return crudServiceImpl.submitTest(map, dataSourceTransactionManager);
     }
 
@@ -61,7 +62,9 @@ public class CRUDInterface {
 
     @RequestMapping("/testUser")
     public void test(@RequestBody Map<String, Object> map) {
-        crudServiceImpl.test(map);
+        System.out.println(map.toString());
+        stringRedisTemplate.delete("");
+//        crudServiceImpl.test(map);
     }
 
     public void testRedisTemplateStream() {
@@ -82,9 +85,9 @@ public class CRUDInterface {
 
     @RequestMapping("/testParam")
     public String testRequestParam(@RequestBody Map<String, String> map) throws InterruptedException {
-//        String filepath = map.get("filepath");
-        String tempPath = "D:\\bilibili_video\\test3.xlsx";
-//        System.out.println("filepath = " + filepath);
+        String filepath = map.get("filepath");
+        String tempPath = "D:\\bilibili_video\\test.xlsx";
+        System.out.println("filepath = " + filepath);
         crudServiceImpl.insertCity(tempPath);
         return "上传成功";
     }

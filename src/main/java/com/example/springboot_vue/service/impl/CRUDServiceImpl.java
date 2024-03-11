@@ -125,7 +125,7 @@ public class CRUDServiceImpl implements CRUDService {
         int update = cityMapper.updateSuccess(uuid);
         // 改为批量插入
         stringObjectObjectHashOperations.putAll(paperId, allPaper);
-
+//        stringObjectObjectHashOperations.delete(paperId, "uid");
         if (val < 0 || update < 0) {
             throw new Exception();
         }
