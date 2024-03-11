@@ -10,6 +10,23 @@ public class LeetCodeMain17 {
         System.out.println(c - 'a' + 'A');
     }
 
+    // 11. 盛最多水的容器
+    public int maxArea(int[] height) {
+        int res = 0;
+        int left = 0, right = height.length - 1;
+        while (left < right) {
+            int min = Math.min(height[left], height[right]);
+            res = Math.max(res, min * (right - left));
+            if (height[left] > height[right]) {
+                right--;
+            } else {
+                left++;
+            }
+        }
+
+        return res;
+    }
+
     // 2129. 将标题首字母大写
     public String capitalizeTitle(String title) {
         StringBuilder str = new StringBuilder();
