@@ -1,13 +1,32 @@
 package com.example.springboot_vue.leetcode;
 
+import com.example.springboot_vue.pojo.city.City;
+
+import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class LeetCodeMain17 {
 
-    public static void main(String[] args) {
-        var list = new ArrayList<Integer>();
-        char c = 'b';
-        System.out.println(c - 'a' + 'A');
+    public static void main(String[] args) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, ClassNotFoundException {
+//        var list = new ArrayList<Integer>();
+//        char c = 'b';
+//        System.out.println(c - 'a' + 'A');
+        Class<?> tClass = City.class;
+        Object o = new City[5];
+        Object[] objects = new Object[Array.getLength(o)];
+        for (int i = 0; i < Array.getLength(o); i++) {
+            objects[i] = Array.get(o, i);
+        }
+
+//        Class<?> clazz = City.class;
+//        System.out.println("name = " + clazz.getName());
+//
+//        String[] name = clazz.getName().split("\\.");
+
+//        System.out.println(objects.toString());
+//        City[] temp = (City[]) objects;
+//        System.out.println(temp.length);
     }
 
     // 15. 三数之和
