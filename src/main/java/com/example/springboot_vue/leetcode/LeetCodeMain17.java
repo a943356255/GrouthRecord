@@ -10,6 +10,45 @@ public class LeetCodeMain17 {
         System.out.println(c - 'a' + 'A');
     }
 
+    // 15. 三数之和
+    public List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> res = new ArrayList<>();
+        Set<String> set = new HashSet<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            int target = -nums[i];
+            int left = i + 1, right = nums.length - 1;
+            List<Integer> list = new ArrayList<>();
+            list.add(nums[i]);
+            while (left < right) {
+                if (nums[left] + nums[right] == target) {
+                    String str = nums[i] + "-" + nums[left] + "-" + nums[right];
+                    if (set.contains(str)) {
+
+                    } else {
+                        set.add(str);
+                        list.add(nums[left]);
+                        list.add(nums[right]);
+                        res.add(list);
+                        list = new ArrayList<>();
+                        list.add(nums[i]);
+                    }
+                    left++;
+                    right--;
+                } else if (nums[left] + nums[right] > target) {
+                    right--;
+                } else {
+                    left++;
+                }
+            }
+        }
+
+        return res;
+    }
+
     // 11. 盛最多水的容器
     public int maxArea(int[] height) {
         int res = 0;
