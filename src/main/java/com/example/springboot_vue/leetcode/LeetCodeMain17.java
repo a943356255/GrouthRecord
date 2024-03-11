@@ -6,6 +6,30 @@ public class LeetCodeMain17 {
 
     public static void main(String[] args) {
         var list = new ArrayList<Integer>();
+        char c = 'b';
+        System.out.println(c - 'a' + 'A');
+    }
+
+    // 2129. 将标题首字母大写
+    public String capitalizeTitle(String title) {
+        StringBuilder str = new StringBuilder();
+        String[] spilt = title.split(" ");
+
+        for (int i = 0; i < spilt.length; i++) {
+            if (spilt[i].length() > 2) {
+                str.append(Character.toUpperCase(spilt[i].charAt(0)));
+            } else {
+                str.append(Character.toLowerCase(spilt[i].charAt(0)));
+            }
+            for (int j = 1; j < spilt[i].length(); j++) {
+                char c = spilt[i].charAt(j);
+                str.append(Character.toLowerCase(c));
+            }
+            str.append(" ");
+        }
+        str.delete(str.length() - 1, str.length());
+
+        return str.toString();
     }
 
     // BM53 缺失的第一个正整数
