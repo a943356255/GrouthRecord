@@ -38,7 +38,7 @@ public class LockCityDataListener implements ReadListener<City> {
     /**
      * 这里是设置批量插入数据的大小
      */
-    private static final int BATCH_COUNT = 1000;
+    private static final int BATCH_COUNT = 2000;
 
     /**
      * 缓存的数据
@@ -86,7 +86,8 @@ public class LockCityDataListener implements ReadListener<City> {
             int res = cityMapper.setData((Integer) map.get("version"), resultNumber);
             // 这里，虽然是进行了判断，但是它永远无法获取到最新的version
             while (res == 0) {
-                map = cityMapper.getTotalData();
+                map = cityMapper.getTotalDataForUpdate();
+                System.out.println("发生死锁");
                 resultNumber = rowNumber + (int) map.get("column_count");
                 res = cityMapper.setData((Integer) map.get("version"), resultNumber);
             }
