@@ -37,6 +37,13 @@ public class LeetCodeMain17 {
         }
     }
 
+    // LCR 076. 数组中的第 K 个最大元素
+    public int findKthLargest(int[] nums, int k) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        return nums[n - k];
+    }
+
     // 15. 三数之和
     public List<List<Integer>> threeSum(int[] nums) {
         Arrays.sort(nums);
