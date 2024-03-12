@@ -40,6 +40,24 @@ public class LeetCodeMain17 {
 
     }
 
+    // BM8 链表中倒数最后k个结点
+    public ListNode FindKthToTail (ListNode pHead, int k) {
+        // write code here
+        ListNode slow = pHead, fast = pHead;
+        while (fast != null && k > 0) {
+            k--;
+            fast = fast.next;
+        }
+        if (k != 0) {
+            return null;
+        }
+        while (fast != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+
     // BM13 判断一个链表是否为回文结构
     public boolean isPail (ListNode head) {
         // write code here
