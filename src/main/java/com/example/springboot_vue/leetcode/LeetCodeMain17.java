@@ -13,28 +13,61 @@ public class LeetCodeMain17 {
 //        var list = new ArrayList<Integer>();
 //        char c = 'b';
 //        System.out.println(c - 'a' + 'A');
-        Class<?> tClass = City.class;
-        City[] cities = new City[5];
-        for (int i = 0; i < 5; i++) {
-            City city = new City();
-            city.setTest(String.valueOf(i));
-            cities[i] = city;
+//        Class<?> tClass = City.class;
+//        City[] cities = new City[5];
+//        for (int i = 0; i < 5; i++) {
+//            City city = new City();
+//            city.setTest(String.valueOf(i));
+//            cities[i] = city;
+//        }
+//
+//        Object o = cities;
+//        // 方法1
+//        Object[] objects = new Object[Array.getLength(o)];
+//        for (int i = 0; i < Array.getLength(o); i++) {
+//            objects[i] = Array.get(o, i);
+//            Method method = tClass.getDeclaredMethod("getTest");
+//            System.out.println(method.invoke(objects[i]));
+//        }
+//
+//        // 方法2
+//        City[] cities1 = (City[]) o;
+//        for (int i = 0; i < cities1.length; i++) {
+//            System.out.println(cities1[i].getTest());
+//        }
+        LeetCodeMain17 leetCodeMain17 = new LeetCodeMain17();
+        leetCodeMain17.lengthOfLongestSubstring("abcabcbb");
+
+    }
+
+    // 3. 无重复字符的最长子串
+    public int lengthOfLongestSubstring(String s) {
+        if (s == null || s.equals("")) {
+            return 0;
         }
 
-        Object o = cities;
-        // 方法1
-        Object[] objects = new Object[Array.getLength(o)];
-        for (int i = 0; i < Array.getLength(o); i++) {
-            objects[i] = Array.get(o, i);
-            Method method = tClass.getDeclaredMethod("getTest");
-            System.out.println(method.invoke(objects[i]));
+        int res = -1, left = 0, right = 1;
+        Set<Character> set = new HashSet<>();
+        set.add(s.charAt(0));
+        while (right < s.length()) {
+            char c = s.charAt(right);
+            if (!set.contains(c)) {
+                set.add(c);
+                right++;
+                res = Math.max(right - left, res);
+            } else {
+                while (set.contains(c) && left < right) {
+                    set.remove(s.charAt(left));
+                    left++;
+                }
+                set.add(c);
+                right++;
+            }
         }
 
-        // 方法2
-        City[] cities1 = (City[]) o;
-        for (int i = 0; i < cities1.length; i++) {
-            System.out.println(cities1[i].getTest());
-        }
+        res = Math.max(set.size(), res);
+
+        return res;
     }
 
     // 322. 零钱兑换
