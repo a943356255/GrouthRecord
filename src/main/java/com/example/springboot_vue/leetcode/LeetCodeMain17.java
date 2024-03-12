@@ -38,8 +38,55 @@ public class LeetCodeMain17 {
         LeetCodeMain17 leetCodeMain17 = new LeetCodeMain17();
 //        leetCodeMain17.lengthOfLongestSubstring("abcabcbb");
         int[] arr = new int[]{7, 3, 1, 5, 4, 2, 6};
-        leetCodeMain17.quickSort(arr);
+        leetCodeMain17.mergeSort(arr);
         System.out.println(Arrays.toString(arr));
+    }
+
+    public void mergeSort(int[] arr) {
+        trueMergeSort(arr, 0, arr.length - 1);
+    }
+
+    public void trueMergeSort(int[] arr, int start, int end) {
+        if (arr == null || start >= end) {
+            return;
+        }
+
+        int mid = (start + end) / 2;
+        // 递归的分割左右两部分
+        trueMergeSort(arr, start, mid);
+        trueMergeSort(arr, mid + 1, end);
+
+        // 将分割的数据合并
+        newMerge(arr, start, end, mid);
+    }
+
+    public void newMerge(int[] arr, int start, int end, int mid) {
+        int[] temp = new int[end - start + 1];
+        // 这里的i是第一个数组的起始，j是第二个数组的起始，k是temp的下标
+        int i = start, j = mid + 1, k = 0;
+
+        // 这里少写等于
+        while (i <= mid && j <= end) {
+            if (arr[i] > arr[j]) {
+                temp[k++] = arr[j++];
+            } else {
+                temp[k++] = arr[i++];
+            }
+        }
+
+        // 这里也少些等于
+        while (i <= mid) {
+            temp[k++] = arr[i++];
+        }
+
+        // 这里也少些等于
+        while (j <= end) {
+            temp[k++] = arr[j++];
+        }
+
+        for (int t = 0; t < k; t++) {
+            arr[t + start] = temp[t];
+        }
     }
 
     public void rewriteSort(int[] arr, int left, int right) {
