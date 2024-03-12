@@ -42,6 +42,32 @@ public class LeetCodeMain17 {
         System.out.println(Arrays.toString(arr));
     }
 
+    public void rewriteSort(int[] arr, int left, int right) {
+        if (left < right) {
+            int i = left, j = right, x = arr[left];
+            while (i < j) {
+                while (i < j && arr[j] > x) {
+                    j--;
+                }
+                if (i < j) {
+                    // 找到从右往左第一个比x小的，将其覆盖到原来i的位置，即x的值
+                    arr[i++] = arr[j];
+                }
+                while (i < j && arr[i] < x) {
+                    i++;
+                }
+                // 这里的j是上边找到第一个比x小的位置，因为会将x移动到j的位置，只不过没有实际移动，而是用x代替，原数组直接覆盖写
+                if (i < j) {
+                    // 找到从左往右第一个比x小的值，直接覆盖
+                    arr[j--] = arr[i];
+                }
+            }
+            arr[i] = x;
+            rewriteSort(arr, left, i - 1);
+            rewriteSort(arr, i + 1, right);
+        }
+    }
+
     // quickSort
     public void quickSort(int[] arr) {
         sort(arr, 0, arr.length - 1);
