@@ -36,8 +36,47 @@ public class LeetCodeMain17 {
 //            System.out.println(cities1[i].getTest());
 //        }
         LeetCodeMain17 leetCodeMain17 = new LeetCodeMain17();
-        leetCodeMain17.lengthOfLongestSubstring("abcabcbb");
+//        leetCodeMain17.lengthOfLongestSubstring("abcabcbb");
+        int[] arr = new int[]{7, 3, 1, 5, 4, 2, 6};
+        leetCodeMain17.quickSort(arr);
+        System.out.println(Arrays.toString(arr));
+    }
 
+    // quickSort
+    public void quickSort(int[] arr) {
+        sort(arr, 0, arr.length - 1);
+    }
+
+    public void sort(int[] arr, int left, int right) {
+        if (left < right) {
+            int i, j, x;
+            i = left;
+            j = right;
+            // 这里已经用x替换了arr[i]，所以后续可以直接用覆盖写arr[i++] = arr[j]，先将arr[i]覆盖了，然后i++
+            x = arr[i];
+
+            while (i < j) {
+                // 从右往左找第一个比x小的
+                while (i < j && arr[j] > x) {
+                    j--;
+                }
+                if (i < j) {
+//                    arr[j--] = arr[i];
+                    arr[i++] = arr[j];
+                }
+                // 从左往右找第一个比x大的
+                while (i < j && arr[i] < x) {
+                    i++;
+                }
+                if (i < j) {
+//                    arr[i++] = arr[j];
+                    arr[j--] = arr[i];
+                }
+            }
+            arr[i] = x;
+            sort(arr, left, i - 1);
+            sort(arr, i + 1, right);
+        }
     }
 
     // BM20 数组中的逆序对
@@ -62,6 +101,12 @@ public class LeetCodeMain17 {
             // 并
             merge(array, left, mid, right);
         }
+    }
+
+    // 1143. 最长公共子序列
+    public int longestCommonSubsequence(String text1, String text2) {
+        int res = 0;
+        return 0;
     }
 
     public void myMerge(int[] arr, int left, int mid, int right) {
