@@ -40,6 +40,92 @@ public class LeetCodeMain17 {
 
     }
 
+    Map<Character, Integer> minWindowMapT = new HashMap<>();
+    Map<Character, Integer> minWindowMapS = new HashMap<>();
+    // 76. 最小覆盖子串
+    public String minWindow(String s, String t) {
+        if (t.length() > s.length()) {
+            return "";
+        }
+//        if (s.length() == t.length()) {
+//            return s.equals(t) ? s : "";
+//        }
+        if (t.length() == 1) {
+            return s.contains(t) ? t : "";
+        }
+
+        for (int i = 0; i < t.length(); i++) {
+            char c = t.charAt(i);
+            minWindowMapT.merge(c, 1, Integer::sum);
+        }
+
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (minWindowMapT.containsKey(c)) {
+                list.add(i);
+            }
+        }
+
+        if (list.size() == 0) {
+            return "";
+        }
+
+        int left = 0, right = 1, res = Integer.MAX_VALUE;
+        int resLeft = 0, resRight = 0;
+        minWindowMapS.put(s.charAt(list.get(0)), 1);
+        int trueLeft = 0;
+        int trueRight = 0;
+        System.out.println(list.size());
+        while (right < list.size()) {
+            trueLeft = list.get(left);
+            trueRight = list.get(right);
+            char c = s.charAt(trueRight);
+            minWindowMapS.merge(c, 1, Integer::sum);
+            System.out.println(minWindowMapS.toString());
+            // 检查相同
+            if (check()) {
+                if (res > (trueRight - trueLeft)) {
+                    res = trueRight - trueLeft;
+                    resLeft = trueLeft;
+                    resRight = trueRight;
+                }
+                minWindowMapS.put(s.charAt(trueLeft), minWindowMapS.get(s.charAt(trueLeft)) - 1);
+                left++;
+                System.out.println("为真" + " left = " + resLeft + " right = " + resRight + " map = " + minWindowMapS.toString());
+            }
+            right++;
+        }
+
+        right--;
+        while (left < right) {
+            trueLeft = list.get(left);
+            trueRight = list.get(right);
+            if (check()) {
+                if (res > (trueRight - trueLeft)) {
+                    res = trueRight - trueLeft;
+                    resLeft = trueLeft;
+                    resRight = trueRight;
+                }
+            }
+            minWindowMapS.put(s.charAt(trueLeft), minWindowMapS.get(s.charAt(trueLeft)) - 1);
+            left++;
+        }
+
+        return res == Integer.MAX_VALUE ? "" : s.substring(resLeft, resRight + 1);
+    }
+
+    public boolean check() {
+        for (Map.Entry<Character, Integer> characterIntegerEntry : minWindowMapT.entrySet()) {
+            Character key = (Character) ((Map.Entry) characterIntegerEntry).getKey();
+            Integer val = (Integer) ((Map.Entry) characterIntegerEntry).getValue();
+            if (minWindowMapS.getOrDefault(key, 0) < val) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     // 3. 无重复字符的最长子串
     public int lengthOfLongestSubstring(String s) {
         if (s == null || s.equals("")) {
