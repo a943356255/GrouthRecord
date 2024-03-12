@@ -37,6 +37,68 @@ public class LeetCodeMain17 {
         }
     }
 
+    // 322. 零钱兑换
+    int coinChangeMark = 0;
+    List<List<Integer>> coinChangeRes = new ArrayList<>();
+    public int coinChange(int[] coins, int amount) {
+        if (amount == 0) {
+            return 0;
+        }
+        Arrays.sort(coins);
+        dfs(coins, 0, new LinkedList<>(), amount);
+        if (coinChangeRes.size() == 0) {
+            return -1;
+        }
+        int min = Integer.MAX_VALUE;
+        for (List<Integer> coinChangeRe : coinChangeRes) {
+            min = Math.min(min, coinChangeRe.size());
+        }
+
+        return min;
+    }
+
+    // 题解的记忆优化搜索，它其实也是回溯，只不过用了前一个回溯的最优解来减少当此的计算
+    private int coinChange(int[] coins, int rem, int[] count) {
+        if (rem < 0) {
+            return -1;
+        }
+        if (rem == 0) {
+            return 0;
+        }
+        if (count[rem - 1] != 0) {
+            return count[rem - 1];
+        }
+        int min = Integer.MAX_VALUE;
+        for (int coin : coins) {
+            int res = coinChange(coins, rem - coin, count);
+            if (res >= 0 && res < min) {
+                min = 1 + res;
+            }
+        }
+        count[rem - 1] = (min == Integer.MAX_VALUE) ? -1 : min;
+        return count[rem - 1];
+    }
+
+    // 自己写的dfs，笨的一逼,提前结束导致找到的不是最优解，不提前结束第二个测试用例超时
+    public void dfs(int[] coins, long sum, LinkedList<Integer> list, int amount) {
+        for (int i = coins.length - 1; i >= 0; i--) {
+            if (coinChangeMark == 1) {
+                return;
+            }
+            if (sum + coins[i] <= amount) {
+                list.add(coins[i]);
+                if (sum + coins[i] == amount) {
+                    coinChangeRes.add(new ArrayList<>(list));
+                    coinChangeMark = 1;
+                    return;
+                } else {
+                    dfs(coins, sum + coins[i], list, amount);
+                }
+                list.removeLast();
+            }
+        }
+    }
+
     // LCR 076. 数组中的第 K 个最大元素
     public int findKthLargest(int[] nums, int k) {
         Arrays.sort(nums);
