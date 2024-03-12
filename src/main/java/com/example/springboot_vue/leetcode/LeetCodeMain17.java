@@ -40,6 +40,28 @@ public class LeetCodeMain17 {
 
     }
 
+    // BM13 判断一个链表是否为回文结构
+    public boolean isPail (ListNode head) {
+        // write code here
+        Stack<Integer> stack = new Stack<>();
+        Queue<Integer> queue = new ArrayDeque<>();
+        while (head != null) {
+            stack.push(head.val);
+            queue.add(head.val);
+            head = head.next;
+        }
+        int size = stack.size();
+        for (int i = 0; i < size / 2; i++) {
+            if (!stack.peek().equals(queue.peek())) {
+                return false;
+            }
+            stack.pop();
+            queue.poll();
+        }
+
+        return true;
+    }
+
     Map<Character, Integer> minWindowMapT = new HashMap<>();
     Map<Character, Integer> minWindowMapS = new HashMap<>();
     // 76. 最小覆盖子串
