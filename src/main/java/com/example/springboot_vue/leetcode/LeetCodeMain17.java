@@ -40,6 +40,104 @@ public class LeetCodeMain17 {
 
     }
 
+    // BM20 数组中的逆序对
+    int count = 0;
+    public int InversePairs(int [] array) {
+        // 长度小于2则无逆序对
+        if (array.length < 2)
+            return 0;
+        // 进入归并
+        mergeSort(array,0,array.length - 1);
+        return count;
+    }
+
+    public void mergeSort(int[] array, int left, int right) {
+        // 找分割点
+        int mid = left + (right - left) / 2;
+        if (left < right) {
+            // 左子数组
+            mergeSort(array, left, mid);
+            // 右子数组
+            mergeSort(array, mid + 1, right);
+            // 并
+            merge(array, left, mid, right);
+        }
+    }
+
+    public void myMerge(int[] arr, int left, int mid, int right) {
+        // 这里的arr，是原始的数组，left是本次归并的左边数组的下标。mid是结束位置，right是第二个数组结束的位置
+        // 临时数组
+        int[] temp = new int[right - left + 1];
+        int tempIndex = 0;
+        int tempLeft = left, tempRight = mid + 1;
+        while (tempLeft < mid && tempRight < right) {
+            if (arr[tempLeft] < arr[tempRight]) {
+                temp[tempIndex++] = arr[tempLeft++];
+            } else {
+                temp[tempIndex++] = arr[tempRight++];
+//                count = (count + (mid - tempLeft + 1)) % 1000000007;
+            }
+        }
+
+        while (tempLeft < mid) {
+            temp[tempIndex++] = arr[tempLeft++];
+        }
+
+        while (tempRight < right) {
+            temp[tempIndex++] = arr[tempRight++];
+        }
+
+        for (int i = left; i < right; i++) {
+            arr[left] = temp[i];
+        }
+    }
+
+    public void merge(int[] array, int left, int mid, int right) {
+        // 创建临时数组，长度为此时两个子数组加起来的长度
+        int[] arr =  new int[right - left + 1];
+        // 临时数组的下标起点
+        int c = 0;
+        // 保存在原数组的起点下标值
+        int s = left;
+        // 左子数组的起始指针
+        int l = left;
+        // 右子数组的起始指针
+        int r = mid + 1;
+        // 这里是从两个待合并的数组头部开始遍历，然后依次选择元素加入最终数组
+        while (l <= mid && r <= right) {
+            // 当左子数组的当前元素小的时候，跳过，无逆序对
+            if (array[l] <= array[r]) {
+                // 放入临时数组
+                arr[c] = array[l];
+                // 临时数组下标+1
+                c++;
+                // 左子数组指针右移
+                l++;
+            } else { // 否则，此时存在逆序对
+                // 放入临时数组
+                arr[c] = array[r];
+                // 逆序对的个数为    左子数组的终点- 当前左子数组的当前指针
+                count += mid + 1 - l;
+                count %= 1000000007;
+                // 临时数组+1
+                c++;
+                // 右子数组的指针右移
+                r++;
+            }
+        }
+
+        // 左子数组还有元素时，全部放入临时数组
+        while (l <= mid)
+            arr[c++] = array[l++];
+        // 右子数组还有元素时，全部放入临时数组
+        while (r <= right)
+            arr[c++] = array[r++];
+        // 将临时数组中的元素放入到原数组的指定位置
+        for (int num : arr) {
+            array[s++] = num;
+        }
+    }
+
     // BM8 链表中倒数最后k个结点
     public ListNode FindKthToTail (ListNode pHead, int k) {
         // write code here
