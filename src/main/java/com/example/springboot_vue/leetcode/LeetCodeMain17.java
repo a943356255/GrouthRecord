@@ -43,7 +43,45 @@ public class LeetCodeMain17 {
     }
 
     public void mergeSort(int[] arr) {
-        trueMergeSort(arr, 0, arr.length - 1);
+        mergeSortRewrite(arr, 0, arr.length - 1);
+    }
+
+    public void mergeSortRewrite(int[] arr, int start, int end) {
+        if (arr == null || start >= end) {
+            return;
+        }
+
+        int mid = (start + end) / 2;
+        mergeSortRewrite(arr, start, mid);
+        mergeSortRewrite(arr, mid + 1, end);
+
+        rewriteMerge(start, end, mid, arr);
+    }
+
+    public void rewriteMerge(int start, int end, int mid, int[] arr) {
+        // 这里，right 少写mid + 1
+        int k = 0, left = start, right = mid + 1;
+        int[] temp = new int[end - start + 1];
+
+        while (left <= mid && right <= end) {
+            if (arr[left] > arr[right]) {
+                temp[k++] = arr[right++];
+            } else {
+                temp[k++] = arr[left++];
+            }
+        }
+
+        while (left <= mid) {
+            temp[k++] = arr[left++];
+        }
+
+        while (right <= end) {
+            temp[k++] = arr[right++];
+        }
+
+        for (int t = 0; t < k; t++) {
+            arr[t + start] = temp[t];
+        }
     }
 
     public void trueMergeSort(int[] arr, int start, int end) {
