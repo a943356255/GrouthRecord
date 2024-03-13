@@ -8,6 +8,50 @@ public class LeetCodeMain18 {
 
     }
 
+    // 73. 矩阵置零
+    public void setZeroes(int[][] matrix) {
+        boolean column = false, line = false;
+        for (int i = 0; i < matrix.length; i++) {
+            if (matrix[i][0] == 0) {
+                line = true;
+                break;
+            }
+        }
+        for (int i = 0; i < matrix[0].length; i++) {
+            if (matrix[0][i] == 0) {
+                column = true;
+                break;
+            }
+        }
+
+        for (int i = 1; i < matrix.length; i++) {
+            for (int j = 1; j < matrix[0].length; j++) {
+                if (matrix[i][j] == 0) {
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+                }
+            }
+        }
+
+        for (int i = 1; i < matrix.length; i++) {
+            for (int j = 1; j < matrix[0].length; j++) {
+                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+
+        if (column) {
+            Arrays.fill(matrix[0], 0);
+        }
+
+        if (line) {
+            for (int i = 0; i < matrix.length; i++) {
+                matrix[i][0] = 0;
+            }
+        }
+    }
+
     // 56. 合并区间
     public int[][] merge(int[][] intervals) {
         Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
@@ -38,50 +82,6 @@ public class LeetCodeMain18 {
         }
 
         return arr;
-
-//        TreeMap<Integer, Integer> treeMap = new TreeMap<>();
-//        for (int i = 0; i < intervals.length; i++) {
-//            int start = intervals[i][0];
-//            int end = intervals[i][1];
-//
-//            Map.Entry<Integer, Integer> higherEntry = treeMap.higherEntry(start);
-//            Map.Entry<Integer, Integer> lowerEntry = treeMap.lowerEntry(start);
-//            if (higherEntry == null && lowerEntry == null) {
-//                treeMap.put(start, end);
-//            }
-//
-//            // 有大的，没有小的
-//            if (higherEntry == null && lowerEntry != null) {
-//                int val = lowerEntry.getValue();
-//                if (start > val) {
-//                    treeMap.put(start, end);
-//                } else {
-//                    int tempEnd = lowerEntry.getValue();
-//                    treeMap.remove(val);
-//                    treeMap.put(val, Math.max(tempEnd, end));
-//                }
-//            }
-//
-//            if (higherEntry != null && lowerEntry == null) {
-//                int key = higherEntry.getKey();
-//                int val = higherEntry.getValue();
-//                if (key > end) {
-//                    treeMap.put(start, end);
-//                } else {
-//                    treeMap.remove(key);
-//                    treeMap.put(start, Math.max(end, val));
-//                }
-//            }
-//
-//
-//        }
-//
-//        int[][] res = new int[treeMap.size()][2];
-//        for (Map.Entry<Integer, Integer> entry : treeMap.entrySet()) {
-//
-//        }
-//
-//        return res;
     }
 
 }
