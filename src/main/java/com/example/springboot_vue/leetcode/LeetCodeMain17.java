@@ -6,10 +6,12 @@ import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class LeetCodeMain17 {
 
     public static void main(String[] args) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, ClassNotFoundException {
+
 //        var list = new ArrayList<Integer>();
 //        char c = 'b';
 //        System.out.println(c - 'a' + 'A');
@@ -40,6 +42,28 @@ public class LeetCodeMain17 {
         int[] arr = new int[]{7, 3, 1, 5, 4, 2, 6};
         leetCodeMain17.mergeSort(arr);
         System.out.println(Arrays.toString(arr));
+    }
+
+    // 128. 最长连续序列
+    public int longestConsecutive(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            set.add(num);
+        }
+
+        int res = 1;
+        for (int i = 0; i < nums.length; i++) {
+            if (!set.contains(nums[i] - 1)) {
+                int temp = 0, x = nums[i];
+                while (set.contains(x++)) {
+                    temp++;
+                }
+
+                res = Math.max(temp, res);
+            }
+        }
+
+        return res;
     }
 
     public void mergeSort(int[] arr) {
