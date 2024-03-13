@@ -44,6 +44,57 @@ public class LeetCodeMain17 {
         System.out.println(Arrays.toString(arr));
     }
 
+    // 438. 找到字符串中所有字母异位词
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> res = new ArrayList<>();
+        if (p.length() > s.length()) {
+            return res;
+        }
+
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < p.length(); i++) {
+            char c = p.charAt(i);
+            map.merge(c, 1, Integer::sum);
+        }
+
+        Map<Character, Integer> sMap = new HashMap<>();
+        int left = 0, right = 0;
+        for (int i = 0; i < p.length(); i++) {
+            char c = s.charAt(i);
+            sMap.merge(c, 1, Integer::sum);
+            right++;
+        }
+        right--;
+        // System.out.println(map.toString());
+        while (right < s.length()) {
+            // System.out.println(sMap.toString() + " left = " + left + " right = " + right);
+            if (countTrue(sMap, map)) {
+                res.add(left);
+            }
+            char c = s.charAt(left);
+            sMap.put(c, sMap.get(c) - 1);
+
+            left++;
+            right++;
+            if (right == s.length()) {
+                break;
+            }
+            c = s.charAt(right);
+            sMap.merge(c, 1, Integer::sum);
+        }
+
+        return res;
+    }
+
+    public boolean countTrue(Map<Character, Integer> sMap, Map<Character, Integer> pMap) {
+        for (Map.Entry<Character, Integer> entry : pMap.entrySet()) {
+            if (!entry.getValue().equals(sMap.get(entry.getKey()))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     // 128. 最长连续序列
     public int longestConsecutive(int[] nums) {
         Set<Integer> set = new HashSet<>();
@@ -52,9 +103,9 @@ public class LeetCodeMain17 {
         }
 
         int res = 1;
-        for (int i = 0; i < nums.length; i++) {
-            if (!set.contains(nums[i] - 1)) {
-                int temp = 0, x = nums[i];
+        for (int i : set) {
+            if (!set.contains(i - 1)) {
+                int temp = 0, x = i;
                 while (set.contains(x++)) {
                     temp++;
                 }
