@@ -44,6 +44,46 @@ public class LeetCodeMain17 {
         System.out.println(Arrays.toString(arr));
     }
 
+    // 560. 和为 K 的子数组
+    public int subarraySum(int[] nums, int k) {
+        int count = 0, pre = 0;
+        HashMap < Integer, Integer > mp = new HashMap < > ();
+        mp.put(0, 1);
+        for (int i = 0; i < nums.length; i++) {
+            pre += nums[i];
+            if (mp.containsKey(pre - k)) {
+                count += mp.get(pre - k);
+            }
+            mp.put(pre, mp.getOrDefault(pre, 0) + 1);
+        }
+        return count;
+        /*
+            我的写法问题出来，它统计时有一个先后顺序，后边的数字减去前边的
+            也就是说，只能统计arr[i]前边满足arr[i] - k的个数，后边的不行
+         */
+//        int[] arr = new int[nums.length + 1];
+//        arr[0] = 0;
+//        for (int i = 1; i <= nums.length; i++) {
+//            arr[i] = arr[i - 1] + nums[i - 1];
+//        }
+//
+//        Map<Integer, Integer> map = new HashMap<>();
+//        for (int j : arr) {
+////            map.merge(arr[i], 1, Integer::sum);
+//            map.put(j, map.getOrDefault(j, 1));
+//        }
+//        System.out.println(map.toString());
+//        System.out.println(Arrays.toString(arr));
+//        int res = 0;
+//        for (int i = 1; i < arr.length; i++) {
+//            if (map.containsKey(arr[i] - k)) {
+//                res += map.get(arr[i] - k);
+//            }
+//        }
+//
+//        return res;
+    }
+
     // 438. 找到字符串中所有字母异位词
     public List<Integer> findAnagrams(String s, String p) {
         List<Integer> res = new ArrayList<>();
