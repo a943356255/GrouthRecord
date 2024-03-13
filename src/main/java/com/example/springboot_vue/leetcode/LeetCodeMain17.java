@@ -44,6 +44,29 @@ public class LeetCodeMain17 {
         System.out.println(Arrays.toString(arr));
     }
 
+    // 142. 环形链表 II
+    public ListNode detectCycle(ListNode head) {
+        ListNode fast = head, slow = head;
+        while (true) {
+            // 这里说明无环，直接返回空即可
+            if (fast == null || fast.next == null) {
+                return null;
+            }
+
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow) {
+                break;
+            }
+        }
+        fast = head;
+        while (fast != slow) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        return fast;
+    }
+
     // 560. 和为 K 的子数组
     public int subarraySum(int[] nums, int k) {
         int count = 0, pre = 0;
