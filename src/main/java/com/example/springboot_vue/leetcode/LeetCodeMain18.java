@@ -8,6 +8,28 @@ public class LeetCodeMain18 {
 
     }
 
+    // 80. 删除有序数组中的重复项 II
+    public int removeDuplicates(int[] nums) {
+        if (nums.length <= 2) {
+            return nums.length;
+        }
+        // slow 和 fast并不是一直相差二
+        // 这里跟我的思路有点相似，就是前边一个指针，指向当前需要被覆盖的下标
+        // 但是我的问题在于试图通过第一次遍历去找前一个指针的位置
+        // 事实是，只需要将第一个指针设置到2即可。因为前边有两个数字，而比较时是那slow - 2 和fast进行比较
+        // 这样还解决了我之前需要额外判断覆盖写是否超过2个
+        // 当fast 和 slow - 2不相等的时候，slow指向的就是要被覆盖掉的
+        int slow = 2, fast = 2;
+        while (fast < nums.length) {
+            if (nums[slow - 2] != nums[fast]) {
+                nums[slow] = nums[fast];
+                slow++;
+            }
+            fast++;
+        }
+        return slow;
+    }
+
     // 2789. 合并后数组中的最大元素
     public long maxArrayValue(int[] nums) {
         long lastNum = nums[nums.length - 1];
