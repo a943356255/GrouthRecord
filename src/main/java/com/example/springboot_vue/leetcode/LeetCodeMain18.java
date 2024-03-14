@@ -8,6 +8,30 @@ public class LeetCodeMain18 {
 
     }
 
+    int maxPathSumRes = Integer.MIN_VALUE;
+    // 124. 二叉树中的最大路径和
+    public int maxPathSum(TreeNode root) {
+        maxPathSumDfs(root);
+        return maxPathSumRes;
+    }
+
+    public int maxPathSumDfs(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        int left = Math.max(maxPathSumDfs(root.left), 0);
+        int right = Math.max(maxPathSumDfs(root.right), 0);
+
+        maxPathSumRes = Math.max(maxPathSumRes, left + right + root.val);
+
+        // 这里，往父节点返回时，并不能将子节点的左右子树都走完，只能走一个，所以不是全部相加
+        // return Math.max(0, left + right + root.val);
+        // 这两个值只能取较大的
+        // 如果是负数，这里为什么不返回0？其实不影响，为什么呢？看上面的left 和right，他在那里取了0，所以这里不用取
+        return root.val + Math.max(left, right);
+    }
+
     // LCR 024. 反转链表
     public ListNode reverseList(ListNode head) {
         if (head == null) {
@@ -29,8 +53,8 @@ public class LeetCodeMain18 {
     // 73. 矩阵置零
     public void setZeroes(int[][] matrix) {
         boolean column = false, line = false;
-        for (int i = 0; i < matrix.length; i++) {
-            if (matrix[i][0] == 0) {
+        for (int[] ints : matrix) {
+            if (ints[0] == 0) {
                 line = true;
                 break;
             }
