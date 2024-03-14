@@ -8,6 +8,24 @@ public class LeetCodeMain18 {
 
     }
 
+    // LCR 024. 反转链表
+    public ListNode reverseList(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+
+        ListNode prev = null;
+        ListNode current = head;
+        while (current != null) {
+            ListNode next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+
+        return prev;
+    }
+
     // 73. 矩阵置零
     public void setZeroes(int[][] matrix) {
         boolean column = false, line = false;
