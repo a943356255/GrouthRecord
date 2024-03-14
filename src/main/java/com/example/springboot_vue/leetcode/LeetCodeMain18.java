@@ -30,6 +30,44 @@ public class LeetCodeMain18 {
         return slow;
     }
 
+    // 27. 移除元素
+    public int removeElement(int[] nums, int val) {
+        int fast = 0, slow = 0;
+        while (fast < nums.length) {
+            if (nums[fast] != val) {
+                nums[slow++] = nums[fast++];
+            } else {
+                while (fast < nums.length && nums[fast] == val) {
+                    fast++;
+                }
+                if (fast < nums.length) {
+                    nums[slow++] = nums[fast++];
+                }
+            }
+        }
+
+        return slow;
+    }
+
+    // 26. 删除有序数组中的重复项
+    public int removeDuplicatesEasy(int[] nums) {
+        if (nums.length == 1) {
+            return 1;
+        }
+        int slow = 1, fast = 1;
+        while (fast < nums.length) {
+            if (nums[fast] == nums[slow - 1]) {
+                fast++;
+            } else {
+                nums[slow] = nums[fast];
+                fast++;
+                slow++;
+            }
+        }
+
+        return slow;
+    }
+
     // 2789. 合并后数组中的最大元素
     public long maxArrayValue(int[] nums) {
         long lastNum = nums[nums.length - 1];
