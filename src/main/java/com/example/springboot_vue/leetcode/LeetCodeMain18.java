@@ -47,6 +47,17 @@ public class LeetCodeMain18 {
         }
 
         return slow;
+        // 这种写法，是不考虑顺序的写法
+//        int ans=nums.length;
+//        for(int i=0;i<ans;){
+//            if(nums[i]==val){
+//                nums[i]=nums[ans-1];
+//                ans--;
+//            }else{
+//                i++;
+//            }
+//        }
+//        return ans;
     }
 
     // 26. 删除有序数组中的重复项
