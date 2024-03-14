@@ -8,6 +8,22 @@ public class LeetCodeMain18 {
 
     }
 
+    // 2789. 合并后数组中的最大元素
+    public long maxArrayValue(int[] nums) {
+        long lastNum = nums[nums.length - 1];
+        long max = lastNum;
+        for (int i = nums.length - 2; i >= 0; i--) {
+            if (nums[i] <= lastNum) {
+                lastNum += nums[i];
+            } else {
+                lastNum = nums[i];
+            }
+            max = Math.max(max, lastNum);
+        }
+
+        return max;
+    }
+
     int maxPathSumRes = Integer.MIN_VALUE;
     // 124. 二叉树中的最大路径和
     public int maxPathSum(TreeNode root) {
