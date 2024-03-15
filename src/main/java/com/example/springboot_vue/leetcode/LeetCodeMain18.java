@@ -74,6 +74,18 @@ public class LeetCodeMain18 {
         }
     }
 
+    // 121. 买卖股票的最佳时机
+    public int maxProfit(int[] prices) {
+        int minIn = prices[0];
+        int maxRes = 0;
+        for (int i = 1; i < prices.length; i++) {
+            // 之前的最小价格，今天卖出
+            maxRes = Math.max(maxRes, prices[i] - minIn);
+            minIn = Math.min(prices[i], minIn);
+        }
+        return maxRes;
+    }
+
     // 88. 合并两个有序数组
     public void merge(int[] nums1, int m, int[] nums2, int n) {
         if (n == 0) {
