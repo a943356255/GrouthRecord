@@ -74,6 +74,19 @@ public class LeetCodeMain18 {
         }
     }
 
+    // 122. 买卖股票的最佳时机 II
+    public int maxProfitTwo(int[] prices) {
+        int maxRes = 0, minIn = prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i] >= minIn) {
+                maxRes += prices[i] - minIn;
+            }
+            minIn = prices[i];
+        }
+
+        return maxRes;
+    }
+
     // 121. 买卖股票的最佳时机
     public int maxProfit(int[] prices) {
         int minIn = prices[0];
