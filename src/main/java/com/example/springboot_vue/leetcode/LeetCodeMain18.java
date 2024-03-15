@@ -74,6 +74,29 @@ public class LeetCodeMain18 {
         }
     }
 
+    // 209. 长度最小的子数组
+    public int minSubArrayLen(int target, int[] nums) {
+        int left = 0, right = 0, sum = 0;
+        int min = Integer.MAX_VALUE;
+        while (right < nums.length) {
+            sum += nums[right++];
+            if (sum >= target) {
+                min = Math.min(min, right - left);
+                while (sum >= target) {
+                    sum -= nums[left++];
+                    if (sum >= target) {
+                        min = Math.min(min, right - left);
+                    }
+                }
+            }
+        }
+
+        if (min == Integer.MAX_VALUE) {
+            min = 0;
+        }
+        return min;
+    }
+
     // 55. 跳跃游戏，判断当前能到达的最远距离是否在大于等于下标i即可
     public boolean canJump(int[] nums) {
         boolean[] dp = new boolean[nums.length];
