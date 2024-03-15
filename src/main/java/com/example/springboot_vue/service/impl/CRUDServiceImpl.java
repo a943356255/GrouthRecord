@@ -132,9 +132,12 @@ public class CRUDServiceImpl implements CRUDService {
     }
 
     @Override
-    public void insertRedis() {
+    public void insertRedis(Map<String, Object> map) {
         HashOperations<String, String, Object> stringObjectObjectHashOperations = redisTemplate.opsForHash();
         String paperId = "测评任务1";
+        String key = (String) map.get("key");
+        List<String> list = (List<String>) stringObjectObjectHashOperations.get(paperId, key);
+        System.out.println(list.toString());
         String hashKey = "12345678901111111";
 //        for (int i = 0; i < 10000; i++) {
 //            List<Paper> list = new ArrayList<>();

@@ -45,7 +45,7 @@ public class CRUDInterface {
 
     @RequestMapping("/testRedis")
     public JSONObject testRedis(@RequestBody Map<String, Object> map) {
-        crudServiceImpl.insertRedis();
+        crudServiceImpl.insertRedis(map);
         return new JSONObject();
     }
 
