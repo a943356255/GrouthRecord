@@ -8,6 +8,91 @@ public class LeetCodeMain18 {
 
     }
 
+    // 25. K 个一组翻转链表
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if (k == 1) {
+            return head;
+        }
+        int count = 0;
+        ListNode first, kTail;
+        first = head;
+        List<ListNode[]> list = new ArrayList<>();
+        while (head != null) {
+            count++;
+            if (count == k) {
+                kTail = head;
+                ListNode tempHead = first;
+                ListNode tempTail = kTail;
+                list.add(new ListNode[]{tempHead, tempTail});
+                reserveList(tempHead, tempTail);
+            }
+            head = head.next;
+        }
+
+        for (int i = 1; i < list.size(); i++) {
+            list.get(i - 1)[0].next = list.get(i)[1];
+        }
+
+        return first;
+    }
+
+    // 92. 反转链表 II
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode temp = head;
+        ListNode tempFirst = new ListNode(), tempSecond = new ListNode();
+        while (temp != null) {
+            if (temp.val == left) {
+                tempFirst = temp;
+            }
+
+            if (temp.val == right) {
+                tempSecond = temp;
+            }
+            temp = temp.next;
+        }
+        ListNode node = tempSecond.next.next;
+        reserveList(tempFirst, tempSecond);
+        tempFirst.next.next = node;
+        return head;
+    }
+
+    // 反转链表
+    public void reserveList(ListNode head, ListNode tail) {
+        ListNode pre = head, next;
+        head = head.next;
+        next = head.next;
+        while (next != null && next != tail.next) {
+            pre.next = null;
+            head.next = pre;
+            pre = head;
+            head = next;
+            next = next.next;
+        }
+    }
+
+    // 88. 合并两个有序数组
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        if (n == 0) {
+            return;
+        }
+        int left = m - 1, right = nums2.length - 1, index = nums1.length - 1;
+        while (left >= 0 && right >= 0) {
+            if (nums1[left] > nums2[right]) {
+                nums1[index--] = nums1[left--];
+            } else {
+                nums1[index--] = nums2[right--];
+            }
+        }
+
+        while (right >= 0) {
+            nums1[index--] = nums2[right--];
+        }
+    }
+
     // 80. 删除有序数组中的重复项 II
     public int removeDuplicates(int[] nums) {
         if (nums.length <= 2) {
