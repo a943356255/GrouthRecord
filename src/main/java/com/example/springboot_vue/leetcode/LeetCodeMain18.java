@@ -74,6 +74,22 @@ public class LeetCodeMain18 {
         }
     }
 
+    // 55. 跳跃游戏，判断当前能到达的最远距离是否在大于等于下标i即可
+    public boolean canJump(int[] nums) {
+        boolean[] dp = new boolean[nums.length];
+        Arrays.fill(dp, false);
+        dp[0] = true;
+        int maxIndex = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            if (i <= maxIndex) {
+                dp[i] = true;
+                maxIndex = Math.max(maxIndex, i + nums[i]);
+            }
+        }
+
+        return dp[nums.length - 1];
+    }
+
     // 122. 买卖股票的最佳时机 II
     public int maxProfitTwo(int[] prices) {
         int maxRes = 0, minIn = prices[0];
