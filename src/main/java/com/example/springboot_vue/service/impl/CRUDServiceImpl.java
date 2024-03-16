@@ -181,15 +181,18 @@ public class CRUDServiceImpl implements CRUDService {
 
             // 插入数据
             cityMapper.insertTest();
+            // message是消息表
             List<MyMessage> messages = new ArrayList<>();
-            // 生成10000条数据
+            // 生成10000条数据,list是存储真实的
             List<List<String>> list = new ArrayList<>();
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 130; i++) {
+                // 这里是一批学生的名字
                 List<String> res = new ArrayList<>();
-                for (int j = 0; j < 100; j++) {
+                for (int j = 0; j < 1000; j++) {
                     res.add(UUID.randomUUID().toString());
                 }
 
+                // 每1000个学生，封装一条消息
                 MyMessage message = new MyMessage();
                 message.setId(UUID.randomUUID().toString());
                 message.setRouteKey("DirectRouting");
@@ -197,8 +200,8 @@ public class CRUDServiceImpl implements CRUDService {
                 message.setExchangeName("DirectExchange");
                 message.setStatus(0);
                 message.setSuccess(0);
+                // 这里封装消息体
                 message.setMessageBody(res.toString());
-
                 messages.add(message);
                 list.add(res);
             }
@@ -206,31 +209,14 @@ public class CRUDServiceImpl implements CRUDService {
             dataSourceTransactionManager.commit(transaction);
 
             // 发送消息
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < messages.size(); i++) {
                 CorrelationData correlationData = new CorrelationData(messages.get(i).getId());
                 // 将消息携带绑定键值：DirectRouting 发送到交换机DirectExchange
                 System.out.println("发送时的id = " + correlationData.getId());
+                // list存储的是实际的消息，而message存储的是消息表中的数据，他们两个大小一样，都是130
                 rabbitTemplate.convertAndSend("DirectExchange", "DirectRouting", list.get(i), correlationData);
             }
 
-//            while (true) {
-//                if (confirmCallbackService.mark == val + 100) {
-//                    dataSourceTransactionManager.commit(transaction);
-//                    break;
-//                } else {
-//                    if (index == 103) {
-//                        System.out.println("消息发送异常，事务回滚");
-//                        dataSourceTransactionManager.rollback(transaction);
-//                        break;
-//                    }
-//                    index++;
-//                    try {
-//                        Thread.sleep(500);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
