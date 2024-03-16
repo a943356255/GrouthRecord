@@ -74,6 +74,78 @@ public class LeetCodeMain18 {
         }
     }
 
+    // 2684. 矩阵中移动的最大次数
+    // 这个题，最多从左移动到右这么多次
+    public int maxMoves(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        Set<Integer> q = new HashSet<>();
+
+        for (int i = 0; i < m; i++) {
+            q.add(i);
+        }
+
+        for (int j = 1; j < n; j++) {
+            Set<Integer> q2 = new HashSet<>();
+            for (int i : q) {
+                for (int i2 = i - 1; i2 <= i + 1; i2++) {
+                    if (0 <= i2 && i2 < m && grid[i][j - 1] < grid[i2][j]) {
+                        q2.add(i2);
+                    }
+                }
+            }
+            q = q2;
+            if (q.isEmpty()) {
+                return j - 1;
+            }
+        }
+
+        return n - 1;
+//        int[][] dp = new int[grid.length][grid[0].length];
+//        for (int[] ints : dp) {
+//            Arrays.fill(ints, -1);
+//        }
+//        int max = 0;
+//        Queue<int[]> queue = new ArrayDeque<>();
+//        for (int i = 0; i < grid.length; i++) {
+//            queue.add(new int[]{i, 0});
+//            dp[i][0] = 0;
+//        }
+//
+//        while (!queue.isEmpty()) {
+//            int size = queue.size();
+//            for (int k = 0; k < size; k++) {
+//                int[] arr = queue.poll();
+//                int i = arr[0];
+//                int j = arr[1];
+//                if (i - 1 >= 0 && j + 1 < grid[0].length) {
+//                    if (grid[i][j] < grid[i - 1][j + 1]) {
+//                        dp[i - 1][j + 1] = Math.max(dp[i - 1][j + 1], dp[i][j] + 1);
+//                        max = Math.max(dp[i - 1][j + 1], max);
+//                        queue.offer(new int[]{i - 1, j + 1});
+//                    }
+//                }
+//
+//                if (j + 1 < grid[0].length) {
+//                    if (grid[i][j] < grid[i][j + 1]) {
+//                        dp[i][j + 1] = Math.max(dp[i][j + 1], dp[i][j] + 1);
+//                        max = Math.max(dp[i][j + 1], max);
+//                        queue.offer(new int[]{i, j + 1});
+//                    }
+//                }
+//
+//                if (i + 1 < grid.length && j + 1 < grid[0].length) {
+//                    if (grid[i][j] < grid[i + 1][j + 1]) {
+//                        dp[i + 1][j + 1] = Math.max(dp[i + 1][j + 1], dp[i][j] + 1);
+//                        max = Math.max(dp[i + 1][j + 1], max);
+//                        queue.offer(new int[]{i + 1, j + 1});
+//                    }
+//                }
+//            }
+//        }
+//        System.out.println(Arrays.deepToString(dp));
+//        return max;
+    }
+
     // 209. 长度最小的子数组
     public int minSubArrayLen(int target, int[] nums) {
         int left = 0, right = 0, sum = 0;
