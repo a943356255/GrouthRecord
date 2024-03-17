@@ -74,6 +74,31 @@ public class LeetCodeMain18 {
         }
     }
 
+    // 49. 字母异位词分组
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> res = new ArrayList<>();
+        Map<String, List<String>> map = new HashMap<>();
+        for (String str : strs) {
+            int[] arr = new int[26];
+            for (int j = 0; j < str.length(); j++) {
+                char c = str.charAt(j);
+                arr[c - 'a']++;
+            }
+            String temp = Arrays.toString(arr);
+            if (map.get(temp) == null) {
+                List<String> list = new ArrayList<>();
+                map.put(temp, list);
+            }
+            map.get(temp).add(str);
+        }
+
+        for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+            res.add(entry.getValue());
+        }
+
+        return res;
+    }
+
     // 1. 两数之和
     public int[] twoSumEasy(int[] nums, int target) {
         int[] res = new int[2];
