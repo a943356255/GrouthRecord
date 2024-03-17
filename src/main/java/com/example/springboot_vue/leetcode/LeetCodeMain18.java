@@ -74,6 +74,29 @@ public class LeetCodeMain18 {
         }
     }
 
+    // 114. 二叉树展开为链表
+    public void flatten(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        List<TreeNode> list = new ArrayList<>();
+        flattenDfs(root, list);
+        for (int i = 1; i < list.size(); i++) {
+            root.left = null;
+            root.right = list.get(i);
+            root = root.right;
+        }
+    }
+
+    public void flattenDfs(TreeNode root, List<TreeNode> list) {
+        if (root == null) {
+            return;
+        }
+        list.add(root);
+        flattenDfs(root.left, list);
+        flattenDfs(root.right, list);
+    }
+
     // 49. 字母异位词分组
     public List<List<String>> groupAnagrams(String[] strs) {
         List<List<String>> res = new ArrayList<>();
