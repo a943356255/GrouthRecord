@@ -8,32 +8,80 @@ public class LeetCodeMain18 {
 
     }
 
+    // 852. 山脉数组的峰顶索引
+    public int peakIndexInMountainArray(int[] arr) {
+        int left = 0, right = arr.length - 1;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            int tempLeft = Math.max(mid - 1, 0);
+            int tempRight = Math.min(mid + 1, arr.length - 1);
+            if (arr[mid] > arr[tempLeft] && arr[mid] > arr[tempRight]) {
+                return mid;
+            } else if (arr[mid] > arr[tempLeft] && arr[mid] < arr[tempRight]) {
+                left = mid;
+            } else {
+                right = mid;
+            }
+        }
+
+        return 0;
+    }
+
     // 25. K 个一组翻转链表
     public ListNode reverseKGroup(ListNode head, int k) {
         if (k == 1) {
             return head;
         }
         int count = 0;
-        ListNode first, kTail;
-        first = head;
+        ListNode first = head;
         List<ListNode[]> list = new ArrayList<>();
+        ListNode[] nodes = new ListNode[2];
+        nodes[0] = head;
+        list.add(nodes);
+        int index = 0;
         while (head != null) {
             count++;
+            System.out.println("count = " + count);
             if (count == k) {
-                kTail = head;
-                ListNode tempHead = first;
-                ListNode tempTail = kTail;
-                list.add(new ListNode[]{tempHead, tempTail});
-                reserveList(tempHead, tempTail);
+                // 下标为0是尾节点，下标为1是头节点
+                ListNode tail = head.next;
+                list.get(index++)[1] = reserveList(first, tail);
+                System.out.println("head.next" + head.next);
+                count = 0;
+                ListNode[] temp = new ListNode[2];
+                temp[0] = head.next;
+                list.add(temp);
+                first = head.next;
             }
             head = head.next;
         }
 
+        System.out.println(list.size());
         for (int i = 1; i < list.size(); i++) {
             list.get(i - 1)[0].next = list.get(i)[1];
         }
 
-        return first;
+        return list.get(0)[0];
+    }
+
+    // 反转链表
+    public ListNode reserveList(ListNode head, ListNode tail) {
+        if (head == null) {
+            return null;
+        }
+
+        ListNode pre = null;
+        ListNode cur = head;
+        ListNode next = head.next;
+        while (next != tail) {
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+            next = next.next;
+        }
+
+        cur.next = pre;
+        return cur;
     }
 
     // 92. 反转链表 II
@@ -58,20 +106,6 @@ public class LeetCodeMain18 {
         reserveList(tempFirst, tempSecond);
         tempFirst.next.next = node;
         return head;
-    }
-
-    // 反转链表
-    public void reserveList(ListNode head, ListNode tail) {
-        ListNode pre = head, next;
-        head = head.next;
-        next = head.next;
-        while (next != null && next != tail.next) {
-            pre.next = null;
-            head.next = pre;
-            pre = head;
-            head = next;
-            next = next.next;
-        }
     }
 
     // 206. 反转链表
