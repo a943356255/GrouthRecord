@@ -74,6 +74,25 @@ public class LeetCodeMain18 {
         }
     }
 
+    // 167. 两数之和 II - 输入有序数组
+    public int[] twoSum(int[] numbers, int target) {
+        int[] res = new int[2];
+        int left = 0, right = numbers.length - 1;
+        while (left < right) {
+            if (numbers[left] + numbers[right] == target) {
+                res[0] = left + 1;
+                res[1] = right + 1;
+                break;
+            } else if (numbers[left] + numbers[right] > target) {
+                right--;
+            } else {
+                left++;
+            }
+        }
+
+        return res;
+    }
+
     // 151. 反转字符串中的单词
     public String reverseWords(String s) {
         Stack<String> stack = new Stack<>();
