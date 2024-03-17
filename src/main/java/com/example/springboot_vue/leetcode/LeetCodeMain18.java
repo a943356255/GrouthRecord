@@ -74,6 +74,38 @@ public class LeetCodeMain18 {
         }
     }
 
+    // 238. 除自身以外数组的乘积
+    public int[] productExceptSelf(int[] nums) {
+        int[] res = new int[nums.length];
+        long temp = 1, countZero = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 0) {
+                countZero++;
+            } else {
+                temp *= nums[i];
+            }
+        }
+
+        if (countZero > 1) {
+            Arrays.fill(res, 0);
+            return res;
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if (countZero > 0) {
+                if (nums[i] != 0) {
+                    res[i] = 0;
+                } else {
+                    res[i] = (int) temp;
+                }
+            } else {
+                res[i] = (int) (temp / nums[i]);
+            }
+        }
+
+        return res;
+    }
+
     // 2684. 矩阵中移动的最大次数
     // 这个题，最多从左移动到右这么多次
     public int maxMoves(int[][] grid) {
