@@ -74,6 +74,26 @@ public class LeetCodeMain18 {
         }
     }
 
+    // 206. 反转链表
+    public ListNode reserveList(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+
+        ListNode pre = null;
+        ListNode cur = head;
+        ListNode next = head.next;
+        while (next != null) {
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+            next = next.next;
+        }
+
+        cur.next = pre;
+        return cur;
+    }
+
     // 215. 数组中的第K个最大元素
     public int findKthLargest(int[] nums, int k) {
         int size = 0;
