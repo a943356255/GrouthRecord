@@ -74,6 +74,38 @@ public class LeetCodeMain18 {
         }
     }
 
+    // 151. 反转字符串中的单词
+    public String reverseWords(String s) {
+        Stack<String> stack = new Stack<>();
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == ' ') {
+                while (i < s.length() && s.charAt(i) == ' ') {
+                    i++;
+                }
+                if (str.length() > 0) {
+                    stack.push(str.toString());
+                }
+                str = new StringBuilder();
+                if (i < s.length()) {
+                    str.append(s.charAt(i));
+                }
+            } else {
+                str.append(c);
+            }
+        }
+        if (str.length() > 0) {
+            stack.push(str.toString());
+        }
+        str = new StringBuilder();
+        while (!stack.isEmpty()) {
+            str.append(stack.pop()).append(" ");
+        }
+        str.delete(str.length() - 1, str.length());
+        return str.toString();
+    }
+
     // 238. 除自身以外数组的乘积
     public int[] productExceptSelf(int[] nums) {
         int[] res = new int[nums.length];
