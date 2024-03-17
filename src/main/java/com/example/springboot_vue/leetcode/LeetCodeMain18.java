@@ -74,6 +74,24 @@ public class LeetCodeMain18 {
         }
     }
 
+    // 215. 数组中的第K个最大元素
+    public int findKthLargest(int[] nums, int k) {
+        int size = 0;
+        PriorityQueue<Integer> queue = new PriorityQueue<>(k);
+        for (int i = 0; i < nums.length; i++) {
+            if (size < k) {
+                queue.offer(nums[i]);
+                size++;
+            } else {
+                if (nums[i] > queue.peek()) {
+                    queue.poll();
+                    queue.offer(nums[i]);
+                }
+            }
+        }
+        return queue.peek();
+    }
+
     // 114. 二叉树展开为链表
     public void flatten(TreeNode root) {
         if (root == null) {
