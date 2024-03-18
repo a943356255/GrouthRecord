@@ -8,6 +8,8 @@ public class LeetCodeMain18 {
 
     }
 
+
+
     // 179. 最大数
     public String largestNumber(int[] nums) {
         StringBuilder res = new StringBuilder();
@@ -21,6 +23,31 @@ public class LeetCodeMain18 {
         }
 
         return res.toString();
+    }
+
+    // 245. 最短单词距离 III
+    public int shortestWordDistance(String[] wordsDict, String word1, String word2) {
+        int res = Integer.MAX_VALUE, index1 = -1, index2 = -1;
+        for (int i = 0; i < wordsDict.length; i++) {
+            if (wordsDict[i].equals(word1)) {
+                if (word1.equals(word2)) {
+                    if (index1 != -1) {
+                        res = Math.min(res, i - index1);
+                    }
+                }
+                index1 = i;
+                if (index2 != -1) {
+                    res = Math.min(res, Math.abs(index2 - index1));
+                }
+            } else if (wordsDict[i].equals(word2)) {
+                index2 = i;
+                if (index1 != -1) {
+                    res = Math.min(res, Math.abs(index2 - index1));
+                }
+            }
+        }
+
+        return res;
     }
 
     // 243. 最短单词距离
