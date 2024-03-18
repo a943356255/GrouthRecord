@@ -8,6 +8,27 @@ public class LeetCodeMain18 {
 
     }
 
+    // 42. 接雨水
+    public int trap(int[] height) {
+        int ans = 0;
+        Deque<Integer> stack = new LinkedList<>();
+        int n = height.length;
+        for (int i = 0; i < n; ++i) {
+            while (!stack.isEmpty() && height[i] > height[stack.peek()]) {
+                int top = stack.pop();
+                if (stack.isEmpty()) {
+                    break;
+                }
+                int left = stack.peek();
+                int currWidth = i - left - 1;
+                int currHeight = Math.min(height[left], height[i]) - height[top];
+                ans += currWidth * currHeight;
+            }
+            stack.push(i);
+        }
+        return ans;
+    }
+
     // 852. 山脉数组的峰顶索引
     public int peakIndexInMountainArray(int[] arr) {
         int left = 0, right = arr.length - 1;
@@ -89,7 +110,6 @@ public class LeetCodeMain18 {
         if (head == null || head.next == null) {
             return head;
         }
-
         ListNode temp = head;
         ListNode tempFirst = new ListNode(), tempSecond = new ListNode();
         while (temp != null) {
@@ -102,9 +122,9 @@ public class LeetCodeMain18 {
             }
             temp = temp.next;
         }
-        ListNode node = tempSecond.next.next;
-        reserveList(tempFirst, tempSecond);
-        tempFirst.next.next = node;
+        ListNode node = tempSecond.next;
+        ListNode res = reserveList(tempFirst, tempSecond);
+        tempFirst.next = node;
         return head;
     }
 
