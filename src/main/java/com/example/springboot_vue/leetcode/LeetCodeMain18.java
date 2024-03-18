@@ -8,6 +8,48 @@ public class LeetCodeMain18 {
 
     }
 
+    // 200. 岛屿数量
+    public int numIslands(char[][] grid) {
+        int[][] direct = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        boolean[][] get = new boolean[grid.length][grid[0].length];
+        for (int i = 0; i < grid.length; i++) {
+            Arrays.fill(get[i], false);
+        }
+        int count = 0;
+        Queue<int[]> queue = new ArrayDeque<>();
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (get[i][j] || grid[i][j] == '0') {
+                    continue;
+                }
+                count++;
+                queue.add(new int[]{i, j});
+                get[i][j] = true;
+                while (!queue.isEmpty()) {
+                    int size = queue.size();
+                    for (int k = 0; k < size; k++) {
+                        int[] arr = queue.poll();
+                        int x = arr[0], y = arr[1];
+                        for (int l = 0; l < direct.length; l++) {
+                            if (canGet(grid, x + direct[l][0], y + direct[l][1])) {
+                                if (grid[x + direct[l][0]][y + direct[l][1]] == '1' && !get[x + direct[l][0]][y + direct[l][1]]) {
+                                    queue.offer(new int[]{x + direct[l][0], y + direct[l][1]});
+                                    get[x + direct[l][0]][y + direct[l][1]] = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return count;
+    }
+
+    public boolean canGet(char[][] grid, int x, int y) {
+        return x < grid.length && x >= 0 && y < grid[0].length && y >= 0;
+    }
+
     // LCR 016. 无重复字符的最长子串
     public int lengthOfLongestSubstring(String s) {
         int left = 0, right = 0, res = 0;
