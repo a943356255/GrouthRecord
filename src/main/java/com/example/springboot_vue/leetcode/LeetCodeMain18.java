@@ -23,9 +23,52 @@ public class LeetCodeMain18 {
         return res.toString();
     }
 
+    // 243. 最短单词距离
+    public int shortestDistance(String[] wordsDict, String word1, String word2) {
+        int res = Integer.MAX_VALUE, index1 = -1, index2 = -1;
+        for (int i = 0; i < wordsDict.length; i++) {
+            if (wordsDict[i].equals(word1)) {
+                index1 = i;
+                if (index2 != -1) {
+                    res = Math.min(res, Math.abs(index2 - index1));
+                }
+            }
+
+            if (wordsDict[i].equals(word2)) {
+                index2 = i;
+                if (index1 != -1) {
+                    res = Math.min(res, Math.abs(index2 - index1));
+                }
+            }
+        }
+
+        return res;
+    }
+
     // 189. 轮转数组
     public void rotate(int[] nums, int k) {
+        if (k == nums.length) {
+            return;
+        }
 
+        int count = 0, index = 0, length = nums.length, temp, temp2 = nums[index];
+        Set<Integer> set = new HashSet<>();
+        set.add(index);
+        while (count != length) {
+            temp = nums[(index + k) % length];
+            nums[(index + k) % length] = temp2;
+            index = (index + k) % length;
+            if (!set.contains(index)) {
+                set.add(index);
+            } else {
+                while (set.contains(index)) {
+                    index = (index + 1) % length;
+                    temp = nums[index];
+                }
+            }
+            temp2 = temp;
+            count++;
+        }
     }
 
     // rewrite quickSort
