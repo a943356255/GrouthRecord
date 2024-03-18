@@ -8,7 +8,25 @@ public class LeetCodeMain18 {
 
     }
 
+    // LCR 016. 无重复字符的最长子串
+    public int lengthOfLongestSubstring(String s) {
+        int left = 0, right = 0, res = 0;
+        Set<Character> set = new HashSet<>();
+        while (right < s.length()) {
+            char c = s.charAt(right++);
+            if (set.contains(c)) {
+                while (set.contains(c)) {
+                    set.remove(s.charAt(left++));
+                }
+                set.add(c);
+            } else {
+                set.add(c);
+                res = Math.max(res, set.size());
+            }
+        }
 
+        return res;
+    }
 
     // 179. 最大数
     public String largestNumber(int[] nums) {
