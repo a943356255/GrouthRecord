@@ -8,6 +8,33 @@ public class LeetCodeMain18 {
 
     }
 
+    // rewrite quickSort
+    public void quickSort(int[] arr, int left, int right) {
+        if (left < right) {
+            int i = left, j = right, x = arr[left];
+
+            while (i < j) {
+
+                while (i < j && arr[j] > x) {
+                    j--;
+                }
+                if (i < j) {
+                    arr[i++] = arr[j];
+                }
+
+                while (i < j && arr[i] < x) {
+                    i++;
+                }
+                if (i < j) {
+                    arr[j--] = arr[i];
+                }
+            }
+            arr[i] = x;
+            quickSort(arr, left, i - 1);
+            quickSort(arr, i + 1, right);
+        }
+    }
+
     // 42. 接雨水
     public int trap(int[] height) {
         int ans = 0;
