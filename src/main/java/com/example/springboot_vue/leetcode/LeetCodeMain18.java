@@ -8,6 +8,26 @@ public class LeetCodeMain18 {
 
     }
 
+    // 179. 最大数
+    public String largestNumber(int[] nums) {
+        StringBuilder res = new StringBuilder();
+        res.append(nums[0]);
+        for (int i = 1; i < nums.length; i++) {
+            if ((res.toString() + nums[i]).compareTo(nums[i] + res.toString()) > 0) {
+                res.append(nums[i]);
+            } else {
+                res.insert(0, nums[i]);
+            }
+        }
+
+        return res.toString();
+    }
+
+    // 189. 轮转数组
+    public void rotate(int[] nums, int k) {
+
+    }
+
     // rewrite quickSort
     public void quickSort(int[] arr, int left, int right) {
         if (left < right) {
