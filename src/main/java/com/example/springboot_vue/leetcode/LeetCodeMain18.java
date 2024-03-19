@@ -10,6 +10,29 @@ public class LeetCodeMain18 {
 
     List<String> letterCombinationsList = new ArrayList<>();
 
+    // 19. 删除链表的倒数第 N 个结点
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        if (head == null) {
+            return null;
+        }
+
+        ListNode fast = head, slow, pre = new ListNode();
+        pre.next = head;
+        while (n > 0 && fast != null) {
+            n--;
+            fast = fast.next;
+        }
+        slow = pre;
+        while (fast != null) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+
+        slow.next = slow.next.next;
+
+        return pre.next;
+    }
+
     // 17. 电话号码的字母组合
     public List<String> letterCombinations(String digits) {
         if (digits.equals("")) {
