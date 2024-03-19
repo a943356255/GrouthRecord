@@ -8,6 +8,46 @@ public class LeetCodeMain18 {
 
     }
 
+    // 2. 两数相加
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode res = new ListNode();
+        ListNode tempNode = res;
+        int temp = 0;
+        while (l1 != null && l2 != null) {
+            int first = l1.val, second = l2.val;
+            ListNode node = new ListNode();
+            node.val = (first + second + temp) % 10;
+            temp = (first + second + temp) / 10;
+            l1 = l1.next;
+            l2 = l2.next;
+            tempNode.next = node;
+            tempNode = node;
+        }
+
+        while (l1 != null) {
+            ListNode node = new ListNode();
+            node.val = (l1.val + temp) % 10;
+            temp = (l1.val + temp) / 10;
+            l1 = l1.next;
+            tempNode.next = node;
+            tempNode = node;
+        }
+
+        while (l2 != null) {
+            ListNode node = new ListNode();
+            node.val = (l2.val + temp) % 10;
+            temp = (l2.val + temp) / 10;
+            l2 = l2.next;
+            tempNode.next = node;
+            tempNode = node;
+        }
+
+        if (temp != 0) {
+            tempNode.next = new ListNode(1);
+        }
+        return res.next;
+    }
+
     // 24. 两两交换链表中的节点
     public ListNode swapPairs(ListNode head) {
         if (head == null || head.next == null) {
