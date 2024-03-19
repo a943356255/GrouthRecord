@@ -8,6 +8,45 @@ public class LeetCodeMain18 {
 
     }
 
+    List<String> letterCombinationsList = new ArrayList<>();
+
+    // 17. 电话号码的字母组合
+    public List<String> letterCombinations(String digits) {
+        if (digits.equals("")) {
+            return letterCombinationsList;
+        }
+        Map<Character, Character[]> map = new HashMap<>();
+        map.put('2', new Character[]{'a', 'b', 'c'});
+        map.put('3', new Character[]{'d', 'e', 'f'});
+        map.put('4', new Character[]{'g', 'h', 'i'});
+        map.put('5', new Character[]{'j', 'k', 'l'});
+        map.put('6', new Character[]{'m', 'n', 'o'});
+        map.put('7', new Character[]{'p', 'q', 'r', 's'});
+        map.put('8', new Character[]{'t', 'u', 'v'});
+        map.put('9', new Character[]{'w', 'x', 'y', 'z'});
+
+        StringBuilder stringBuilder = new StringBuilder();
+        letterCombinationsDfs(map, 0, digits, stringBuilder);
+
+        return letterCombinationsList;
+    }
+
+    public void letterCombinationsDfs(Map<Character, Character[]> map, int index, String digits, StringBuilder str) {
+        if (str.length() == digits.length()) {
+            letterCombinationsList.add(String.valueOf(str));
+            return;
+        }
+
+        for (int i = index; i < index + 1; i++) {
+            Character[] characters = map.get(digits.charAt(i));
+            for (int j = 0; j < characters.length; j++) {
+                str.append(characters[j]);
+                letterCombinationsDfs(map, index + 1, digits, str);
+                str.delete(str.length() - 1, str.length());
+            }
+        }
+    }
+
     // 200. 岛屿数量
     public int numIslands(char[][] grid) {
         int[][] direct = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
