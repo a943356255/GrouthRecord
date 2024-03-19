@@ -8,7 +8,30 @@ public class LeetCodeMain18 {
 
     }
 
-    List<String> letterCombinationsList = new ArrayList<>();
+    // 24. 两两交换链表中的节点
+    public ListNode swapPairs(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode pre = new ListNode();
+        pre.next = head;
+        ListNode res = pre;
+        ListNode slow = head, fast = head.next;
+        while (fast != null ) {
+            slow.next = fast.next;
+            pre.next = fast;
+            fast.next = slow;
+            pre = slow;
+            fast = slow.next;
+            if (fast != null) {
+                fast = fast.next;
+            }
+            slow = slow.next;
+        }
+
+        return res.next;
+    }
 
     // 19. 删除链表的倒数第 N 个结点
     public ListNode removeNthFromEnd(ListNode head, int n) {
@@ -33,6 +56,7 @@ public class LeetCodeMain18 {
         return pre.next;
     }
 
+    List<String> letterCombinationsList = new ArrayList<>();
     // 17. 电话号码的字母组合
     public List<String> letterCombinations(String digits) {
         if (digits.equals("")) {
