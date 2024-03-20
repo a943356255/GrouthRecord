@@ -8,6 +8,50 @@ public class LeetCodeMain18 {
 
     }
 
+    // 72. 编辑距离
+    public int minDistance(String word1, String word2) {
+        int n = word1.length();
+        int m = word2.length();
+
+        // 有一个字符串为空串
+        if (n * m == 0) {
+            return n + m;
+        }
+
+        // DP 数组
+        int[][] D = new int[n + 1][m + 1];
+
+        // 边界状态初始化
+        for (int i = 0; i < n + 1; i++) {
+            D[i][0] = i;
+        }
+        for (int j = 0; j < m + 1; j++) {
+            D[0][j] = j;
+        }
+
+        System.out.println(Arrays.deepToString(D));
+
+        // 对于DP的含义，dp[i][j]就代表了word1的前i个字符和word2的前j个字符的编辑距离
+        // 这里dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] or dp[i - 1][j - 1] + 1)
+        // 原因：我们得到了字符1前i个字符与字符2前j个字符的最短编辑距离后，那么i，j的值只需要将i - 1的字符加一个字符，就可以达到编辑距离
+        // 而i，j - 1与其同理
+        // 至于i - 1，j - 1，如果第i和j个字符本身就相同，那么就等于dp[i - 1][j - 1]，如果不相同，只需要将字符第i个字符变为第j个就可以了
+        // 计算所有 DP 值
+        for (int i = 1; i < n + 1; i++) {
+            for (int j = 1; j < m + 1; j++) {
+                int left = D[i - 1][j] + 1;
+                int down = D[i][j - 1] + 1;
+                int left_down = D[i - 1][j - 1];
+                if (word1.charAt(i - 1) != word2.charAt(j - 1)) {
+                    left_down += 1;
+                }
+                D[i][j] = Math.min(left, Math.min(down, left_down));
+            }
+        }
+
+        return D[n][m];
+    }
+
     // 2. 两数相加
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         ListNode res = new ListNode();
