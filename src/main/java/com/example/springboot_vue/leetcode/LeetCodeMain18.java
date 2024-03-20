@@ -8,6 +8,42 @@ public class LeetCodeMain18 {
 
     }
 
+    // 72. 编辑距离，手写版
+    public int minDistanceMy(String word1, String word2) {
+        int m = word1.length();
+        int n = word2.length();
+
+        if (m * n == 0) {
+            return m + n;
+        }
+
+        // dp[i][j]代表了word1的前i个字符和word2的前j个字符的最短编辑距离
+        int[][] dp = new int[m + 1][n + 1];
+        // 当j为0时，i是多少，他们的编辑距离就是多少
+        for (int i = 0; i < m + 1; i++) {
+            dp[i][0] = i;
+        }
+        for (int i = 0; i < n + 1; i++) {
+            dp[0][i] = i;
+        }
+
+        for (int i = 1; i < m + 1; i++) {
+            for (int j = 1; j < n + 1; j++) {
+                int first = dp[i - 1][j] + 1;
+                int second = dp[i][j - 1] + 1;
+                int third = dp[i - 1][j - 1];
+                // 这里为什么是i - 1，j - 1
+                if (word1.charAt(i - 1) != word2.charAt(j - 1)) {
+                    third++;
+                }
+
+                dp[i][j] = Math.min(Math.min(first, second), third);
+            }
+        }
+
+        return dp[m][n];
+    }
+
     // 72. 编辑距离
     public int minDistance(String word1, String word2) {
         int n = word1.length();
