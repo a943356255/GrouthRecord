@@ -5,7 +5,35 @@ import java.util.*;
 public class LeetCodeMain19 {
 
     public static void main(String[] args) {
+        int[] arr = {3, 6, 3, 7, 8, 2, 1, 9, 10};
+        new LeetCodeMain19().quickSort(0, arr.length - 1, arr);
+        System.out.println(Arrays.toString(arr));
+    }
 
+    public void quickSort(int left, int right, int[] arr) {
+        if (left < right) {
+            int i = left, j = right, x = arr[left];
+            while (i < j) {
+                while (i < j && arr[j] > x) {
+                    j--;
+                }
+
+                if (i < j) {
+                    arr[i++] = arr[j];
+                }
+
+                while (i < j && arr[i] < x) {
+                    i++;
+                }
+
+                if (i < j) {
+                    arr[j--] = arr[i];
+                }
+            }
+            arr[i] = x;
+            quickSort(left, i - 1, arr);
+            quickSort(i + 1, right, arr);
+        }
     }
 
     // LCR 049. 求根节点到叶节点数字之和
@@ -48,7 +76,15 @@ public class LeetCodeMain19 {
         for (int i = 1; i < height.length; i++) {
             while (!stack.isEmpty() && height[stack.peek()] < height[i]) {
                 int top = stack.pop();
+                // 栈为空，说明这里左边没有东西，往右递增，不可能积攒雨水
+                if (stack.isEmpty()) {
+                    break;
+                }
 
+                // 当前栈顶元素,即当此计算的左边界
+                int left = stack.peek();
+                int high = Math.min(height[left], height[i]) - height[top];
+                sum += (i - left - 1) * high;
             }
 
             stack.push(i);
