@@ -1,13 +1,52 @@
 package com.example.springboot_vue.leetcode;
 
+import com.alibaba.fastjson.JSONObject;
+import com.example.springboot_vue.pojo.city.City;
+
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class LeetCodeMain19 {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IllegalAccessException {
         int[] arr = {3, 6, 3, 7, 8, 2, 1, 9, 10};
         new LeetCodeMain19().quickSort(0, arr.length - 1, arr);
         System.out.println(Arrays.toString(arr));
+        City city = new City();
+        city.setMarkId(111);
+        JSONObject jsonObject = new JSONObject();
+        Class<?> clazz = city.getClass();
+        Field[] fields = clazz.getDeclaredFields();
+        System.out.println(Arrays.toString(fields));
+        for (int i = 0; i < fields.length; i++) {
+            fields[i].setAccessible(true);
+            jsonObject.put(fields[i].getName(), fields[i].get(city));
+        }
+        System.out.println(jsonObject.get("markId"));
+
+    }
+
+    // 315. 计算右侧小于当前元素的个数
+    public List<Integer> countSmaller(int[] nums) {
+        List<Integer> res = new LinkedList<>();
+        Stack<Integer> stack = new Stack<>();
+        Stack<Integer> second = new Stack<>();
+        for (int i = nums.length - 1; i >= 0; i--) {
+            if (stack.isEmpty() || stack.peek() > nums[i]) {
+                res.add(0, 0);
+            } else {
+                int sum = 0;
+                while (!stack.isEmpty() && stack.peek() < nums[i]) {
+                    second.push(stack.pop());
+                    sum++;
+                }
+                res.add(0, sum);
+            }
+
+            stack.push(nums[i]);
+        }
+
+        return res;
     }
 
     public void quickSort(int left, int right, int[] arr) {
