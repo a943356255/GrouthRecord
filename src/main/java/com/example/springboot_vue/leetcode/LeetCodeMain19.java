@@ -34,6 +34,22 @@ public class LeetCodeMain19 {
         }
         String str2 = "467";
         String result = String.join("-", strings);
+
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(1, 1);
+    }
+
+    // 392. 判断子序列
+    public boolean isSubsequence(String s, String t) {
+        int left = 0, right = 0;
+        while (left < s.length() && right < t.length()) {
+            if (s.charAt(left) == t.charAt(right)) {
+                left++;
+            }
+            right++;
+        }
+
+        return left == s.length();
     }
 
     // 228. 汇总区间
