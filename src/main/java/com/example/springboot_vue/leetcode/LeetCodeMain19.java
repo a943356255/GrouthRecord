@@ -2,6 +2,8 @@ package com.example.springboot_vue.leetcode;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.springboot_vue.pojo.city.City;
+import com.example.springboot_vue.socket.utils.StringUtils;
+import io.netty.util.internal.StringUtil;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -23,7 +25,43 @@ public class LeetCodeMain19 {
             jsonObject.put(fields[i].getName(), fields[i].get(city));
         }
         System.out.println(jsonObject.get("markId"));
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("123");
+        String str = "123";
+        String[] strings = str.split("/");
+        for (int i = 0; i < strings.length; i++) {
+            stringBuilder.append(strings[i]).append("-");
+        }
+        String str2 = "467";
+        String result = String.join("-", strings);
+    }
 
+    // 228. 汇总区间
+    public List<String> summaryRanges(int[] nums) {
+        List<String> res = new ArrayList<>();
+        if (nums.length == 0) {
+            return res;
+        }
+        int first = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            while (i < nums.length && nums[i] - nums[i - 1] == 1) {
+                i++;
+            }
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(first);
+            if (nums[i - 1] != first) {
+                stringBuilder.append("->").append(nums[i - 1]);
+            }
+            res.add(stringBuilder.toString());
+            if (i < nums.length) {
+                first = nums[i];
+            }
+        }
+
+        if (first == nums[nums.length - 1]) {
+            res.add(String.valueOf(first));
+        }
+        return res;
     }
 
     // 315. 计算右侧小于当前元素的个数
