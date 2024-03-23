@@ -39,6 +39,14 @@ public class LeetCodeMain19 {
         map.put(1, 1);
     }
 
+    // 2549. 统计桌面上的不同数字
+    public int distinctIntegers(int n) {
+        if (n == 1) {
+            return 0;
+        }
+        return n - 1;
+    }
+
     // 392. 判断子序列
     public boolean isSubsequence(String s, String t) {
         int left = 0, right = 0;
