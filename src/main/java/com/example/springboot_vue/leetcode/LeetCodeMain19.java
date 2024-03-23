@@ -39,6 +39,33 @@ public class LeetCodeMain19 {
         map.put(1, 1);
     }
 
+    List<List<Integer>> subsetsWithDupList = new ArrayList<>();
+    Set<String> subsetsWithDupSet = new HashSet<>();
+    // 90. 子集 II
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        // Arrays.sort(nums);
+        LinkedList<Integer> list = new LinkedList<>();
+        subsetsWithDupList.add(new ArrayList<>());
+        subsetsWithDupDfs(nums, list, 0);
+        return subsetsWithDupList;
+    }
+
+    public void subsetsWithDupDfs(int[] nums, LinkedList<Integer> list, int index) {
+        if (index == nums.length) {
+            return;
+        }
+
+        for (int i = index; i < nums.length; i++) {
+            list.add(nums[i]);
+            if (!subsetsWithDupSet.contains(list.toString())) {
+                subsetsWithDupList.add(new ArrayList<>(list));
+                subsetsWithDupSet.add(list.toString());
+            }
+            subsetsWithDupDfs(nums, list, i + 1);
+            list.removeLast();
+        }
+    }
+
     // 2549. 统计桌面上的不同数字
     public int distinctIntegers(int n) {
         if (n == 1) {
