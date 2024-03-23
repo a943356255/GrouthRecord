@@ -39,6 +39,32 @@ public class LeetCodeMain19 {
         map.put(1, 1);
     }
 
+    // 28. 找出字符串中第一个匹配项的下标
+    public int strStr(String haystack, String needle) {
+        int index = -1;
+        for (int i = 0; i < haystack.length(); i++) {
+            if (haystack.charAt(i) == needle.charAt(0)) {
+                index = i;
+                int temp = -1;
+                int left = 0;
+                while (i < haystack.length() && left < needle.length() && haystack.charAt(i) == needle.charAt(left)) {
+                    if (haystack.charAt(i) == needle.charAt(0)) {
+                        temp = i;
+                    }
+                    i++;
+                    left++;
+                }
+                if (left == needle.length()) {
+                    return index;
+                }
+                index = -1;
+                System.out.println("temp = " + temp);
+                i = temp;
+            }
+        }
+        return index;
+    }
+
     List<List<Integer>> subsetsWithDupList = new ArrayList<>();
     Set<String> subsetsWithDupSet = new HashSet<>();
     // 90. 子集 II
