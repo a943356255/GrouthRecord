@@ -45,6 +45,53 @@ public class LeetCodeMain19 {
         test();
     }
 
+    // 98. 验证二叉搜索树
+    public boolean isValidBST(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        return isValidBST(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+
+    public boolean isValidBST(TreeNode root, long lower, long higher) {
+        if (root == null) {
+            return true;
+        }
+
+        if (root.val <= lower || root.val >= higher) {
+            return false;
+        }
+
+        return isValidBST(root.left, lower, root.val) && isValidBST(root.right, root.val, higher);
+    }
+
+    // 33. 搜索旋转排序数组
+    public int search(int[] nums, int target) {
+        int left = 0, right = nums.length;
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (nums[mid] == target) {
+                return mid;
+            } else {
+                if (nums[0] <= nums[mid]) {
+                    if (nums[0] < target && nums[mid] < target) {
+                        left = mid + 1;
+                    } else {
+                        right = mid - 1;
+                    }
+                } else {
+                    if (nums[mid] < target && nums[0] > target) {
+                        left = mid + 1;
+                    } else {
+                        right = mid - 1;
+                    }
+                }
+            }
+        }
+        System.out.println("left = " + left + " right = " + right);
+        return -1;
+    }
+
     //
     public static void test() {
         City city = new City();
