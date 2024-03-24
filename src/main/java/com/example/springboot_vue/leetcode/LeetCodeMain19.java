@@ -45,6 +45,22 @@ public class LeetCodeMain19 {
         test();
     }
 
+    // LCR 193. 二叉搜索树的最近公共祖先
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        TreeNode res = root;
+        while (res != null) {
+            if (res.val > p.val && res.val > q.val) {
+                res = res.left;
+            } else if (res.val < q.val && res.val < p.val) {
+                res = res.right;
+            } else {
+                break;
+            }
+        }
+
+        return res;
+    }
+
     // 98. 验证二叉搜索树
     public boolean isValidBST(TreeNode root) {
         if (root == null) {
