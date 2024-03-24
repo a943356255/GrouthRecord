@@ -10,7 +10,9 @@ import java.util.*;
 
 public class LeetCodeMain19 {
 
-    private int testNumber = 1;
+    int testNumber = 1;
+
+    static int staticNumber = 1;
 
     public static void main(String[] args) throws IllegalAccessException {
 //        int[] arr = {3, 6, 3, 7, 8, 2, 1, 9, 10};
@@ -43,13 +45,15 @@ public class LeetCodeMain19 {
         test();
     }
 
+    //
     public static void test() {
         City city = new City();
-
+        staticNumber = 2;
     }
 
     // 1673. 找出最具竞争力的子序列
     public int[] mostCompetitive(int[] nums, int k) {
+
         if (k >= nums.length) {
             return nums;
         }
