@@ -61,6 +61,28 @@ public class LeetCodeMain19 {
         return res;
     }
 
+    TreeNode res = new TreeNode();
+    // LCR 194. 二叉树的最近公共祖先
+    public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
+        dfs(root, p, q);
+        return res;
+    }
+
+    public boolean dfs(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null) {
+            return false;
+        }
+
+        boolean left = dfs(root.left, p, q);
+        boolean right = dfs(root.right, p, q);
+
+        if (left && right || ((root.val == p.val || root.val == q.val) && (left || right))) {
+            res = root;
+        }
+
+        return left || right || root.val == p.val || root.val == q.val;
+    }
+
     // 98. 验证二叉搜索树
     public boolean isValidBST(TreeNode root) {
         if (root == null) {
