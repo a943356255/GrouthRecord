@@ -39,6 +39,53 @@ public class LeetCodeMain19 {
         map.put(1, 1);
     }
 
+    // 402. 移掉 K 位数字
+    public String removeKdigits(String num, int k) {
+        if (k == num.length()) {
+            return "0";
+        }
+        StringBuilder res = new StringBuilder();
+        Stack<Character> stack = new Stack<>();
+        int count = 0, index = -1;
+        for (int i = 0; i < num.length(); i++) {
+            char c = num.charAt(i);
+            while (!stack.isEmpty() && stack.peek() > c) {
+                stack.pop();
+                count++;
+                if (count == k) {
+                    break;
+                }
+            }
+            stack.push(c);
+            if (count == k) {
+                index = i + 1;
+                break;
+            }
+        }
+
+        if (index == -1) {
+            while (!stack.isEmpty() && stack.size() != num.length() - k) {
+                stack.pop();
+            }
+            while (!stack.isEmpty()) {
+                res.insert(0, stack.pop());
+            }
+        } else {
+            while (!stack.isEmpty()) {
+                res.insert(0, stack.pop());
+            }
+            for (int i = index; i < num.length(); i++) {
+                res.append(num.charAt(i));
+            }
+        }
+
+        while (res.charAt(0) == '0' && res.length() > 1) {
+            res.delete(0, 1);
+        }
+
+        return res.toString();
+    }
+
     // 28. 找出字符串中第一个匹配项的下标
     public int strStr(String haystack, String needle) {
         int index = -1;
