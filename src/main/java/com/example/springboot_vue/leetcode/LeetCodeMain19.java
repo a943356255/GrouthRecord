@@ -45,6 +45,28 @@ public class LeetCodeMain19 {
         test();
     }
 
+    //  打家劫舍，牛客
+    public int rob (int[] nums) {
+        // write code here
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        if (nums.length == 2) {
+            return Math.max(nums[0], nums[1]);
+        }
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        dp[1] = Math.max(nums[1], nums[0]);
+        int max = Integer.MIN_VALUE;
+        for (int i = 2; i < nums.length; i++) {
+            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
+            max = Math.max(max, dp[i]);
+        }
+
+        return max;
+    }
+
     // LCR 193. 二叉搜索树的最近公共祖先
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         TreeNode res = root;
