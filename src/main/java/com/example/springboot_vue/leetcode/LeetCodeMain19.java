@@ -10,33 +10,42 @@ import java.util.*;
 
 public class LeetCodeMain19 {
 
-    public static void main(String[] args) throws IllegalAccessException {
-        int[] arr = {3, 6, 3, 7, 8, 2, 1, 9, 10};
-        new LeetCodeMain19().quickSort(0, arr.length - 1, arr);
-        System.out.println(Arrays.toString(arr));
-        City city = new City();
-        city.setMarkId(111);
-        JSONObject jsonObject = new JSONObject();
-        Class<?> clazz = city.getClass();
-        Field[] fields = clazz.getDeclaredFields();
-        System.out.println(Arrays.toString(fields));
-        for (int i = 0; i < fields.length; i++) {
-            fields[i].setAccessible(true);
-            jsonObject.put(fields[i].getName(), fields[i].get(city));
-        }
-        System.out.println(jsonObject.get("markId"));
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("123");
-        String str = "123";
-        String[] strings = str.split("/");
-        for (int i = 0; i < strings.length; i++) {
-            stringBuilder.append(strings[i]).append("-");
-        }
-        String str2 = "467";
-        String result = String.join("-", strings);
+    private int testNumber = 1;
 
-        Map<Integer, Integer> map = new HashMap<>();
-        map.put(1, 1);
+    public static void main(String[] args) throws IllegalAccessException {
+//        int[] arr = {3, 6, 3, 7, 8, 2, 1, 9, 10};
+//        new LeetCodeMain19().quickSort(0, arr.length - 1, arr);
+//        System.out.println(Arrays.toString(arr));
+//        City city = new City();
+//        city.setMarkId(111);
+//        JSONObject jsonObject = new JSONObject();
+//        Class<?> clazz = city.getClass();
+//        Field[] fields = clazz.getDeclaredFields();
+//        System.out.println(Arrays.toString(fields));
+//        for (int i = 0; i < fields.length; i++) {
+//            fields[i].setAccessible(true);
+//            jsonObject.put(fields[i].getName(), fields[i].get(city));
+//        }
+//        System.out.println(jsonObject.get("markId"));
+//        StringBuilder stringBuilder = new StringBuilder();
+//        stringBuilder.append("123");
+//        String str = "123";
+//        String[] strings = str.split("/");
+//        for (int i = 0; i < strings.length; i++) {
+//            stringBuilder.append(strings[i]).append("-");
+//        }
+//        String str2 = "467";
+//        String result = String.join("-", strings);
+//
+//        Map<Integer, Integer> map = new HashMap<>();
+//        map.put(1, 1);
+        LeetCodeMain19 leetCodeMain19 = new LeetCodeMain19();
+        test();
+    }
+
+    public static void test() {
+        City city = new City();
+
     }
 
     // 1673. 找出最具竞争力的子序列
