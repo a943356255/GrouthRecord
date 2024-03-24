@@ -39,6 +39,43 @@ public class LeetCodeMain19 {
         map.put(1, 1);
     }
 
+    // 1673. 找出最具竞争力的子序列
+    public int[] mostCompetitive(int[] nums, int k) {
+        if (k >= nums.length) {
+            return nums;
+        }
+
+        int[] res = new int[k];
+        Deque<Integer> stack = new ArrayDeque<>();
+        for (int i = 0; i < nums.length; i++) {
+            while (!stack.isEmpty() && nums[stack.peekLast()] > nums[i]) {
+                stack.pollLast();
+            }
+            stack.offerLast(i);
+        }
+
+        int temp = 0;
+        if (!stack.isEmpty() && stack.size() < k) {
+            temp = res.length - stack.size();
+            k -= stack.size();
+            int index = stack.peekFirst();
+            for (int i = index - 1; i >= 0 && k > 0; i--, k--) {
+                res[temp--] = nums[i];
+            }
+            System.out.println(Arrays.toString(res));
+            temp = res.length - stack.size();
+            while (!stack.isEmpty()) {
+                res[temp++] = nums[stack.pop()];
+            }
+        } else {
+            while (!stack.isEmpty() && temp < res.length) {
+                res[temp++] = nums[stack.pop()];
+            }
+        }
+
+        return res;
+    }
+
     // 402. 移掉 K 位数字
     public String removeKdigits(String num, int k) {
         if (k == num.length()) {
