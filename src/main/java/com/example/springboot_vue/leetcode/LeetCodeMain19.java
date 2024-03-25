@@ -47,7 +47,50 @@ public class LeetCodeMain19 {
 
     // 86. 分隔链表
     public ListNode partition(ListNode head, int x) {
+        if (head == null || head.next == null) {
+            return head;
+        }
 
+        ListNode res = new ListNode();
+        res.next = head;
+
+        ListNode max = new ListNode();
+        max.next = head;
+        if (head.val >= x) {
+            res = max;
+        }
+
+        int mark = 0;
+        // 找到第一个比x大的节点
+        while (head != null) {
+            if (head.val >= x) {
+                mark = 1;
+                break;
+            }
+            max = max.next;
+            head = head.next;
+        }
+
+        if (mark == 0) {
+            return res.next;
+        }
+
+        ListNode pre = new ListNode();
+        pre.next = head;
+        while (head != null) {
+            if (head.val < x) {
+                pre.next = head.next;
+                head.next = max.next;
+                max.next = head;
+                head = pre.next;
+                max = max.next;
+            } else {
+                head = head.next;
+                pre = pre.next;
+            }
+        }
+
+        return res.next;
     }
 
     // 74. 搜索二维矩阵
