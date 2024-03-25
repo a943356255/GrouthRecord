@@ -14,6 +14,8 @@ public class LeetCodeMain19 {
 
     static int staticNumber = 1;
 
+    ThreadLocal<City> threadLocal = new ThreadLocal<>();
+
     public static void main(String[] args) throws IllegalAccessException {
 //        int[] arr = {3, 6, 3, 7, 8, 2, 1, 9, 10};
 //        new LeetCodeMain19().quickSort(0, arr.length - 1, arr);
@@ -43,6 +45,26 @@ public class LeetCodeMain19 {
 //        map.put(1, 1);
         LeetCodeMain19 leetCodeMain19 = new LeetCodeMain19();
         test();
+    }
+
+    // 230. 二叉搜索树中第K小的元素
+    int kthSmallestRes = 0, kthSmallestCount;
+    public int kthSmallest(TreeNode root, int k) {
+        kthSmallestDfs(root, k);
+        return kthSmallestRes;
+    }
+
+    public void kthSmallestDfs(TreeNode root, int k) {
+        if (root == null) {
+            return;
+        }
+
+        kthSmallestDfs(root.left, k);
+        kthSmallestCount++;
+        if (kthSmallestCount == k) {
+            kthSmallestRes = root.val;
+        }
+        kthSmallestDfs(root.right, k);
     }
 
     // 104. 二叉树的最大深度
