@@ -45,6 +45,44 @@ public class LeetCodeMain19 {
         test();
     }
 
+    // 104. 二叉树的最大深度
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        return Math.max(maxDepthDfs(root.left), maxDepthDfs(root.right)) + 1;
+    }
+
+    public int maxDepthDfs(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        int left = maxDepthDfs(root.left);
+        int right = maxDepthDfs(root.right);
+
+        return Math.max(left, right) + 1;
+    }
+
+    // 226. 翻转二叉树
+    public TreeNode invertTree(TreeNode root) {
+        invertTreeDfs(root);
+        return root;
+    }
+
+    public void invertTreeDfs(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        TreeNode node = root.right;
+        root.right = root.left;
+        root.left = node;
+        invertTreeDfs(root.left);
+        invertTreeDfs(root.right);
+    }
+
     int sumNumbersRes = 0;
     // 129. 求根节点到叶节点数字之和
     public int sumNumbers1(TreeNode root) {
