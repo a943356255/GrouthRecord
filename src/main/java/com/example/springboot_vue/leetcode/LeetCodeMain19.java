@@ -45,6 +45,25 @@ public class LeetCodeMain19 {
         test();
     }
 
+    int sumNumbersRes = 0;
+    // 129. 求根节点到叶节点数字之和
+    public int sumNumbers1(TreeNode root) {
+        sumNumbersDFS(root, 0);
+        return sumNumbersRes;
+    }
+
+    public void sumNumbersDFS(TreeNode root, int sum) {
+        if (root == null) {
+            return;
+        }
+        sum = sum * 10 + root.val;
+        if (root.left == null && root.right == null) {
+            sumNumbersRes += sum;
+        }
+        sumNumbersDFS(root.left, sum);
+        sumNumbersDFS(root.right, sum);
+    }
+
     // 86. 分隔链表
     public ListNode partition(ListNode head, int x) {
         if (head == null || head.next == null) {
