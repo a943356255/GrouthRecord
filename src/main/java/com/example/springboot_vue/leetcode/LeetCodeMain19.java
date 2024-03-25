@@ -45,6 +45,53 @@ public class LeetCodeMain19 {
         test();
     }
 
+    // 86. 分隔链表
+    public ListNode partition(ListNode head, int x) {
+
+    }
+
+    // 74. 搜索二维矩阵
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int index = binarySearchColumn(matrix, target);
+        if (index < 0) {
+            return false;
+        }
+
+        return binarySearchRow(matrix, target, index) == target;
+    }
+
+    public int binarySearchColumn(int[][] matrix, int target) {
+        int left = -1, right = matrix.length - 1;
+
+        while (left < right) {
+            int mid = (left + right + 1) / 2;
+            if (matrix[mid][0] <= target) {
+                left = mid;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return left;
+    }
+
+    public int binarySearchRow(int[][] matrix, int target, int index) {
+        int left = 0, right = matrix[index].length - 1;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (matrix[index][mid] == target) {
+                return target;
+            }
+            if (matrix[index][mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return -1;
+    }
+
     // 518. 零钱兑换 II
     public int change(int amount, int[] coins) {
         int[] dp = new int[amount + 1];
