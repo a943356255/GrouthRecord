@@ -45,6 +45,20 @@ public class LeetCodeMain19 {
         test();
     }
 
+    // 518. 零钱兑换 II
+    public int change(int amount, int[] coins) {
+        int[] dp = new int[amount + 1];
+        // dp[i]代表了总金额为i的组合数，那么后续遍历时，dp[i]的值就可以加上i - coin的值
+        dp[0] = 1;
+        for (int coin : coins) {
+            for (int i = coin; i <= amount; i++) {
+                dp[i] += dp[i - coin];
+            }
+        }
+
+        return dp[amount];
+    }
+
     //  打家劫舍，牛客
     public int rob (int[] nums) {
         // write code here
