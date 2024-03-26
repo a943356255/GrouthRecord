@@ -47,6 +47,26 @@ public class LeetCodeMain19 {
         test();
     }
 
+
+
+    // 169. 多数元素
+    public int majorityElement(int[] nums) {
+        int res = nums[0], count = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] == res) {
+                count++;
+            } else {
+                count--;
+                if (count < 1) {
+                    count = 1;
+                    res = nums[i];
+                }
+            }
+        }
+
+        return res;
+    }
+
     // 230. 二叉搜索树中第K小的元素
     int kthSmallestRes = 0, kthSmallestCount;
     public int kthSmallest(TreeNode root, int k) {
