@@ -47,6 +47,28 @@ public class LeetCodeMain19 {
         test();
     }
 
+    // 48. 旋转图像
+    public void rotate(int[][] matrix) {
+        int length = matrix.length - 1;
+        // 水平翻转
+        for (int i = 0; i < matrix.length / 2; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[length - i][j];
+                matrix[length - i][j] = temp;
+            }
+        }
+
+        // 对角线翻转
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < i; j++) {
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = temp;
+            }
+        }
+    }
+
     // 290. 单词规律
     public boolean wordPattern(String pattern, String s) {
         String[] res = s.split(" ");
