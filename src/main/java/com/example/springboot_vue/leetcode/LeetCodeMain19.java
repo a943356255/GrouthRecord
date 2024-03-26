@@ -45,6 +45,25 @@ public class LeetCodeMain19 {
 //        map.put(1, 1);
         LeetCodeMain19 leetCodeMain19 = new LeetCodeMain19();
         test();
+
+    }
+
+    // 3. 无重复字符的最长子串
+    public int lengthOfLongestSubstring(String s) {
+        Set<Character> set = new HashSet<>();
+        int max = 0, count = 0, left = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            while (set.contains(c)) {
+                set.remove(s.charAt(left++));
+                count--;
+            }
+            set.add(c);
+            count++;
+            max = Math.max(max, count);
+        }
+
+        return max;
     }
 
     // 88. 合并两个有序数组
