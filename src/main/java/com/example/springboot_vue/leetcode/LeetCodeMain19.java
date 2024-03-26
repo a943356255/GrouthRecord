@@ -47,7 +47,31 @@ public class LeetCodeMain19 {
         test();
     }
 
+    // 290. 单词规律
+    public boolean wordPattern(String pattern, String s) {
+        String[] res = s.split(" ");
+        if (pattern.length() != res.length) {
+            return false;
+        }
+        Set<String> set = new HashSet<>();
+        Map<Character, String> map = new HashMap<>();
+        for (int i = 0; i < res.length; i++) {
+            char c = pattern.charAt(i);
+            if (!map.containsKey(c)) {
+                if (set.contains(res[i])) {
+                    return false;
+                }
+                map.put(c, res[i]);
+                set.add(res[i]);
+            } else {
+                if (!map.get(c).equals(res[i])) {
+                    return false;
+                }
+            }
+        }
 
+        return true;
+    }
 
     // 169. 多数元素
     public int majorityElement(int[] nums) {
