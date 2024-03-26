@@ -47,6 +47,25 @@ public class LeetCodeMain19 {
         test();
     }
 
+    // 274. H 指数
+    public int hIndex(int[] citations) {
+        int res = 0;
+        int[] arr = new int[1001];
+        for (int i = 0; i < citations.length; i++) {
+            arr[citations[i]]++;
+        }
+
+        int sum = 0;
+        for (int i = 1000; i >= 0; i--) {
+            sum += arr[i];
+            if (sum >= i) {
+                return i;
+            }
+        }
+
+        return res;
+    }
+
     // 125. 验证回文串
     public boolean isPalindrome(String s) {
         int left = 0, right = s.length() - 1;
