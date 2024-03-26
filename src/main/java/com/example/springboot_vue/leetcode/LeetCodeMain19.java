@@ -47,6 +47,27 @@ public class LeetCodeMain19 {
         test();
     }
 
+    // 88. 合并两个有序数组
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        if (m == 0) {
+            System.arraycopy(nums2, 0, nums1, 0, nums1.length);
+        }
+        int left = m - 1, right = n - 1;
+        int length = nums1.length - 1;
+        while (left >= 0 && right >= 0) {
+            if (nums1[left] > nums2[right]) {
+                nums1[length] = nums1[left--];
+            } else {
+                nums1[length] = nums2[right--];
+            }
+            length--;
+        }
+
+        while (right >= 0) {
+            nums1[length--] = nums2[right--];
+        }
+    }
+
     // 274. H 指数
     public int hIndex(int[] citations) {
         int res = 0;
